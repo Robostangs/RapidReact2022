@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
         // mMotor.setSpeed(speed); //TODO: set motor speed
     }
 
-    public returntype getSensor___() { //TODO: set sensor return type
+    // public returntype getSensor___() { //TODO: set sensor return type
         // return mSensor.getvalue(); //TODO: return sensor value
-    }
+    // }
 }
