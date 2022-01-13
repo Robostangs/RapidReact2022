@@ -22,7 +22,7 @@ public class Drivetrain extends SubsystemBase {
         return Instance;
     }
 
-    private Drivetrain() {
+    public Drivetrain() {
         m_leftFront = new TalonFX(Constants.Drivetrain.LF);
         m_leftMiddle = new TalonFX(Constants.Drivetrain.LM);
         m_leftBack = new TalonFX(Constants.Drivetrain.LB);
@@ -40,9 +40,9 @@ public class Drivetrain extends SubsystemBase {
         m_gyro = new AHRS(SPI.Port.kMXP);
     }
 
-    public void drivePower(int Lpwer, int Rpwer) {
-        m_leftFront.set(ControlMode.Velocity, Lpwer);
-        m_rightFront.set(ControlMode.Velocity, Rpwer);
+    public void drivePower(double leftPwr, double rightPwr) {
+        m_leftFront.set(ControlMode.Velocity, leftPwr);
+        m_rightFront.set(ControlMode.Velocity, rightPwr);
     }
 
     //Test out code, docs seems to suggest that its a PID built in control mode
