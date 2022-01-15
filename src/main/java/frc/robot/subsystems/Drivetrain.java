@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,6 +16,7 @@ public class Drivetrain extends SubsystemBase {
     public static Drivetrain Instance;
     private TalonFX m_leftFront, m_leftBack, m_leftMiddle, m_rightFront, m_rightBack, m_rightMiddle; 
     private AHRS m_gyro;
+    private PIDController m_leftPID, m_rightPID;
 
     public static Drivetrain getInstance() {
         if(Instance == null) {
@@ -45,11 +48,11 @@ public class Drivetrain extends SubsystemBase {
         m_rightFront.set(ControlMode.Velocity, rightPwr);
     }
 
-    // //Test out code, docs seems to suggest that its a PID built in control mode
-    // public void motionMagicDrive(int Lpwer, int Rpwer) {
-    //     m_leftFront.set(ControlMode.MotionMagic, Lpwer);
-    //     m_rightFront.set(ControlMode.MotionMagic, Rpwer);
-    // }
+    //Test out code, docs seems to suggest that its a PID built in control mode
+    public void motionMagicDrive(double endPosition) {
+        m_leftFront.set(ControlMode.MotionMagic, endPosition);
+        m_rightFront.set(ControlMode.MotionMagic, endPosition);
+    }
 
     public double getLeftEncoder() {
         return m_leftFront.getActiveTrajectoryPosition();
