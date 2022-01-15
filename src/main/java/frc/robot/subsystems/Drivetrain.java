@@ -45,15 +45,10 @@ public class Drivetrain extends SubsystemBase {
         m_rightFront.set(ControlMode.Velocity, rightPwr);
     }
 
-    //Test out code, docs seems to suggest that its a PID built in control mode
-    public void motionMagicDrive(int Lpwer, int Rpwer) {
-        m_leftFront.set(ControlMode.MotionMagic, Lpwer);
-        m_rightFront.set(ControlMode.MotionMagic, Rpwer);
-    }
-
-    // public void driveRot(double Lrot, double Rrot) {
-    //     leftFront.set(ControlMode.Position, Lrot);
-    //     rightFront.set(ControlMode.Position, Rrot);
+    // //Test out code, docs seems to suggest that its a PID built in control mode
+    // public void motionMagicDrive(int Lpwer, int Rpwer) {
+    //     m_leftFront.set(ControlMode.MotionMagic, Lpwer);
+    //     m_rightFront.set(ControlMode.MotionMagic, Rpwer);
     // }
 
     public double getLeftEncoder() {

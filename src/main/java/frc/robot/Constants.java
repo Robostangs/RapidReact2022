@@ -25,6 +25,8 @@ public final class Constants {
         public static final int RB = 5;
 
         public static final int gyro = 7;
+        public static final int falcon_encoder_max = 4096;
+        public static final double wheelDiameter = 3;
     }
 
 }
