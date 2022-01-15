@@ -29,13 +29,9 @@ public final class Constants {
         public static final double wheelDiameter = 3;
 
         //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
-        public static final double leftkP = 1;
-        public static final double leftkI = 1;
-        public static final double leftkD = 1;
-
-        public static final double rightkP = 1;
-        public static final double rightkI = 1;
-        public static final double rightkD = 1;
+        public static final double kP = 1;
+        public static final double kI = 1;
+        public static final double kD = 1;
     }
 
 }

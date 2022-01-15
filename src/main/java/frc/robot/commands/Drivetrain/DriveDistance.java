@@ -13,7 +13,6 @@ public class DriveDistance extends CommandBase {
     //Implement a better command, which can drive you at a given distance, at a given speed, at a given angle during the drive
     public DriveDistance(double angle, double distance, double speed) {
         double encoderResult = Utils.motorConversionInches(Constants.Drivetrain.falcon_encoder_max, distance);
-        double currentAngle = mDrivetrain.getAngle();
 
         mDrivetrain.motionMagicDrive(encoderResult);
 
