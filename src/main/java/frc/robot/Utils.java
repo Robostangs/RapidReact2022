@@ -14,7 +14,7 @@ public final class Utils {
         if (input <= lower_maxzone) {
             return -1;
         } else if (lower_maxzone < input && input < lower_deadzone) {
-            return Math.pow((-input + lower_deadzone) / (lower_deadzone - lower_maxzone), power);
+            return -Math.pow((-input + lower_deadzone) / (lower_deadzone - lower_maxzone), power);
         } else if (lower_deadzone <= input && input <= higher_deadzone) {
             return 0;
         } else if (higher_deadzone < input && input < higher_maxzone) {
