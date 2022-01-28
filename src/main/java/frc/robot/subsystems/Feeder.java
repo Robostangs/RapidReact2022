@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -12,6 +13,7 @@ public class Feeder extends SubsystemBase {
     public static Feeder Instance;
     private TalonFX m_beltMotor, m_elevatorMotor; 
     private SlotConfiguration m_beltMotorConfig, m_elevatorMotorConfig; 
+    private DigitalInput m_intakeSensor, m_shooterSensor;
 
     public static Feeder getInstance() {
         if(Instance == null) {
@@ -34,8 +36,19 @@ public class Feeder extends SubsystemBase {
        m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kI;
        m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kD;
 
+       m_intakeSensor = new DigitalInput(Constants.Feeder.colorIntakeID);
+       m_shooterSensor = new DigitalInput(Constants.Feeder.colorShooterID);
+
        m_beltMotor.configureSlot(m_beltMotorConfig, 1, 500);
        m_elevatorMotor.configureSlot(m_elevatorMotorConfig, 1, 500);  
+    }
+
+    public boolean getIntakeSensor() {
+        return m_intakeSensor.get();
+    }
+
+    public boolean getShooterSensor() {
+        return m_shooterSensor.get();
     }
 
     public void moveBelt(double beltPower) {
