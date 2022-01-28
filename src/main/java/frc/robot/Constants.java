@@ -18,11 +18,13 @@ public final class Constants {
         public static final int alignmentID = 1;
         public static final int leftShooterID = 2;
         public static final int rightShooterID = 3;
+        public static final int angleShooterID = 4;
 
         public static final double motorKP = 1;
         public static final double motorKI = 1;
         public static final double motorKD = 1;
 
+        public static final double ticksPerDegree = 10;
     }
 
 }

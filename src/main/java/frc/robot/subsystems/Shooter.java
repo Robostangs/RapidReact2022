@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
-    public final TalonFX m_Alignment, m_leftShooter, m_rightShooter;
+    public final TalonFX m_Alignment, m_leftShooter, m_rightShooter, m_angleChanger;
     private SlotConfiguration m_allMotorPID;
     //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
@@ -25,6 +25,7 @@ public class Shooter extends SubsystemBase {
         m_Alignment = new TalonFX(Constants.Shooter.alignmentID);
         m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
         m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
+        m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
         
         m_allMotorPID = new SlotConfiguration();
         m_allMotorPID.kP = Constants.Shooter.motorKP; 
@@ -34,6 +35,7 @@ public class Shooter extends SubsystemBase {
         m_Alignment.configureSlot(m_allMotorPID);
         m_leftShooter.configureSlot(m_allMotorPID);
         m_rightShooter.configureSlot(m_allMotorPID);
+        m_angleChanger.configureSlot(m_allMotorPID);
 
         m_Alignment.selectProfileSlot(1, 0);
         m_leftShooter.selectProfileSlot(1, 0);
@@ -55,6 +57,10 @@ public class Shooter extends SubsystemBase {
         m_rightShooter.set(ControlMode.Velocity, power);
     }
 
+    public void setAnglePosition(double position) {
+        m_angleChanger.set(ControlMode.Position, position);
+    }
+
     public double getAlignmentVelocity() {
         return m_Alignment.getActiveTrajectoryVelocity();
     }
@@ -67,6 +73,9 @@ public class Shooter extends SubsystemBase {
         return m_rightShooter.getActiveTrajectoryVelocity();
     }
 
+    public double getAnglePosition() {
+        return m_angleChanger.getActiveTrajectoryPosition();
+    }
     // public double getAlignmentEncoder() {
     //     return m_Alignment.getActiveTrajectoryPosition();
     // }
