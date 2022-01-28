@@ -23,10 +23,4 @@ public final class Utils {
             return 1;
         }
     }
-
-    public static double motorConversionInches(double encoderMax, double distance) {
-        //Update wheel diameter in constants
-        double rotations = distance / 2*Math.PI*Constants.Drivetrain.wheelDiameter;
-        return encoderMax * rotations;
-    }
 }

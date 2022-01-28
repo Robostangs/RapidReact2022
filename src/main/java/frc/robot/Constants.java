@@ -14,24 +14,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class Shooter {
 
-    public static final class Drivetrain {
-        public static final int LF = 0;
-        public static final int LM = 1;
-        public static final int LB = 2;
-
-        public static final int RF = 3;
-        public static final int RM = 4;
-        public static final int RB = 5;
-
-        public static final int gyro = 7;
-        public static final int falcon_encoder_max = 4096;
-        public static final double wheelDiameter = 3;
-
-        //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
-        public static final double kP = 1;
-        public static final double kI = 1;
-        public static final double kD = 1;
     }
 
 }
