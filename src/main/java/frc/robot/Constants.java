@@ -14,6 +14,12 @@ package frc.robot;
  */
 public final class Constants {
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 0; //TODO: Set intake speed
+        public static final double kIntakeSpeed = 0; //TODO: Set intake speed\
+        public static final int intakeMotorID = 1;
+        public static final int sensorID = 2;
+
+        public static final double kP = 1;
+        public static final double kI = 1;
+        public static final double kD = 1;
     }
 }
