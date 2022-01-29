@@ -26,7 +26,12 @@ public class Shooter extends SubsystemBase {
         m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
         m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
         m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
-        
+
+        m_Alignment.configFactoryDefault();
+        m_leftShooter.configFactoryDefault();
+        m_rightShooter.configFactoryDefault();
+        m_angleChanger.configFactoryDefault();
+
         m_allMotorPID = new SlotConfiguration();
         m_allMotorPID.kP = Constants.Shooter.motorKP; 
         m_allMotorPID.kI = Constants.Shooter.motorKI;
