@@ -13,7 +13,7 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
 
     public static Drivetrain Instance;
-    private TalonFX m_leftFront, m_leftBack, m_leftMiddle, m_rightFront, m_rightBack, m_rightMiddle; 
+    private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
     private AHRS m_gyro;
     private SlotConfiguration m_allMotorPID;
 
@@ -25,64 +25,64 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public Drivetrain() {
-        m_leftFront = new TalonFX(Constants.Drivetrain.LF);
-        m_leftMiddle = new TalonFX(Constants.Drivetrain.LM);
-        m_leftBack = new TalonFX(Constants.Drivetrain.LB);
+        m_leftTop = new TalonFX(Constants.Drivetrain.LT);
+        m_leftBottom = new TalonFX(Constants.Drivetrain.LB);
 
-        m_rightFront = new TalonFX(Constants.Drivetrain.RF);
-        m_rightMiddle = new TalonFX(Constants.Drivetrain.RM);
-        m_rightBack = new TalonFX(Constants.Drivetrain.RB);
+        m_rightTop = new TalonFX(Constants.Drivetrain.RT);
+        m_rightBottom = new TalonFX(Constants.Drivetrain.RB);
+
+        m_leftTop.configFactoryDefault();
+        m_leftBottom.configFactoryDefault();
+        m_rightTop.configFactoryDefault();
+        m_rightBottom.configFactoryDefault();
 
         m_allMotorPID = new SlotConfiguration();
         m_allMotorPID.kP = Constants.Drivetrain.kP;
         m_allMotorPID.kI = Constants.Drivetrain.kI;
         m_allMotorPID.kD = Constants.Drivetrain.kD;
 
-        m_leftFront.configureSlot(m_allMotorPID, 1, 500);
-        m_rightFront.configureSlot(m_allMotorPID, 1, 500);
+        m_leftTop.configureSlot(m_allMotorPID, 1, 500);
+        m_rightTop.configureSlot(m_allMotorPID, 1, 500);
 
-        m_leftFront.selectProfileSlot(1, 0);
-        m_rightFront.selectProfileSlot(1, 0);
+        m_leftTop.selectProfileSlot(1, 0);
+        m_rightTop.selectProfileSlot(1, 0);
 
-        m_leftMiddle.follow(m_leftFront);
-        m_leftBack.follow(m_leftFront);
-
-        m_rightMiddle.follow(m_rightFront);
-        m_rightBack.follow(m_rightFront);
+        m_leftBottom.follow(m_leftTop);
+        m_rightBottom.follow(m_rightTop);
 
         m_gyro = new AHRS(SPI.Port.kMXP);
     }
 
     public void drivePower(double leftPwr, double rightPwr) {
-        m_leftFront.set(ControlMode.Velocity, leftPwr);
-        m_rightFront.set(ControlMode.Velocity, rightPwr);
+        m_leftTop.set(ControlMode.PercentOutput, leftPwr);
+        m_rightTop.set(ControlMode.PercentOutput, rightPwr);
     }
 
     //Test out code, docs seems to suggest that its a PID built in control mode, PID Configured above?
     public void motionMagicDrive(double endPosition) {
-        m_leftFront.set(ControlMode.Position, endPosition);
-        m_rightFront.set(ControlMode.Position, endPosition);
+        m_leftTop.set(ControlMode.Position, endPosition);
+        m_rightTop.set(ControlMode.Position, endPosition);
     }
 
     public double getLeftEncoder() {
-        return m_leftFront.getActiveTrajectoryPosition();
+        return m_leftTop.getActiveTrajectoryPosition();
     }
 
     public double getRightEncoder() {
-        return m_rightFront.getActiveTrajectoryPosition();
+        return m_rightTop.getActiveTrajectoryPosition();
     }
 
     public double getRightVelocity() {
-        return m_rightFront.getSelectedSensorVelocity();
+        return m_rightTop.getSelectedSensorVelocity();
     }
 
     public double getLeftVelocity() {
-        return m_leftFront.getSelectedSensorVelocity();
+        return m_leftTop.getSelectedSensorVelocity();
     }
 
     public void resetEncoder() {
-        m_leftFront.setSelectedSensorPosition(0);
-        m_rightFront.setSelectedSensorPosition(0);
+        m_leftTop.setSelectedSensorPosition(0);
+        m_rightTop.setSelectedSensorPosition(0);
     }
 
     public double getAngle() {

@@ -31,7 +31,7 @@ public class RobotContainer {
         XboxController driver = new XboxController(0);
         XboxController manip = new XboxController(1);
 
-        Drivetrain.getInstance().setDefaultCommand(new ArcadeDrive(driver::getRightY, driver::getLeftX));
+        Drivetrain.getInstance().setDefaultCommand(new ArcadeDrive(driver::getRightY, driver::getRightX));
     }
 
     /**

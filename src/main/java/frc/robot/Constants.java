@@ -16,13 +16,11 @@ package frc.robot;
 public final class Constants {
 
     public static final class Drivetrain {
-        public static final int LF = 0;
-        public static final int LM = 1;
-        public static final int LB = 2;
+        public static final int LT = 2;
+        public static final int LB = 0;
 
-        public static final int RF = 3;
-        public static final int RM = 4;
-        public static final int RB = 5;
+        public static final int RT = 3;
+        public static final int RB = 1;
 
         public static final int gyro = 7;
         public static final int falcon_encoder_max = 4096;
