@@ -45,16 +45,16 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setAlignmentPower(double power) {
-        m_Alignment.set(ControlMode.Velocity, power);
+        m_Alignment.set(ControlMode.PercentOutput, power);
     }
 
     
     public void setLeftShooterPower(double power) {
-        m_leftShooter.set(ControlMode.Velocity, power);
+        m_leftShooter.set(ControlMode.PercentOutput, power);
     }
     
     public void setRightShooterPower(double power) {
-        m_rightShooter.set(ControlMode.Velocity, power);
+        m_rightShooter.set(ControlMode.PercentOutput, power);
     }
 
     public void setAnglePosition(double position) {
