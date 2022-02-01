@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
-public class Turret extends PIDSubsystem{
+public class Turret extends PIDSubsystem {
     private final TalonFX rotationMotor;
     public Turret instance;
     //private TalonFXSensorCollection m_sensorCollection;
@@ -22,6 +22,7 @@ public class Turret extends PIDSubsystem{
 
     public Turret() {
         super(new PIDController(Constants.Turret.rotationMotorKp, Constants.Turret.rotationMotorKi, Constants.Turret.rotationMotorKd));
+        super.m_controller.enableContinuousInput(Constants.Turret.rotationMotorMin, Constants.Turret.rotationMotorMax);
         rotationMotor = new TalonFX(Constants.Turret.rotationMotorID);
     }
     

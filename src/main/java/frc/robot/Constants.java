@@ -20,6 +20,8 @@ public final class Constants {
         public static final double rotationMotorKi = 1;
         public static final double rotationMotorKd = 1;
 
+        public static final double rotationMotorMax = 2048;
+        public static final double rotationMotorMin = 0;
     }
 
 }
