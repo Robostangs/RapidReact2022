@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -11,7 +12,7 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
     public final TalonFX m_Alignment, m_leftShooter, m_rightShooter, m_angleChanger;
-    private SlotConfiguration m_allMotorPID;
+    private PIDController m_alignmentPID, m_leftShooterPID, m_rightShooterPID, m_angleChangerPID;
     //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
     public static Shooter getInstance() {
@@ -31,28 +32,25 @@ public class Shooter extends SubsystemBase {
         m_leftShooter.configFactoryDefault();
         m_rightShooter.configFactoryDefault();
         m_angleChanger.configFactoryDefault();
-
-        m_allMotorPID = new SlotConfiguration();
-        m_allMotorPID.kP = Constants.Shooter.motorKP; 
-        m_allMotorPID.kI = Constants.Shooter.motorKI;
-        m_allMotorPID.kD = Constants.Shooter.motorKD;
-
-        m_Alignment.configureSlot(m_allMotorPID);
-        m_leftShooter.configureSlot(m_allMotorPID);
-        m_rightShooter.configureSlot(m_allMotorPID);
-        m_angleChanger.configureSlot(m_allMotorPID);
-
-        m_Alignment.selectProfileSlot(1, 0);
-        m_leftShooter.selectProfileSlot(1, 0);
-        m_rightShooter.selectProfileSlot(1, 0);
     
-    
+        m_alignmentPID = new PIDController(Constants.Shooter.alignmentMotorKP, Constants.Shooter.alignmentMotorKI, Constants.Shooter.alignmentMotorKD);
+        m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
+        m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
+        m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
+    }
+
+    @Override
+    public void periodic() {
+        super.periodic();
+        setAlignmentPower(m_alignmentPID.calculate(getAlignmentPosition()));
+        setAnglePower(m_angleChangerPID.calculate(getAnglePosition()));
+        setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
+        setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
     }
 
     public void setAlignmentPower(double power) {
         m_Alignment.set(ControlMode.PercentOutput, power);
     }
-
     
     public void setLeftShooterPower(double power) {
         m_leftShooter.set(ControlMode.PercentOutput, power);
@@ -62,20 +60,24 @@ public class Shooter extends SubsystemBase {
         m_rightShooter.set(ControlMode.PercentOutput, power);
     }
 
-    public void setAnglePosition(double position) {
-        m_angleChanger.set(ControlMode.Position, position);
+    public void setAnglePower(double power) {
+        m_angleChanger.set(ControlMode.PercentOutput, power);
     }
 
-    public double getAlignmentVelocity() {
-        return m_Alignment.getActiveTrajectoryVelocity();
+    public void setAnglePositionPID(double position) {
+        m_alignmentPID.setSetpoint(position);
     }
 
-    public double getLeftShooterVelocity() {
-        return m_leftShooter.getActiveTrajectoryVelocity();
+    public double getAlignmentPosition() {
+        return m_Alignment.getActiveTrajectoryPosition();
     }
 
-    public double getRightShooterVelocity() {
-        return m_rightShooter.getActiveTrajectoryVelocity();
+    public double getLeftShooterPosition() {
+        return m_leftShooter.getActiveTrajectoryPosition();
+    }
+
+    public double getRightShooterPosition() {
+        return m_rightShooter.getActiveTrajectoryPosition();
     }
 
     public double getAnglePosition() {

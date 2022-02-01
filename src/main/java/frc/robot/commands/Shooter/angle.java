@@ -18,7 +18,7 @@ public class angle extends CommandBase {
     public void execute() {
         double currentPosition = mShooter.getAnglePosition();
         double change = m_anglePosition - currentPosition / Constants.Shooter.ticksPerDegree;
-        mShooter.setAnglePosition(change);               
+        mShooter.setAnglePositionPID(change);               
     }
 
     @Override
