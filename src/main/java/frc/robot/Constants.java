@@ -16,6 +16,10 @@ public final class Constants {
 
     public static class Turret {
         public static final int rotationMotorID = 1;
+        public static final double rotationMotorKp = 1;
+        public static final double rotationMotorKi = 1;
+        public static final double rotationMotorKd = 1;
+
     }
 
 }
