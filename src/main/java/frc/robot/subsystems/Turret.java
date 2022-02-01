@@ -27,13 +27,18 @@ public class Turret extends PIDSubsystem {
     }
     
     @Override
-    protected double getMeasurement() {
+    public double getMeasurement() {
         return rotationMotor.getActiveTrajectoryPosition();
     }
 
     @Override
     protected void useOutput(double output, double setpoint) {
         rotateMotorVelocity(output); //ADD OUTPUT        
+    }
+
+    @Override
+    public void setSetpoint(double setpoint) {
+        super.setSetpoint(setpoint);
     }
 
     public void rotateMotorVelocity(double speed) {
