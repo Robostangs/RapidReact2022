@@ -14,9 +14,8 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static class Limelight {
-        public static final double targetHeight = 104;
-        public static final double limelightAngle = 30; 
+    public static class Turret {
+        public static final int rotationMotorID = 1;
     }
 
 }
