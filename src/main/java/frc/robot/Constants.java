@@ -37,6 +37,10 @@ public final class Constants {
         public static final double angleMotorKD = 1;
 
         public static final double ticksPerDegree = 10;
+
+    public static class Limelight {
+        public static final double targetHeight = 104;
+        public static final double limelightAngle = 30; 
     }
 
 }
