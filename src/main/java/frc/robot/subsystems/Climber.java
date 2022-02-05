@@ -5,16 +5,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Climber extends SubsystemBase{
+public class Climber extends PIDSubsystem {
     
     public static Climber instance;
     private TalonFX m_rotationMotor;  
     private CANSparkMax m_leftClaw, m_rightClaw;
-    private Servo m_leftClawLock, m_rightClawLock;
+    private Servo m_leftClawLock, m_rightClawLock, m_elevatorServo;
 
 
     public static Climber getInstance() {
@@ -25,8 +27,10 @@ public class Climber extends SubsystemBase{
     }
 
     public Climber() {
+        super(new PIDController(kp, ki, kd))
         m_rotationMotor = new TalonFX(Constants.Climber.rotationMotorID);
-        
+        m_elevatorServo = new Servo(Constants.Climber.elevatorID);
+
         m_leftClaw = new CANSparkMax(Constants.Climber.leftClawID, MotorType.kBrushless);
         m_rightClaw = new CANSparkMax(Constants.Climber.rightClawID, MotorType.kBrushless);
         
@@ -80,5 +84,13 @@ public class Climber extends SubsystemBase{
 
     public double getLeftClawLockPosition() {
         return m_leftClawLock.getPosition();
+    }
+    
+    public void setElevatorPosition(double position) {
+        m_elevatorServo.set(position);
+    }
+
+    public double getElevatorPosition() {
+        return m_elevatorServo.getPosition();
     }
 }

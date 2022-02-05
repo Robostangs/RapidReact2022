@@ -14,10 +14,12 @@ package frc.robot;
  */
 public final class Constants {
     public static class Climber {
-        public static final int rotationMotorID = 0;
+        public static final int rotationMotorID = 0;        
         public static final int leftClawID = 1;
         public static final int rightClawID = 2;
         public static final int leftClawLockID = 3;
         public static final int rightClawLockID = 4;
+        public static final int elevatorID = 5;
+
     }
 }
