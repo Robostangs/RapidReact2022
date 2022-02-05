@@ -10,10 +10,10 @@ import frc.robot.Constants;
 
 public class Turret extends PIDSubsystem {
     private final TalonFX rotationMotor;
-    public Turret instance;
+    public static Turret instance;
     //private TalonFXSensorCollection m_sensorCollection;
 
-    public Turret getInstance() {
+    public static Turret getInstance() {
         if(instance == null) {
             instance = new Turret();
         }
