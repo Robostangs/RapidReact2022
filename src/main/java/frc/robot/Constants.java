@@ -22,6 +22,12 @@ public final class Constants {
 
         public static final double rotationMotorMax = 2048;
         public static final double rotationMotorMin = 0;
+
+        public static final double leftLimit = 0;
+        public static final double rightLimit = 5000;
+
+        public static final double leftSpeedMaxAuto = 0.5;
+        public static final double rightSpeedMaxAuto = 0.5;
     }
     
     public static class Limelight {

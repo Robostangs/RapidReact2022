@@ -44,4 +44,8 @@ public class Turret extends PIDSubsystem {
     public void rotateMotorVelocity(double speed) {
         rotationMotor.set(ControlMode.PercentOutput, speed);
     }
+
+    public double getVelocity() {
+        return rotationMotor.getSelectedSensorVelocity();
+    }
 }
