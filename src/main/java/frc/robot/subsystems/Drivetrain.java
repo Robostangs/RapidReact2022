@@ -60,6 +60,11 @@ public class Drivetrain extends SubsystemBase {
         );
     }
 
+    public void setPoint(double leftSetpoint, double rightSetpoint) {
+        m_leftPIDController.setSetpoint(leftSetpoint);
+        m_rightPIDController.setSetpoint(rightSetpoint);
+    }
+
     public void drivePower(double leftPwr, double rightPwr) {
         m_leftTop.set(ControlMode.PercentOutput, leftPwr);
         m_rightTop.set(ControlMode.PercentOutput, rightPwr);
