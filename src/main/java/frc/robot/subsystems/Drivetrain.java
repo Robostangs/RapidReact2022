@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -98,4 +99,9 @@ public class Drivetrain extends SubsystemBase {
     public void brake() {
         drivePower(0, 0);
     }       
+
+    public void updateValues() {
+        SmartDashboard.putData("LeftDrivetrainPID", m_leftPIDController);
+        SmartDashboard.putData("RightDrivetrainPID", m_rightPIDController); 
+    }
 }
