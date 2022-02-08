@@ -87,6 +87,30 @@ public class Drivetrain extends SubsystemBase {
         return m_rightTop.getSelectedSensorVelocity();
     }
 
+    public double getLeftCurrent() {
+        return m_leftTop.getSupplyCurrent();
+    }
+
+    public double getRightCurrent() {
+        return m_rightTop.getSupplyCurrent();
+    }
+
+    public double getLeftVoltage() {
+        return m_leftTop.getBusVoltage();
+    }
+
+    public double getRightVoltage() {
+        return m_rightTop.getBusVoltage();
+    }
+
+    public double getLeftTemp() {
+        return m_leftTop.getTemperature();
+    }
+
+    public double getRightTemp() {
+        return m_rightTop.getTemperature();
+    }
+
     public void resetEncoder() {
         m_leftTop.setSelectedSensorPosition(0);
         m_rightTop.setSelectedSensorPosition(0);
