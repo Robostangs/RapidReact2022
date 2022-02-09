@@ -35,4 +35,5 @@ public class Intake extends SubsystemBase {
     public boolean getSensor() {
         return m_intakeSensor.get();
     }
+
 }

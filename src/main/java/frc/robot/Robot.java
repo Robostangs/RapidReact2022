@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
+import frc.robot.commands.Intake.Activate;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,6 +28,7 @@ public class Robot extends TimedRobot {
     private Drivetrain m_Drivetrain;
     private XboxController driver, manip;
     private RobotContainer m_robotContainer;
+    private Intake m_Intake;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -40,6 +43,7 @@ public class Robot extends TimedRobot {
         m_Drivetrain  = Drivetrain.getInstance();
         driver = new XboxController(0);
         manip = new XboxController(1);
+        m_Intake = Intake.getInstance();
 
     }
 
@@ -97,6 +101,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         //m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
         m_Drivetrain.setDefaultCommand(new ArcadeDrive(driver::getRightX, driver::getLeftY));
+        m_Intake.setDefaultCommand(new Activate(manip.getLeftX()));
     }
 
     @Override
