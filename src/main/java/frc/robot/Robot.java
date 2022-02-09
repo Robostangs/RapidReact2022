@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Drivetrain.ArcadeDrive;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-
+    private Drivetrain m_Drivetrain;
+    private XboxController driver, manip;
     private RobotContainer m_robotContainer;
 
     /**
@@ -28,6 +32,9 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+        m_Drivetrain  = Drivetrain.getInstance();
+        driver = new XboxController(0);
+        manip = new XboxController(1);
     }
 
     /**
@@ -56,11 +63,11 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
-        // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
-        m_autonomousCommand.schedule();
+            m_autonomousCommand.schedule();
         }
     }
 
@@ -75,13 +82,16 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (m_autonomousCommand != null) {
-        m_autonomousCommand.cancel();
+            m_autonomousCommand.cancel();
         }
     }
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        //m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
+        m_Drivetrain.setDefaultCommand(new ArcadeDrive(driver::getRightX, driver::getLeftY));
+    }
 
     @Override
     public void testInit() {
