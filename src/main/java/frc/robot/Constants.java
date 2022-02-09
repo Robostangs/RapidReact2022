@@ -16,6 +16,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public final class Constants {
 
+    public static final class IntakeConstants {
+        public static final double kIntakeSpeed = 0; //TODO: Set intake speed\
+        public static final int intakeMotorID = 1;
+        public static final int sensorID = 2;
+
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+    }
+
+
     public static final class Drivetrain {
         public static final int LT = 2;
         public static final int LB = 0;
@@ -40,5 +51,6 @@ public final class Constants {
         public static final double kRightS = 1;
         public static final double kRightV = 1;
     }
+
 
 }
