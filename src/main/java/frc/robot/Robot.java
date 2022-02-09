@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
-        m_Drivetrain.getInstance();
+        m_Drivetrain  = Drivetrain.getInstance();
         driver = new XboxController(0);
         manip = new XboxController(1);
     }
@@ -89,9 +89,8 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        m_Drivetrain.updateValues();
-        
-        m_Drivetrain.setDefaultCommand(new ArcadeDrive(driver::getLeftY, driver::getRightX));
+        //m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
+        m_Drivetrain.setDefaultCommand(new ArcadeDrive(driver::getRightX, driver::getLeftY));
     }
 
     @Override

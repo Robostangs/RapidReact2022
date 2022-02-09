@@ -25,8 +25,8 @@ public class ArcadeDrive extends CommandBase {
     @Override
     public void execute() {
         mDrivetrain.drivePower(
-            Utils.deadzone(mFuncForward.get() - mFuncTurn.get()),
-            Utils.deadzone(mFuncForward.get() + mFuncTurn.get())
+            Utils.deadzone(-mFuncForward.get() - mFuncTurn.get()),
+            Utils.deadzone(-mFuncForward.get() + mFuncTurn.get())
         );
     }
 

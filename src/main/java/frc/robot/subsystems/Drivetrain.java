@@ -14,6 +14,7 @@ import frc.robot.Constants;
 
 
 public class Drivetrain extends SubsystemBase {
+    
 
     public static Drivetrain Instance;
     private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
@@ -48,18 +49,18 @@ public class Drivetrain extends SubsystemBase {
         m_leftBottom.follow(m_leftTop);
         m_rightBottom.follow(m_rightTop);
 
-        m_gyro = new AHRS(SPI.Port.kMXP);
+        // m_gyro = new AHRS(SPI.Port.kMXP);
     }
 
-    @Override
-    public void periodic() {
-        double leftOutput = m_leftPIDController.calculate(getLeftPosition());
-        double rightOutput = m_rightPIDController.calculate(getRightPosition());
-        drivePower(
-            leftOutput + m_leftFeedForward.calculate(getLeftVelocity()),
-            rightOutput + m_rightFeedForward.calculate(getRightVelocity())
-        );
-    }
+    // @Override
+    // public void periodic() {
+    //     double leftOutput = m_leftPIDController.calculate(getLeftPosition());
+    //     double rightOutput = m_rightPIDController.calculate(getRightPosition());
+    //     drivePower(
+    //         leftOutput + m_leftFeedForward.calculate(getLeftVelocity()),
+    //         rightOutput + m_rightFeedForward.calculate(getRightVelocity())
+    //     );
+    // }
 
     public void setPoint(double leftSetpoint, double rightSetpoint) {
         m_leftPIDController.setSetpoint(leftSetpoint);
@@ -71,13 +72,13 @@ public class Drivetrain extends SubsystemBase {
         m_rightTop.set(ControlMode.PercentOutput, rightPwr);
     }
 
-    public double getLeftPosition() {
-        return m_leftTop.getActiveTrajectoryPosition();
-    }
+    // public double getLeftPosition() {
+    //     return m_leftTop.getActiveTrajectoryPosition();
+    // }
 
-    public double getRightPosition() {
-        return m_rightTop.getActiveTrajectoryPosition();
-    }
+    // public double getRightPosition() {
+    //     return m_rightTop.getActiveTrajectoryPosition();
+    // }
     
     public double getLeftVelocity() {
         return m_leftTop.getSelectedSensorVelocity();
