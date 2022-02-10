@@ -27,7 +27,7 @@ public class Climber extends PIDSubsystem {
     }
 
     public Climber() {
-        super(new PIDController(kp, ki, kd))
+        super(new PIDController(Constants.Climber.rotationKP, Constants.Climber.rotationKI, Constants.Climber.rotationKD));
         m_rotationMotor = new TalonFX(Constants.Climber.rotationMotorID);
         m_elevatorServo = new Servo(Constants.Climber.elevatorID);
 
@@ -92,5 +92,15 @@ public class Climber extends PIDSubsystem {
 
     public double getElevatorPosition() {
         return m_elevatorServo.getPosition();
+    }
+
+    @Override
+    protected void useOutput(double output, double setpoint) {
+        setRotationMotorSpeed(output);
+    }
+
+    @Override
+    protected double getMeasurement() {
+        return m_rotationMotor.getActiveTrajectoryPosition();
     }
 }
