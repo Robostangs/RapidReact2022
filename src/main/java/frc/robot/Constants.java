@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public final class Constants {
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 0; //TODO: Set intake speed\
+        public static final double kIntakeSpeed = 4; //TODO: Set intake speed\
         public static final int intakeMotorID = 1;
         public static final int sensorID = 2;
 

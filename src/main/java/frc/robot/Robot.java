@@ -99,9 +99,16 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        //m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
-        m_Drivetrain.setDefaultCommand(new ArcadeDrive(driver::getRightX, driver::getLeftY));
-        m_Intake.setDefaultCommand(new Activate(manip.getLeftX()));
+        // m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
+        
+       // m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
+
+        // Josh's preferred style 
+        m_Drivetrain.drivePower(
+            Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
+            Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
+        );
+        m_Intake.setSpeed(0);
     }
 
     @Override
