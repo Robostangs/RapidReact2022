@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -17,6 +18,7 @@ public class Climber extends PIDSubsystem {
     private TalonFX m_rotationMotor;  
     private CANSparkMax m_leftClaw, m_rightClaw;
     private Servo m_leftClawLock, m_rightClawLock, m_elevatorServo;
+    private ElevatorFeedforward m_ElevatorFeedforward;
 
 
     public static Climber getInstance() {
@@ -36,6 +38,8 @@ public class Climber extends PIDSubsystem {
         
         m_leftClawLock = new Servo(Constants.Climber.leftClawLockID);
         m_rightClawLock = new Servo(Constants.Climber.rightClawLockID);
+        
+        m_ElevatorFeedforward = new ElevatorFeedforward(Constants.Climber.rotationStaticGain, Constants.Climber.gravityGain, Constants.Climber.velocityGain, Constants.Climber.accelerationGain);
     }
 
     public void setRotationMotorSpeed(double power) {
@@ -96,7 +100,7 @@ public class Climber extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        setRotationMotorSpeed(output);
+        setRotationMotorSpeed(output + m_ElevatorFeedforward.calculate(setpoint));
     }
 
     @Override

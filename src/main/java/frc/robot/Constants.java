@@ -25,5 +25,9 @@ public final class Constants {
         public static final double rotationKI = 1;
         public static final double rotationKD = 1;
 
+        public static final double rotationStaticGain = 1;
+        public static final double gravityGain = 1;
+        public static final double velocityGain = 1;
+        public static final double accelerationGain = 1;
     }
 }
