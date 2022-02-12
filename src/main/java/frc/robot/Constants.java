@@ -39,16 +39,16 @@ public final class Constants {
         public static final double wheelDiameter = 3;
 
         //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
-        public static final double kLeftP = SmartDashboard.getNumber("kLeftP", 1);
-        public static final double kLeftI = SmartDashboard.getNumber("kLeftI", 1);
-        public static final double kLeftD = SmartDashboard.getNumber("kLeftD", 1);
-        public static final double kLeftS = 1;
+        public static final double kLeftP = SmartDashboard.getNumber("kLeftP", 0.1);
+        public static final double kLeftI = SmartDashboard.getNumber("kLeftI", 0);
+        public static final double kLeftD = SmartDashboard.getNumber("kLeftD", 0);
+        public static final double kLeftF = 1;
         public static final double kLeftV = 1;
 
-        public static final double kRightP = SmartDashboard.getNumber("kRightP", 1);
-        public static final double kRightI = SmartDashboard.getNumber("kRightI", 1);
-        public static final double kRightD = SmartDashboard.getNumber("kRightD", 1);
-        public static final double kRightS = 1;
+        public static final double kRightP = SmartDashboard.getNumber("kRightP", 0.1);
+        public static final double kRightI = SmartDashboard.getNumber("kRightI", 0);
+        public static final double kRightD = SmartDashboard.getNumber("kRightD", 0);
+        public static final double kRightF = 1;
         public static final double kRightV = 1;
     }
 

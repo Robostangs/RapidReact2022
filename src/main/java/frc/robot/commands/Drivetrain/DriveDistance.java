@@ -11,10 +11,12 @@ public class DriveDistance extends CommandBase {
 
     //Use PID to use encoder values to calculate distance
     //Implement a better command, which can drive you at a given distance, at a given speed, at a given angle during the drive
-    public DriveDistance(double angle, double distance, double speed) {
+    public DriveDistance(double distance) {
+        
+        this.addRequirements(mDrivetrain);
         double encoderResult = Utils.motorConversionInches(Constants.Drivetrain.falcon_encoder_max, distance);
-
-        mDrivetrain.setPoint(encoderResult, encoderResult);
+        // System.out.println(encoderResult);
+        mDrivetrain.driveDistance(encoderResult);
 
     }
 }
