@@ -4,24 +4,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class raiseElevator extends CommandBase{
-    
+public class closeClawLeft extends CommandBase{
+
     private Climber m_climber = new Climber();
 
-    public raiseElevator() {
+    public closeClawLeft() {
         this.addRequirements(m_climber);
-        this.setName("Raise Elevator");
+        this.setName("Closing Left Class");
     }
 
     @Override
     public void execute() {
-        m_climber.setElevatorPosition(Constants.Climber.elevatorReleaseConstant);
+        m_climber.setLeftClawPosition(Constants.Climber.);
     }
-
 
     @Override
     public boolean isFinished() {
         return false;
     }
-
+    
 }

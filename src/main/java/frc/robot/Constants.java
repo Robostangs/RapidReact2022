@@ -29,5 +29,8 @@ public final class Constants {
         public static final double gravityGain = 1;
         public static final double velocityGain = 1;
         public static final double accelerationGain = 1;
+
+        public static final double elevatorReleaseConstant = 500;
+        public static final double elevatorReleaseConstant = 500;
     }
 }

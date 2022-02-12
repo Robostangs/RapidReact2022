@@ -1,5 +1,5 @@
 package frc.robot.commands.Climber;
 
-public class closeClaw {
+public class openClawLeft {
     
 }
