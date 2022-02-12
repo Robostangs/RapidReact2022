@@ -10,10 +10,10 @@ import frc.robot.Constants;
 
 public class Turret extends PIDSubsystem {
     private final TalonFX rotationMotor;
-    public Turret instance;
+    public static Turret instance;
     //private TalonFXSensorCollection m_sensorCollection;
 
-    public Turret getInstance() {
+    public static Turret getInstance() {
         if(instance == null) {
             instance = new Turret();
         }
@@ -43,5 +43,9 @@ public class Turret extends PIDSubsystem {
 
     public void rotateMotorVelocity(double speed) {
         rotationMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+    public double getVelocity() {
+        return rotationMotor.getSelectedSensorVelocity();
     }
 }
