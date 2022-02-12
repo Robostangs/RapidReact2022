@@ -100,26 +100,30 @@ public class Robot extends TimedRobot {
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
-        //m_Drivetrain.drivePower(driver.getLeftY(), driver.getRightX());
-        
+    public void teleopPeriodic() {       
         //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
 
-        //m_Drivetrain.driveDistance(10);
-        //m_Drivetrain.drivePower(1, 1);
-        // Josh's preferred style 
+        m_Drivetrain.driveDistance(10);
         m_Drivetrain.updateValues();
+
+        // Josh's preferred style 
         // m_Drivetrain.drivePower(
         //     Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
         //     Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
         // );
         // m_Intake.setSpeed(0);
     
-        m_Drivetrain.drivePower(
-            Utils.deadzone((m_Drivetrain.getAngle() * m_Drivetrain.getAngle()) - driver.getLeftY()), 
-            Utils.deadzone((m_Drivetrain.getAngle() * -m_Drivetrain.getAngle()) - driver.getLeftY())
-        );
+        //Stabilization stuffff
+        // double left = Utils.deadzone(-driver.getLeftY());
+        // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
+        // m_Drivetrain.drivePower(
+        //     left, 
+        //     rightPwr
+        // );
+        // System.out.println(m_Drivetrain.getConstant());
+        // System.out.println(rightPwr);
     }
+
 
     @Override
     public void testInit() {

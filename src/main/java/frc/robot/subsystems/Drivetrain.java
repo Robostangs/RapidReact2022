@@ -21,6 +21,7 @@ public class Drivetrain extends SubsystemBase {
     private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
     private AHRS m_gyro;
     
+    //Stabilization STUFFFF
     private double angleConstant;
     // private SlotConfiguration m_allMotorPID;
     // private PIDController m_leftPIDController;
@@ -55,8 +56,9 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("kRightI", 0);
         SmartDashboard.putNumber("kRightD", 0);
 
-        SmartDashboard.putNumber("CAngle", 0);
-        angleConstant = 0;
+        //Stabilization STUFFFF
+        // SmartDashboard.putNumber("CAngle", 0);
+        // angleConstant = 0;
 
 		m_leftTop.config_kF(0, Constants.Drivetrain.kLeftF, 30);
 		m_leftTop.config_kP(0, SmartDashboard.getNumber("kLeftP", 0.1), 30);
@@ -168,9 +170,10 @@ public class Drivetrain extends SubsystemBase {
         drivePower(0, 0);
     }       
 
-    public double getConstant() {
-        return angleConstant;
-    }
+    //Stabilization Stuffff
+    // public double getConstant() {
+    //     return angleConstant;
+    // }
 
     public void updateValues() {
 		m_leftTop.config_kP(0, SmartDashboard.getNumber("kLeftP", 0.1), 30);
@@ -181,7 +184,9 @@ public class Drivetrain extends SubsystemBase {
 		m_rightTop.config_kI(0, SmartDashboard.getNumber("kRightI", 0), 30);
 		m_rightTop.config_kD(0, SmartDashboard.getNumber("kRightD", 0), 30);
 
-        angleConstant =  SmartDashboard.getNumber("kRightD", 0);
+        
+        //Stabilization STUFFFFF
+        //angleConstant =  SmartDashboard.getNumber("CAngle", 0);
 
         SmartDashboard.putNumber("right velo", m_rightTop.getSelectedSensorVelocity() * 600/2048);
         SmartDashboard.putNumber("left velo", m_leftTop.getSelectedSensorVelocity() * 600/2048);
