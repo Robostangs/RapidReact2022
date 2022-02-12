@@ -40,6 +40,25 @@ public final class Constants {
         public static final double ticksPerDegree = 10;
     }
 
+
+    public static final class Feeder {
+        public static final int beltMotorID = 7;
+        public static final int elevatorMotorID = 8; 
+        public static final int colorIntakeID = 9;
+        public static final int colorShooterID = 10;
+
+        public static final double belt_kP = 1;
+        public static final double belt_kI = 1;
+        public static final double belt_kD = 1; 
+
+        public static final double elevator_kP = 1;
+        public static final double elevator_kI = 1;
+        public static final double elevator_kD = 1; 
+
+        public static final double slowBeltSpeed = 0.1;
+        public static final double slowElevatorSpeed = 0.1;
+    }
+
     public static final class IntakeConstants {
         public static final double kIntakeSpeed = 4; //TODO: Set intake speed\
         public static final int intakeMotorID = 1;
