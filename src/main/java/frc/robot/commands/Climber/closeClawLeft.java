@@ -10,12 +10,12 @@ public class closeClawLeft extends CommandBase{
 
     public closeClawLeft() {
         this.addRequirements(m_climber);
-        this.setName("Closing Left Class");
+        this.setName("Closing Left Claw");
     }
 
     @Override
     public void execute() {
-        m_climber.setLeftClawPosition(Constants.Climber.);
+        m_climber.setLeftClawPosition(Constants.Climber.clawMoveConstant);
     }
 
     @Override

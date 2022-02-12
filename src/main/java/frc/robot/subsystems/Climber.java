@@ -79,7 +79,11 @@ public class Climber extends PIDSubsystem {
     }
 
     public void setLeftClawPosition(double position) {
-        m_leftClawLock.set(position);
+        m_leftClaw.set(position);
+    }
+
+    public void setRightClawPosition(double position) {
+       m_rightClaw.set(position);
     }
 
     public double getRightClawLockPosition() {
