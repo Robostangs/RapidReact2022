@@ -24,10 +24,6 @@ public final class Utils {
         }
     }
 
-    public static double dist(double tx, double ty) {
-        return Constants.Limelight.targetHeight / (Math.tan(degToRad(ty + Constants.Limelight.limelightAngle)));
-    }
-
     public static double degToRad(double x) {
         return (Math.PI / 180.0) * x;
     }

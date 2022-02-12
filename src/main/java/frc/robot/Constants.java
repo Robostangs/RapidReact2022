@@ -95,8 +95,13 @@ public final class Constants {
         public static final double kRightV = 1;
     }
 
-    public static class Limelight {
-        public static final double targetHeight = 104;
-        public static final double limelightAngle = 30; 
+    public static class Turret {
+        public static final int rotationMotorID = 1;
+        public static final double rotationMotorKp = 1;
+        public static final double rotationMotorKi = 1;
+        public static final double rotationMotorKd = 1;
+
+        public static final double rotationMotorMax = 2048;
+        public static final double rotationMotorMin = 0;
     }
 }
