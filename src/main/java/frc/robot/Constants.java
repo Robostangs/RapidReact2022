@@ -20,6 +20,24 @@ public final class Constants {
         public static final int leftShooterID = 2;
         public static final int rightShooterID = 3;
         public static final int angleShooterID = 4;
+
+        public static final double alignmentMotorKP = 1;
+        public static final double alignmentMotorKI = 1;
+        public static final double alignmentMotorKD = 1;
+
+        public static final double leftMotorKP = 1;
+        public static final double leftMotorKI = 1;
+        public static final double leftMotorKD = 1;
+
+        public static final double rightMotorKP = 1;
+        public static final double rightMotorKI = 1;
+        public static final double rightMotorKD = 1;
+
+        public static final double angleMotorKP = 1;
+        public static final double angleMotorKI = 1;
+        public static final double angleMotorKD = 1;
+
+        public static final double ticksPerDegree = 10;
     }
 
     public static final class IntakeConstants {
@@ -56,24 +74,6 @@ public final class Constants {
         public static final double kRightD = SmartDashboard.getNumber("kRightD", 0);
         public static final double kRightF = 1;
         public static final double kRightV = 1;
-        public static final double alignmentMotorKP = 1;
-        public static final double alignmentMotorKI = 1;
-        public static final double alignmentMotorKD = 1;
-
-        public static final double leftMotorKP = 1;
-        public static final double leftMotorKI = 1;
-        public static final double leftMotorKD = 1;
-
-        public static final double rightMotorKP = 1;
-        public static final double rightMotorKI = 1;
-        public static final double rightMotorKD = 1;
-
-        public static final double angleMotorKP = 1;
-        public static final double angleMotorKI = 1;
-        public static final double angleMotorKD = 1;
-
-        public static final double ticksPerDegree = 10;
-
     }
 
     public static class Limelight {
