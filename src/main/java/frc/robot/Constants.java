@@ -109,6 +109,10 @@ public final class Constants {
 
         public static final double leftSpeedMaxAuto = 0.5;
         public static final double rightSpeedMaxAuto = 0.5;
+
+        public static final int goHomeIDOn = 0;
+        public static final int goHomeIDOff = 1;
+        public static final double rotationMotorSpeed = -0.2;
     }
     
     public static class Limelight {

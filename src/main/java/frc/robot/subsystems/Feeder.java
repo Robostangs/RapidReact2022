@@ -13,7 +13,7 @@ public class Feeder extends SubsystemBase {
     public static Feeder Instance;
     private TalonFX m_beltMotor, m_elevatorMotor; 
     private SlotConfiguration m_beltMotorConfig, m_elevatorMotorConfig; 
-    private DigitalInput m_intakeSensor, m_shooterSensor;
+    private DigitalInput m_intakeSensorDark, m_shooterSensorDark,  m_intakeSensorLight, m_shooterSensorLight;
 
     public static Feeder getInstance() {
         if(Instance == null) {
@@ -39,21 +39,31 @@ public class Feeder extends SubsystemBase {
        m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kI;
        m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kD;
 
-       m_intakeSensor = new DigitalInput(Constants.Feeder.colorIntakeID);
-       m_shooterSensor = new DigitalInput(Constants.Feeder.colorShooterID);
+       m_intakeSensorDark = new DigitalInput(Constants.Feeder.colorIntakeID);
+       m_shooterSensorDark = new DigitalInput(Constants.Feeder.colorShooterID);
+
+       m_intakeSensorLight = new DigitalInput(Constants.Feeder.colorIntakeID);
+       m_shooterSensorLight = new DigitalInput(Constants.Feeder.colorShooterID);
 
        m_beltMotor.configureSlot(m_beltMotorConfig, 1, 500);
        m_elevatorMotor.configureSlot(m_elevatorMotorConfig, 1, 500);  
     }
 
-    public boolean getIntakeSensor() {
-        return m_intakeSensor.get();
+    public boolean getIntakeSensorDark() {
+        return m_intakeSensorDark.get();
     }
 
-    public boolean getShooterSensor() {
-        return m_shooterSensor.get();
+    public boolean getShooterSensorDark() {
+        return m_shooterSensorDark.get();
     }
 
+    public boolean getIntakeSensorLight() {
+        return m_intakeSensorLight.get();
+    }
+
+    public boolean getShooterSensorLight() {
+        return m_shooterSensorLight.get();
+    }
     public void moveBelt(double beltPower) {
         m_beltMotor.set(ControlMode.PercentOutput, beltPower);
     }

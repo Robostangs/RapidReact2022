@@ -17,7 +17,7 @@ public class moveUp1Ball extends CommandBase {
 
     @Override
     public void execute() {
-        while(!mFeeder.getShooterSensor()) {
+        while(!mFeeder.getShooterSensorLight()) {
             mFeeder.moveBelt(Constants.Feeder.slowBeltSpeed);
             mFeeder.moveElevator(Constants.Feeder.slowElevatorSpeed);
         }

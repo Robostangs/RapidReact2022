@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
         return instance;
     }
 
-    private Intake() {
+    public Intake() {
         m_intakeMotor = new TalonFX(Constants.IntakeConstants.intakeMotorID);
 
         m_intakeSensor = new DigitalInput(Constants.IntakeConstants.sensorID);

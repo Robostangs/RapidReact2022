@@ -4,16 +4,10 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Intake.Activate;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
 
@@ -25,10 +19,10 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    private Drivetrain m_Drivetrain;
-    private XboxController driver, manip;
+    // private Drivetrain m_Drivetrain;
+    // private XboxController driver, manip;
     private RobotContainer m_robotContainer;
-    private Intake m_Intake;
+    // private Intake m_Intake;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -40,10 +34,10 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         // m_robotContainer = new RobotContainer();
         m_robotContainer = new RobotContainer();
-        m_Drivetrain  = Drivetrain.getInstance();
-        driver = new XboxController(0);
-        manip = new XboxController(1);
-        m_Intake = Intake.getInstance();
+        // m_Drivetrain  = Drivetrain.getInstance();
+        // driver = new XboxController(0);
+        // manip = new XboxController(1);
+        // m_Intake = Intake.getInstance();
 
     }
 
@@ -99,27 +93,29 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {       
-        //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
+        
 
-        m_Drivetrain.driveDistance(10);
-        m_Drivetrain.updateValues();
+        // //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
 
-        // Josh's preferred style 
-        // m_Drivetrain.drivePower(
-        //     Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
-        //     Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
-        // );
-        // m_Intake.setSpeed(0);
+        // m_Drivetrain.driveDistance(10);
+        // m_Drivetrain.updateValues();
+
+        // // Josh's preferred style 
+        // // m_Drivetrain.drivePower(
+        // //     Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
+        // //     Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
+        // // );
+        // // m_Intake.setSpeed(0);
     
-        //Stabilization stuffff
-        // double left = Utils.deadzone(-driver.getLeftY());
-        // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
-        // m_Drivetrain.drivePower(
-        //     left, 
-        //     rightPwr
-        // );
-        // System.out.println(m_Drivetrain.getConstant());
-        // System.out.println(rightPwr);
+        // //Stabilization stuffff
+        // // double left = Utils.deadzone(-driver.getLeftY());
+        // // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
+        // // m_Drivetrain.drivePower(
+        // //     left, 
+        // //     rightPwr
+        // // );
+        // // System.out.println(m_Drivetrain.getConstant());
+        // // System.out.println(rightPwr);
     }
 
 

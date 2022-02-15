@@ -3,14 +3,12 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 
 
@@ -27,7 +25,7 @@ public class Drivetrain extends SubsystemBase {
     // private PIDController m_leftPIDController;
     // private PIDController m_rightPIDController;
     // private SimpleMotorFeedforward m_leftFeedForward;
-    // private SimpleMotorFeedforward m_rightFeedForward;
+    // private SimpleMotorFeedforward m_rightFeedForward;   
 
     public static Drivetrain getInstance() {
         if(Instance == null) {

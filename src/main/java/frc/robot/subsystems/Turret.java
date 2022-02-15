@@ -5,12 +5,14 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
 public class Turret extends PIDSubsystem {
     private final TalonFX rotationMotor;
     public static Turret instance;
+    public static DigitalInput m_homeSensorOn, m_homeSensorOff;
     //private TalonFXSensorCollection m_sensorCollection;
 
     public static Turret getInstance() {
@@ -24,6 +26,8 @@ public class Turret extends PIDSubsystem {
         super(new PIDController(Constants.Turret.rotationMotorKp, Constants.Turret.rotationMotorKi, Constants.Turret.rotationMotorKd));
         super.m_controller.enableContinuousInput(Constants.Turret.rotationMotorMin, Constants.Turret.rotationMotorMax);
         rotationMotor = new TalonFX(Constants.Turret.rotationMotorID);
+        m_homeSensorOn = new DigitalInput(Constants.Turret.goHomeIDOn);
+        m_homeSensorOff = new DigitalInput(Constants.Turret.goHomeIDOff);
     }
     
     @Override
@@ -41,11 +45,27 @@ public class Turret extends PIDSubsystem {
         super.setSetpoint(setpoint);
     }
 
+    public void setSpeed(double speed) {
+        rotationMotor.set(ControlMode.PercentOutput, speed);
+    }
+
     public void rotateMotorVelocity(double speed) {
         rotationMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public double getVelocity() {
         return rotationMotor.getSelectedSensorVelocity();
+    }
+
+    public boolean getActivatedHomeOn() {
+        return m_homeSensorOn.get();
+    }
+
+    public boolean getActivatedHomeOff() {
+        return m_homeSensorOff.get();
+    }
+
+    public void resetEncoder() {
+        rotationMotor.setSelectedSensorPosition(0);
     }
 }
