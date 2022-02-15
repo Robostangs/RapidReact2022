@@ -44,8 +44,14 @@ public class Drivetrain extends SubsystemBase {
         m_leftTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
 				30);
                 m_leftTop.configNeutralDeadband(0.001, 30);
+
+        
+                m_rightTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
+				30);
+                m_rightTop.configNeutralDeadband(0.001, 30);
 		/* Set Motion Magic gains in slot0 - see documentation */
 		m_leftTop.selectProfileSlot(0, 0);
+        m_rightTop.selectProfileSlot(0, 0);
         SmartDashboard.putNumber("kLeftP", 0.1);
         SmartDashboard.putNumber("kLeftI", 0);
         SmartDashboard.putNumber("kLeftD", 0);

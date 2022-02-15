@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -12,7 +13,6 @@ public class Feeder extends SubsystemBase {
     
     public static Feeder Instance;
     private TalonFX m_beltMotor, m_elevatorMotor; 
-    private SlotConfiguration m_beltMotorConfig, m_elevatorMotorConfig; 
     private DigitalInput m_intakeSensorDark, m_shooterSensorDark,  m_intakeSensorLight, m_shooterSensorLight;
 
     public static Feeder getInstance() {
@@ -29,15 +29,42 @@ public class Feeder extends SubsystemBase {
        m_beltMotor.configFactoryDefault();
        m_elevatorMotor.configFactoryDefault();
 
-       m_beltMotorConfig = new SlotConfiguration();
-       m_beltMotorConfig.kP = Constants.Feeder.belt_kP;
-       m_beltMotorConfig.kI = Constants.Feeder.belt_kI;
-       m_beltMotorConfig.kD = Constants.Feeder.belt_kD;
+       m_beltMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+       m_beltMotor.configNeutralDeadband(0.001, 30);
 
-       m_elevatorMotorConfig = new SlotConfiguration();
-       m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kP;
-       m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kI;
-       m_elevatorMotorConfig.kP = Constants.Feeder.elevator_kD;
+
+       m_elevatorMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,30);
+       m_elevatorMotor.configNeutralDeadband(0.001, 30);
+/* Set Motion Magic gains in slot0 - see documentation */
+m_beltMotor.selectProfileSlot(0, 0);
+m_elevatorMotor.selectProfileSlot(0, 0);
+
+// SmartDashboard.putNumber("kLeftP", 0.1);
+// SmartDashboard.putNumber("kLeftI", 0);
+// SmartDashboard.putNumber("kLeftD", 0);
+
+// SmartDashboard.putNumber("kRightP", 0.1);
+// SmartDashboard.putNumber("kRightI", 0);
+// SmartDashboard.putNumber("kRightD", 0);
+
+m_beltMotor.config_kP(0, Constants.Feeder.belt_kP);
+m_beltMotor.config_kI(0, Constants.Feeder.belt_kI);
+m_beltMotor.config_kD(0, Constants.Feeder.belt_kD);
+m_beltMotor.config_kF(0, Constants.Feeder.belt_kF);
+
+/* Set acceleration and vcruise velocity - see documentation */
+m_beltMotor.configMotionCruiseVelocity(20000, 30);
+m_beltMotor.configMotionAcceleration(1500, 30);        
+
+/* Set Motion Magic gains in slot0 - see documentation */
+m_elevatorMotor.config_kP(0, Constants.Feeder.elevator_kP);
+m_elevatorMotor.config_kI(0, Constants.Feeder.elevator_kI);
+m_elevatorMotor.config_kD(0, Constants.Feeder.elevator_kD);
+m_elevatorMotor.config_kF(0, Constants.Feeder.elevator_kF);
+
+/* Set acceleration and vcruise velocity - see documentation */
+m_elevatorMotor.configMotionCruiseVelocity(20000, 30);
+m_elevatorMotor.configMotionAcceleration(1500, 30);    
 
        m_intakeSensorDark = new DigitalInput(Constants.Feeder.colorIntakeID);
        m_shooterSensorDark = new DigitalInput(Constants.Feeder.colorShooterID);
@@ -45,8 +72,6 @@ public class Feeder extends SubsystemBase {
        m_intakeSensorLight = new DigitalInput(Constants.Feeder.colorIntakeID);
        m_shooterSensorLight = new DigitalInput(Constants.Feeder.colorShooterID);
 
-       m_beltMotor.configureSlot(m_beltMotorConfig, 1, 500);
-       m_elevatorMotor.configureSlot(m_elevatorMotorConfig, 1, 500);  
     }
 
     public boolean getIntakeSensorDark() {

@@ -50,10 +50,12 @@ public final class Constants {
         public static final double belt_kP = 1;
         public static final double belt_kI = 1;
         public static final double belt_kD = 1; 
+        public static final double belt_kF = 1; 
 
         public static final double elevator_kP = 1;
         public static final double elevator_kI = 1;
         public static final double elevator_kD = 1; 
+        public static final double elevator_kF = 1; 
 
         public static final double slowBeltSpeed = 0.1;
         public static final double slowElevatorSpeed = 0.1;
