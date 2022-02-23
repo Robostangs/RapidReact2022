@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -42,6 +43,8 @@ public class Shooter extends SubsystemBase {
         m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
         m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
         
+        m_Alignment.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
+
         SmartDashboard.putNumber("RightVelocity", 0);
         SmartDashboard.putNumber("LeftVelocity", 0);
         SmartDashboard.putNumber("AllignmentVelocity", 0);
