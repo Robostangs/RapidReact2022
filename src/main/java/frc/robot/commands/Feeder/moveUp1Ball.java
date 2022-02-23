@@ -9,17 +9,21 @@ import frc.robot.subsystems.Feeder;
 public class moveUp1Ball extends CommandBase {
 
     public final Feeder mFeeder = Feeder.getInstance();
+    private Supplier<Boolean> m_moveFeeder;
 
-    public moveUp1Ball() {
+    public moveUp1Ball(Supplier<Boolean> moveFeeder) {
         this.addRequirements(mFeeder);
         this.setName("Move Feeder");
+        m_moveFeeder = moveFeeder;
     }
 
     @Override
     public void execute() {
-        while(!mFeeder.getShooterSensorLight()) {
-            mFeeder.moveBelt(Constants.Feeder.slowBeltSpeed);
-            mFeeder.moveElevator(Constants.Feeder.slowElevatorSpeed);
+        if(m_moveFeeder.get()) {
+            while(!mFeeder.getShooterSensorLight()) {
+                mFeeder.moveBelt(Constants.Feeder.slowBeltSpeed);
+            }
+            mFeeder.moveBelt(0);
         }
     }
 

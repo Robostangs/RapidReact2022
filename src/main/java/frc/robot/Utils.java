@@ -37,4 +37,9 @@ public final class Utils {
         double rotations = distance / 2*Math.PI*Constants.Drivetrain.wheelDiameter;
         return encoderMax * rotations;
     }
+
+    public static double getEncoderDrivetrain(double distance) {
+        // distance in meters
+        return (distance / 0.15*Math.PI) * 7.82887701 / 2048;  
+   }
 }

@@ -1,4 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -9,7 +8,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.commands.Intake.Activate;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Feeder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,7 +24,9 @@ public class Robot extends TimedRobot {
     // private Drivetrain m_Drivetrain;
     // private XboxController driver, manip;
     private RobotContainer m_robotContainer;
+    private Feeder m_Feeder;
     // private Intake m_Intake;
+    private Shooter m_Shooter;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -32,12 +36,14 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        // m_robotContainer = new RobotContainer();
         m_robotContainer = new RobotContainer();
         // m_Drivetrain  = Drivetrain.getInstance();
         // driver = new XboxController(0);
-        // manip = new XboxController(1);
+        m_Feeder = Feeder.getInstance();
+        // // manip = new XboxController(1);
         // m_Intake = Intake.getInstance();
+        
+        m_Shooter = Shooter.getInstance();
 
     }
 
@@ -93,7 +99,8 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {       
-        
+        m_Shooter.test();
+        m_Feeder.update();
 
         // //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
 
@@ -105,8 +112,7 @@ public class Robot extends TimedRobot {
         // //     Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
         // //     Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
         // // );
-        // // m_Intake.setSpeed(0);
-    
+            
         // //Stabilization stuffff
         // // double left = Utils.deadzone(-driver.getLeftY());
         // // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
@@ -115,7 +121,14 @@ public class Robot extends TimedRobot {
         // //     rightPwr
         // // );
         // // System.out.println(m_Drivetrain.getConstant());
+        
         // // System.out.println(rightPwr);
+
+        // m_Intake.setSpeed(driver.getLeftX());
+        // m_Feeder.moveBelt(driver.getRightX());
+        // m_Feeder.moveElevator(driver.getRightX());
+        // m_Shooter.setLeftShooterPower(driver.getRightX());
+        // m_Shooter.setRightShooterPower(driver.getRightX());
     }
 
 

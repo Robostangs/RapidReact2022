@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,10 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public final class Constants {
     public static final class Shooter {
-        public static final int alignmentID = 1;
-        public static final int leftShooterID = 2;
-        public static final int rightShooterID = 3;
-        public static final int angleShooterID = 4;
+        public static final int alignmentID = -1;
+        public static final int leftShooterID = 3;
+        public static final int rightShooterID = 1;
+        public static final int angleShooterID = -1;
 
         public static final double alignmentMotorKP = 1;
         public static final double alignmentMotorKI = 1;
@@ -42,10 +40,12 @@ public final class Constants {
 
 
     public static final class Feeder {
-        public static final int beltMotorID = 7;
-        public static final int elevatorMotorID = 8; 
-        public static final int colorIntakeID = 9;
-        public static final int colorShooterID = 10;
+        public static final int beltMotorID = 5;
+        public static final int elevatorMotorID = 0; 
+        public static final int dcolorIntakeID = 0;
+        public static final int colorIntakeID = 1;
+        public static final int dcolorShooterID = 2;
+        public static final int colorShooterID = 3;
 
         public static final double belt_kP = 1;
         public static final double belt_kI = 1;
@@ -57,13 +57,13 @@ public final class Constants {
         public static final double elevator_kD = 1; 
         public static final double elevator_kF = 1; 
 
-        public static final double slowBeltSpeed = 0.1;
+        public static final double slowBeltSpeed = -0.8;
         public static final double slowElevatorSpeed = 0.1;
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 4; //TODO: Set intake speed\
-        public static final int intakeMotorID = 1;
+        public static final double kIntakeSpeed = 1; //TODO: Set intake speed\
+        public static final int intakeMotorID = 4;
         public static final int sensorID = 2;
 
         public static final double kP = 0;
@@ -74,27 +74,29 @@ public final class Constants {
 
     public static final class Drivetrain {
         public static final int LT = 2;
-        public static final int LB = 0;
+        public static final int LB = 6;
 
-        public static final int RT = 3;
-        public static final int RB = 1;
+        public static final int RT = 7;
+        public static final int RB = 8;
 
         public static final int gyro = 7;
         public static final int falcon_encoder_max = 2048;
         public static final double wheelDiameter = 3;
 
         //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
-        public static final double kLeftP = SmartDashboard.getNumber("kLeftP", 0.1);
-        public static final double kLeftI = SmartDashboard.getNumber("kLeftI", 0);
-        public static final double kLeftD = SmartDashboard.getNumber("kLeftD", 0);
-        public static final double kLeftF = 1;
-        public static final double kLeftV = 1;
+        public static final double kLeftP = 6.6416;
+        public static final double kLeftI = 0.01;
+        public static final double kLeftD = 0.34565;
+        public static final double kLeftS = 0.69159;
+        public static final double kLeftV = 1.8049;
+        public static final double kLeftA = 0.14022;
 
-        public static final double kRightP = SmartDashboard.getNumber("kRightP", 0.1);
-        public static final double kRightI = SmartDashboard.getNumber("kRightI", 0);
-        public static final double kRightD = SmartDashboard.getNumber("kRightD", 0);
-        public static final double kRightF = 1;
-        public static final double kRightV = 1;
+        public static final double kRightP = 6.7338;
+        public static final double kRightI = 0.01;
+        public static final double kRightD = 0.35998;
+        public static final double kRightS = 0.6924;
+        public static final double kRightV = 1.8045;
+        public static final double kRightA = 0.14905;
     }
 
     public static class Turret {
