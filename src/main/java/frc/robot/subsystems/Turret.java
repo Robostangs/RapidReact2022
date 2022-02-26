@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.security.cert.TrustAnchor;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -18,6 +20,10 @@ public class Turret extends PIDSubsystem {
     private final TalonFX rotationMotor;
     public static Turret instance;
     public static DigitalInput m_homeSensorOn, m_homeSensorOff;
+    private int filtSoftLimitRange;
+    private final XboxController manip = new XboxController(1);
+    private final StatorCurrentLimitConfiguration true_stator_config = new StatorCurrentLimitConfiguration(true, 10, 20, 100);
+    private final StatorCurrentLimitConfiguration false_stator_config = new StatorCurrentLimitConfiguration(false, 10, 20, 100);
     //private TalonFXSensorCollection m_sensorCollection;
 
     public static Turret getInstance() {
@@ -32,6 +38,7 @@ public class Turret extends PIDSubsystem {
         super.m_controller.enableContinuousInput(Constants.Turret.rotationMotorMin, Constants.Turret.rotationMotorMax);
         rotationMotor = new TalonFX(Constants.Turret.rotationMotorID);
         rotationMotor.setNeutralMode(NeutralMode.Brake);
+        rotationMotor.configFactoryDefault();
         // rotationMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 20, 100));
         rotationMotor.configOpenloopRamp(0);
         //m_homeSensorOn = new DigitalInput(Constants.Turret.goHomeIDOn);
@@ -78,8 +85,6 @@ public class Turret extends PIDSubsystem {
     public void resetEncoder() {
         rotationMotor.setSelectedSensorPosition(500000);
     }
-int filtSoftLimitRange;
-XboxController manip = new XboxController(1);
     @Override
     public void periodic() {
         if(Limelight.getTv() != 0) {
@@ -90,14 +95,35 @@ XboxController manip = new XboxController(1);
             manip.setRumble(RumbleType.kRightRumble, 1);
         }
 
-        if(Limelight.getTv() != 0 && (Math.abs(manip.getLeftX()) < 0.1)) {
-            setSpeed(SmartDashboard.getNumber("kP", 0.1) * Limelight.getTx());
+        // if(Limelight.getTv() != 0 && (Math.abs(manip.getLeftX()) < 0.1)) {
+        //     setSpeed(SmartDashboard.getNumber("kP", 0.1) * Limelight.getTx());
+        //     SmartDashboard.putString("Control", "auto");
+        // } else {
+        //     setSpeed(manip.getLeftX());
+        //     SmartDashboard.putString("Control", "manual");
+        // }
+
+        // rotationMotor.configOpenloopRamp(0);
+        double outreq;
+        if (Limelight.getTv() != 0 && (Math.abs(manip.getLeftX()) < 0.1)) {
+            // outreq = SmartDashboard.getNumber("kP", 0.3) * Limelight.getTx();
+            outreq = 0.2 * Limelight.getTx();
             SmartDashboard.putString("Control", "auto");
         } else {
-            setSpeed(manip.getLeftX());
+            outreq = (manip.getLeftX());
             SmartDashboard.putString("Control", "manual");
         }
-        
+
+        if (outreq > 0.5){
+            outreq = 0.5;
+        }
+        else if (outreq < -0.5){
+            outreq = -0.5;
+        }
+
+            setSpeed(outreq);
+
+        /*
         SmartDashboard.putNumber("turret Current", rotationMotor.getStatorCurrent());
         SmartDashboard.putNumber("Turret Percent Output", rotationMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("Turret Encoder Position", rotationMotor.getSelectedSensorPosition());
@@ -112,23 +138,24 @@ XboxController manip = new XboxController(1);
         if(rotationMotor.getSelectedSensorPosition() <= resetPos) {
             rotationMotor.configPeakOutputReverse(-0.5);
             rotationMotor.configPeakOutputForward(0.5);
-            rotationMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 10, 20, 100));
+            rotationMotor.configStatorCurrentLimit(true_stator_config);
             SmartDashboard.putString("Limiting", "motor reset init");
 
         }
         if(rotationMotor.getSelectedSensorPosition() <= resetPos+filtSoftLimitRange) {
             rotationMotor.configPeakOutputReverse(-0.2);
-            rotationMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 10, 20, 100));
+            rotationMotor.configStatorCurrentLimit(true_stator_config);
             SmartDashboard.putString("Limiting", "backwards");
         } else if(rotationMotor.getSelectedSensorPosition() >= resetPos+travelDist-filtSoftLimitRange) {
             rotationMotor.configPeakOutputForward(0.2);
-            rotationMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 10, 20, 100));
+            rotationMotor.configStatorCurrentLimit(true_stator_config);
             SmartDashboard.putString("Limiting", "forwards");
         } else {
             rotationMotor.configPeakOutputReverse(-1);
             rotationMotor.configPeakOutputForward(1);
-            rotationMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 20, 20, 100));
+            rotationMotor.configStatorCurrentLimit(false_stator_config);
             SmartDashboard.putString("Limiting", "none");
         }
+        */
     }
 }

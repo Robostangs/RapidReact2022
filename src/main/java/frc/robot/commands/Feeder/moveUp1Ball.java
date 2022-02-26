@@ -20,9 +20,9 @@ public class moveUp1Ball extends CommandBase {
     @Override
     public void execute() {
         if(m_moveFeeder.get()) {
-            while(!mFeeder.getShooterSensorLight()) {
-                mFeeder.moveBelt(Constants.Feeder.slowBeltSpeed);
-            }
+        mFeeder.moveBelt(Constants.Feeder.slowBeltSpeed);
+        }
+        if (mFeeder.getShooterSensorLight()) {
             mFeeder.moveBelt(0);
         }
     }

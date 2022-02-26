@@ -13,6 +13,7 @@ import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Feeder.controlManual;
 import frc.robot.commands.Feeder.moveUp1Ball;
 import frc.robot.commands.Intake.Activate;
+import frc.robot.commands.Shooter.betterShoot;
 import frc.robot.commands.Shooter.setElevator;
 import frc.robot.commands.Shooter.shoot;
 import frc.robot.commands.Turret.reset;
@@ -70,16 +71,16 @@ public class RobotContainer {
         
             // m_Drivetrain.driveDistance(10);
             // m_Drivetrain.updateValues();
-        new JoystickButton(manip, 2).whileHeld(new shoot(0, 0.45, -0.3));
+        new JoystickButton(manip, 2).whenPressed(new betterShoot(0, -0.55, 0.4));
 
         m_Drivetrain.setDefaultCommand(
             new ArcadeDrive(() -> {return -driver.getLeftX();},
                             () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
 
         //
-        m_Intake.setDefaultCommand(new Activate(() -> { return driver.getAButton() ? 100.0 : 0.0; }));
+        m_Intake.setDefaultCommand(new Activate(() -> { return driver.getAButton() ? 50.0 : 0.0; }));
         m_Feeder.setDefaultCommand(new moveUp1Ball(driver::getAButton));
-        m_Turret.setDefaultCommand(new reset(driver::getBButton));
+        // m_Turret.setDefaultCommand(new reset(driver::getBButton));a
         // m_Feeder.setDefaultCommand(new controlManual(() -> {return driver.getYButton() ? -100.0: 0.0;},
         //                                             () -> {return driver.getYButton() ? -100.0: 0.0;}));
 

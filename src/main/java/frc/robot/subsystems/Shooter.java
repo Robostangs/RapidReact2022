@@ -15,8 +15,8 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
-    public final TalonFX m_leftShooter, m_rightShooter, m_angleChanger, m_Elevator;
-    private PIDController m_leftShooterPID, m_rightShooterPID, m_angleChangerPID;
+    public final TalonFX m_leftShooter, m_rightShooter, m_Elevator;
+    private PIDController m_leftShooterPID, m_rightShooterPID;
     //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
     public static Shooter getInstance() {
@@ -29,18 +29,18 @@ public class Shooter extends SubsystemBase {
     public Shooter() {
         m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
         m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
-        m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
+        // m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
         m_Elevator = new TalonFX(Constants.Feeder.elevatorMotorID);
 
         m_leftShooter.configFactoryDefault();
         m_rightShooter.configFactoryDefault();
-        m_angleChanger.configFactoryDefault();
+        // m_angleChanger.configFactoryDefault();
     
         m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
         m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
-        m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
+        // m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
         
-        m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
+        // m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
 
         SmartDashboard.putNumber("RightVelocity", 0);
         SmartDashboard.putNumber("LeftVelocity", 0);
@@ -64,13 +64,13 @@ public class Shooter extends SubsystemBase {
         m_rightShooter.set(ControlMode.PercentOutput, power);
     }
 
-    public void setAnglePower(double power) {
-        m_angleChanger.set(ControlMode.PercentOutput, power);
-    }
+    // public void setAnglePower(double power) {
+    //     m_angleChanger.set(ControlMode.PercentOutput, power);
+    // }
 
-    public void setAnglePositionPID(double position) {
-        m_angleChangerPID.setSetpoint(position);
-    }
+    // public void setAnglePositionPID(double position) {
+    //     m_angleChangerPID.setSetpoint(position);
+    // }
 
     public void setElevatorPower(double power) {
         m_Elevator.set(ControlMode.PercentOutput, power);
