@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.auto.simpleAuto;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Feeder.controlManual;
 import frc.robot.commands.Feeder.moveUp1Ball;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
+import frc.robot.auto.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,6 +42,7 @@ public class RobotContainer {
     private Feeder m_Feeder;
     private Shooter m_Shooter;
     private Turret m_Turret;
+    
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -71,13 +74,12 @@ public class RobotContainer {
         
             // m_Drivetrain.driveDistance(10);
             // m_Drivetrain.updateValues();
-        new JoystickButton(manip, 2).whenPressed(new betterShoot(0, -0.55, 0.4));
+        new JoystickButton(manip, 2).whenPressed(new betterShoot(0, -0.5, 0.4));
 
         m_Drivetrain.setDefaultCommand(
             new ArcadeDrive(() -> {return -driver.getLeftX();},
                             () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
 
-        //
         m_Intake.setDefaultCommand(new Activate(() -> { return driver.getAButton() ? 50.0 : 0.0; }));
         m_Feeder.setDefaultCommand(new moveUp1Ball(driver::getAButton));
         // m_Turret.setDefaultCommand(new reset(driver::getBButton));a
@@ -110,8 +112,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
   
-    // public Command getAutonomousCommand() {
-    //     // An ExampleCommand will run in autonomous
-    //     // return m_autoCommand;
-    // }
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return new simpleAuto();
+    }
 }

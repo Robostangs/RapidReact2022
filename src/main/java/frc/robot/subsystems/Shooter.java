@@ -59,7 +59,15 @@ public class Shooter extends SubsystemBase {
     public void setLeftShooterPower(double power) {
         m_leftShooter.set(ControlMode.PercentOutput, power);
     }
+
+    public void setLeftShooterVelo(double velocity) {
+        m_leftShooter.set(ControlMode.Velocity, velocity);
+    }
     
+    public void setRightShooterVelo(double velocity) {
+        m_rightShooter.set(ControlMode.Velocity, velocity);
+    }
+
     public void setRightShooterPower(double power) {
         m_rightShooter.set(ControlMode.PercentOutput, power);
     }
@@ -114,10 +122,10 @@ public class Shooter extends SubsystemBase {
     // }
 
     public void test() {
-        m_rightShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("RightVelocity", 0));
-        m_leftShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("LeftVelocity", 0) * 0.94);
-       // m_Alignment.set(ControlMode.PercentOutput, SmartDashboard.getNumber("AllignmentVelocity", 0));
-        m_Elevator.set(ControlMode.PercentOutput, SmartDashboard.getNumber("Elevator", 0));
+    //     m_rightShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("RightVelocity", 0));
+    //     m_leftShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("LeftVelocity", 0) * 0.94);
+    //    // m_Alignment.set(ControlMode.PercentOutput, SmartDashboard.getNumber("AllignmentVelocity", 0));
+    //     m_Elevator.set(ControlMode.PercentOutput, SmartDashboard.getNumber("Elevator", 0));
 
         SmartDashboard.putNumber("Right Shooter Velo", m_rightShooter.getSelectedSensorVelocity() * 600/2048);
         SmartDashboard.putNumber("Left Shooter Velo", m_leftShooter.getSelectedSensorVelocity() * 600/2048);

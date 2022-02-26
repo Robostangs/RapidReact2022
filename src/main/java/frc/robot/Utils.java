@@ -3,7 +3,7 @@ package frc.robot;
 public final class Utils {
     
     public static double deadzone(double input) {
-        return deadzone(input, 2);
+        return deadzone(input, 1.6);
     }
 
     public static double deadzone(double input, double power) {
