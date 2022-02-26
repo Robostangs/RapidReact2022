@@ -23,13 +23,13 @@ public final class Constants {
         public static final double alignmentMotorKI = 1;
         public static final double alignmentMotorKD = 1;
 
-        public static final double leftMotorKP = 1;
-        public static final double leftMotorKI = 1;
-        public static final double leftMotorKD = 1;
+        public static final double leftMotorKP = 0.0002;
+        public static final double leftMotorKI = 0;
+        public static final double leftMotorKD = 0;
 
-        public static final double rightMotorKP = 1;
-        public static final double rightMotorKI = 1;
-        public static final double rightMotorKD = 1;
+        public static final double rightMotorKP = 0.0002;
+        public static final double rightMotorKI = 0;
+        public static final double rightMotorKD = 0;
 
         public static final double angleMotorKP = 1;
         public static final double angleMotorKI = 1;
@@ -42,10 +42,10 @@ public final class Constants {
     public static final class Feeder {
         public static final int beltMotorID = 5;
         public static final int elevatorMotorID = 0; 
-        public static final int dcolorIntakeID = 0;
-        public static final int colorIntakeID = 1;
-        public static final int dcolorShooterID = 2;
-        public static final int colorShooterID = 3;
+        public static final int dcolorIntakeID = 1;
+        public static final int colorIntakeID = 0;
+        public static final int dcolorShooterID = 3;
+        public static final int colorShooterID = 2;
 
         public static final double belt_kP = 1;
         public static final double belt_kI = 1;
@@ -63,7 +63,7 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static final double kIntakeSpeed = 1; //TODO: Set intake speed\
-        public static final int intakeMotorID = 4;
+        public static final int intakeMotorID = 10;
         public static final int sensorID = 2;
 
         public static final double kP = 0;
@@ -100,7 +100,7 @@ public final class Constants {
     }
 
     public static class Turret {
-        public static final int rotationMotorID = 1;
+        public static final int rotationMotorID = 4;
         public static final double rotationMotorKp = 1;
         public static final double rotationMotorKi = 1;
         public static final double rotationMotorKd = 1;
@@ -111,8 +111,8 @@ public final class Constants {
         public static final double leftLimit = 0;
         public static final double rightLimit = 5000;
 
-        public static final double leftSpeedMaxAuto = 0.5;
-        public static final double rightSpeedMaxAuto = 0.5;
+        public static final double leftSpeedMaxAuto = 0.3;
+        public static final double rightSpeedMaxAuto = 0.3;
 
         public static final int goHomeIDOn = 0;
         public static final int goHomeIDOff = 1;

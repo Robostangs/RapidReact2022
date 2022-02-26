@@ -8,14 +8,19 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Feeder.controlManual;
 import frc.robot.commands.Feeder.moveUp1Ball;
 import frc.robot.commands.Intake.Activate;
+import frc.robot.commands.Shooter.setElevator;
+import frc.robot.commands.Shooter.shoot;
+import frc.robot.commands.Turret.reset;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,6 +38,7 @@ public class RobotContainer {
     private Intake m_Intake;
     private Feeder m_Feeder;
     private Shooter m_Shooter;
+    private Turret m_Turret;
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -43,6 +49,7 @@ public class RobotContainer {
         manip = new XboxController(1);
         m_Intake = Intake.getInstance();
         m_Feeder = Feeder.getInstance();
+        m_Turret = Turret.getInstance();
         m_Shooter = Shooter.getInstance();
         configureButtonBindings();
     }
@@ -63,16 +70,16 @@ public class RobotContainer {
         
             // m_Drivetrain.driveDistance(10);
             // m_Drivetrain.updateValues();
-
-
+        new JoystickButton(manip, 2).whileHeld(new shoot(0, 0.45, -0.3));
 
         m_Drivetrain.setDefaultCommand(
-            new ArcadeDrive(() -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());},
-                            () -> {return -driver.getLeftX();}));
+            new ArcadeDrive(() -> {return -driver.getLeftX();},
+                            () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
 
         //
         m_Intake.setDefaultCommand(new Activate(() -> { return driver.getAButton() ? 100.0 : 0.0; }));
         m_Feeder.setDefaultCommand(new moveUp1Ball(driver::getAButton));
+        m_Turret.setDefaultCommand(new reset(driver::getBButton));
         // m_Feeder.setDefaultCommand(new controlManual(() -> {return driver.getYButton() ? -100.0: 0.0;},
         //                                             () -> {return driver.getYButton() ? -100.0: 0.0;}));
 

@@ -1,31 +1,40 @@
 package frc.robot.commands.Shooter;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 public class shoot extends CommandBase{
     private final Shooter mShooter = Shooter.getInstance();
-    private final double m_allignmentPower, m_leftShooterPower, m_rightShooterPower, m_elevatorShooter;
-    private final Boolean m_shoot;
+    private final double m_allignmentPower, m_leftShooterPower, m_rightShooterPower;
 
-    public shoot(double allignmentPower, double leftShooterPower, double rightShooterPower, double elevatorShooter,Boolean shoot) {
+    public shoot(double allignmentPower, double leftShooterPower, double rightShooterPower) {
         this.addRequirements(mShooter);
         this.setName("Shoot");
         m_allignmentPower = allignmentPower;
         m_leftShooterPower = leftShooterPower;
-        m_rightShooterPower = rightShooterPower;        
-        m_elevatorShooter = elevatorShooter;
-        m_shoot = shoot;
+        m_rightShooterPower = rightShooterPower;  
+        
+        
+    }
+    
+    @Override
+    public void initialize() {
+        mShooter.setRightShooterPower(m_rightShooterPower);
+        mShooter.setLeftShooterPower(m_leftShooterPower);
+        mShooter.setAnglePower(m_allignmentPower);
+        mShooter.setElevatorPower(-1);
+        Timer.delay(1.5);
     }
 
     @Override
-    public void execute() {
-        if(m_shoot) {
-            mShooter.setRightShooterPower(m_allignmentPower);
-            mShooter.setLeftShooterPower(m_leftShooterPower);
-            mShooter.setAlignmentPower(m_rightShooterPower);
-            mShooter.setElevatorPower(m_elevatorShooter);
-        }
+    public void end(boolean interrupted) {
+        mShooter.setRightShooterPower(0);
+        mShooter.setLeftShooterPower(0);
+        mShooter.setAnglePower(0);
+        mShooter.setElevatorPower(0);
     } 
     @Override
     public boolean isFinished() {

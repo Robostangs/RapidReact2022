@@ -22,7 +22,7 @@ public class Limelight {
 
     public Limelight(){
         nt = NetworkTableInstance.getDefault().getTable("limelight");
-        nt.getEntry("pipeline").setNumber(1);
+        nt.getEntry("pipeline").setNumber(0);
     }
 
     public static void refresh() {

@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -98,6 +99,9 @@ public class Drivetrain extends SubsystemBase {
 
         m_leftBottom.follow(m_leftTop);
         m_rightBottom.follow(m_rightTop);
+
+        m_leftTop.setNeutralMode(NeutralMode.Brake);
+        m_rightTop.setNeutralMode(NeutralMode.Brake);
 
         m_gyro = new AHRS(SPI.Port.kMXP);
     }

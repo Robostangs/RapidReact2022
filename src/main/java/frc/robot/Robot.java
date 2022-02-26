@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 import frc.robot.commands.Intake.Activate;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -27,6 +29,7 @@ public class Robot extends TimedRobot {
     private Feeder m_Feeder;
     // private Intake m_Intake;
     private Shooter m_Shooter;
+    private Turret m_Turret;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -40,6 +43,7 @@ public class Robot extends TimedRobot {
         // m_Drivetrain  = Drivetrain.getInstance();
         // driver = new XboxController(0);
         m_Feeder = Feeder.getInstance();
+        m_Turret = Turret.getInstance();
         // // manip = new XboxController(1);
         // m_Intake = Intake.getInstance();
         
@@ -99,8 +103,9 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {       
-        m_Shooter.test();
         m_Feeder.update();
+        Limelight.refresh();
+
 
         // //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
 

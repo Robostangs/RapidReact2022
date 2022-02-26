@@ -15,8 +15,8 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
-    public final TalonFX m_Alignment, m_leftShooter, m_rightShooter, m_angleChanger, m_Elevator;
-    private PIDController m_alignmentPID, m_leftShooterPID, m_rightShooterPID, m_angleChangerPID;
+    public final TalonFX m_leftShooter, m_rightShooter, m_angleChanger, m_Elevator;
+    private PIDController m_leftShooterPID, m_rightShooterPID, m_angleChangerPID;
     //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
     public static Shooter getInstance() {
@@ -27,23 +27,20 @@ public class Shooter extends SubsystemBase {
     }
 
     public Shooter() {
-        m_Alignment = new TalonFX(Constants.Shooter.alignmentID);
         m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
         m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
         m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
         m_Elevator = new TalonFX(Constants.Feeder.elevatorMotorID);
 
-        m_Alignment.configFactoryDefault();
         m_leftShooter.configFactoryDefault();
         m_rightShooter.configFactoryDefault();
         m_angleChanger.configFactoryDefault();
     
-        m_alignmentPID = new PIDController(Constants.Shooter.alignmentMotorKP, Constants.Shooter.alignmentMotorKI, Constants.Shooter.alignmentMotorKD);
         m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
         m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
         m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
         
-        m_Alignment.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
+        m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
 
         SmartDashboard.putNumber("RightVelocity", 0);
         SmartDashboard.putNumber("LeftVelocity", 0);
@@ -59,11 +56,6 @@ public class Shooter extends SubsystemBase {
     //     setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
     //     setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
     // }
-
-    public void setAlignmentPower(double power) {
-        m_Alignment.set(ControlMode.PercentOutput, power);
-    }
-    
     public void setLeftShooterPower(double power) {
         m_leftShooter.set(ControlMode.PercentOutput, power);
     }
@@ -77,11 +69,19 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setAnglePositionPID(double position) {
-        m_alignmentPID.setSetpoint(position);
+        m_angleChangerPID.setSetpoint(position);
     }
 
     public void setElevatorPower(double power) {
         m_Elevator.set(ControlMode.PercentOutput, power);
+    }
+
+    public double getLeftVelocity() {
+        return m_leftShooter.getSelectedSensorVelocity();
+    }
+
+    public double getRightVelocity() {
+        return m_rightShooter.getSelectedSensorVelocity();
     }
 
     // public double getAlignmentPosition() {
@@ -115,11 +115,11 @@ public class Shooter extends SubsystemBase {
 
     public void test() {
         m_rightShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("RightVelocity", 0));
-        m_leftShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("LeftVelocity", 0));
+        m_leftShooter.set(ControlMode.PercentOutput, SmartDashboard.getNumber("LeftVelocity", 0) * 0.94);
        // m_Alignment.set(ControlMode.PercentOutput, SmartDashboard.getNumber("AllignmentVelocity", 0));
         m_Elevator.set(ControlMode.PercentOutput, SmartDashboard.getNumber("Elevator", 0));
 
-        SmartDashboard.putNumber("Right Shooter Velo", m_rightShooter.getSelectedSensorVelocity());
-        SmartDashboard.putNumber("Left Shooter Velo", m_leftShooter.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Right Shooter Velo", m_rightShooter.getSelectedSensorVelocity() * 600/2048);
+        SmartDashboard.putNumber("Left Shooter Velo", m_leftShooter.getSelectedSensorVelocity() * 600/2048);
     }
 }
