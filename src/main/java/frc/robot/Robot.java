@@ -3,8 +3,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,6 +21,8 @@ import frc.robot.auto.simpleAuto;
 import frc.robot.commands.Intake.Activate;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
+
+// import com.revrobotics.ColorSensorV3;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,6 +39,8 @@ public class Robot extends TimedRobot {
     // private Intake m_Intake;
     private Shooter m_Shooter;
     private Turret m_Turret;
+    
+    // private ColorSensorV3 color;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -104,6 +111,9 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         // Limelight.ledOn();
+
+        // color = new ColorSensorV3(I2C.Port.kOnboard);
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
@@ -113,34 +123,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {       
         // m_Feeder.update();
-        m_Shooter.test();
-
-        // //m_Drivetrain.setDefaultCommand(new ArcadeDrive((driver::getRightX), (driver::getLeftY)));
-
-        // m_Drivetrain.driveDistance(10);
-        // m_Drivetrain.updateValues();
-
-        // // Josh's preferred style 
-        // // m_Drivetrain.drivePower(
-        // //     Utils.deadzone(driver.getLeftX() - -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis())),
-        // //     Utils.deadzone(driver.getLeftX() + -1*(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis()))
-        // // );
-            
-        // //Stabilization stuffff
-        // // double left = Utils.deadzone(-driver.getLeftY());
-        // // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
-        // // m_Drivetrain.drivePower(
-        // //     left, 
-        // //     rightPwr
-        // // );
-        // // System.out.println(m_Drivetrain.getConstant());
+        // m_Shooter.test();
         
-        // // System.out.println(rightPwr);
-
-        // m_Intake.setSpeed(driver.getLeftX());
-        // m_Feeder.moveBelt(driver.getRightX());
-        // m_Feeder.moveElevator(driver.getRightX());
-        // m_Shooter.setLeftShooterPower(driver.getRightX());
+        // SmartDashboard.putNumber("Color Red", color.getRed());
+        // SmartDashboard.putNumber("Color Blue", color.getBlue());
+        // SmartDashboard.putNumber("Color Green", color.getGreen());
         // m_Shooter.setRightShooterPower(driver.getRightX());
     }
 

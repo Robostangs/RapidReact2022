@@ -8,13 +8,12 @@ import frc.robot.subsystems.Feeder;
 public class controlManual extends CommandBase {
     
     private Feeder m_Feeder = Feeder.getInstance();
-    private Supplier<Double> m_beltPower, m_elevatorMotor;
+    private Supplier<Double> m_beltPower;
 
-    public controlManual(Supplier<Double> beltPower, Supplier<Double> elevatorPower) {
+    public controlManual(Supplier<Double> beltPower) {
         this.addRequirements(m_Feeder);
         this.setName("Manual Move Feeder");
         m_beltPower = beltPower;
-        m_elevatorMotor = elevatorPower;
     }
 
     @Override

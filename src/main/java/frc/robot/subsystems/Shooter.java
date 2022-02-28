@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -36,11 +38,18 @@ public class Shooter extends SubsystemBase {
         m_rightShooter.configFactoryDefault();
         // m_angleChanger.configFactoryDefault();
     
-        m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
-        m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
+        // m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
+        // m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
+
         // m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
         
         // m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
+
+        m_leftShooter.config_kP(0, Constants.Shooter.leftMotorKP);
+        m_leftShooter.config_kI(0, Constants.Shooter.leftMotorKI);
+
+        m_rightShooter.config_kP(0, Constants.Shooter.rightMotorKP);
+        m_rightShooter.config_kI(0, Constants.Shooter.rightMotorKI);
 
         SmartDashboard.putNumber("RightVelocity", 0);
         SmartDashboard.putNumber("LeftVelocity", 0);

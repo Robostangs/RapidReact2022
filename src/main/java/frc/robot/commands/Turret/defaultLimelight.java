@@ -12,6 +12,7 @@ public class defaultLimelight extends CommandBase {
     private Supplier<Double> m_manip;
 
     public defaultLimelight(Supplier<Double> manip) {
+        m_Turret = Turret.getInstance();
         this.addRequirements(m_Turret);
         this.setName("Full Auto");
         m_manip = manip;
@@ -19,12 +20,20 @@ public class defaultLimelight extends CommandBase {
 
     @Override
     public void execute() {
-        
-    }
+        double outreq;
+        if (Limelight.getTv() != 0 && (Math.abs(m_manip.get()) < 0.1)) {
+            outreq = 0.2 * Limelight.getTx();
+        } else {
+            outreq = (m_manip.get());
+        }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+        if (outreq > 0.5){
+            outreq = 0.5;
+        }
+        else if (outreq < -0.5){
+            outreq = -0.5;
+        }
 
+        m_Turret.setSpeed(outreq);
+    }
 }
