@@ -5,23 +5,25 @@ import frc.robot.subsystems.Climber;
 
 public class spinClimber extends CommandBase{
     private Climber m_climber = new Climber();
-    private final double m_position;
+    private final double m_speed;
 
 
-    public spinClimber(double position) {
+    public spinClimber(double speed) {
         this.addRequirements(m_climber);
         this.setName("Spinning Climber");
-        m_position = position;
+        m_speed = speed;
+    }
+
+    @Override
+    public void initialize() {
+        m_climber.setRotationMotorSpeed(m_speed);
     }
 
     @Override
     public void execute() {
-        m_climber.setRotationMotorPosition(m_position);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
+        if(m_climber.getLeftClawSensor() || m_climber.getRightClawSensor()) {
+            m_climber.setRotationMotorSpeed(0);
+        }
     }
 
 }

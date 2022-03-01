@@ -21,6 +21,9 @@ public final class Constants {
         public static final int rightClawLockID = 4;
         public static final int elevatorID = 5;
 
+        public static final int leftClawSensorID = 0;
+        public static final int rightClawSensorID = 0;
+
         public static final double rotationKP = 1;
         public static final double rotationKI = 1;
         public static final double rotationKD = 1;

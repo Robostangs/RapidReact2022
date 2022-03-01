@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +20,7 @@ public class Climber extends PIDSubsystem {
     private CANSparkMax m_leftClaw, m_rightClaw;
     private Servo m_leftClawLock, m_rightClawLock, m_elevatorServo;
     private ElevatorFeedforward m_ElevatorFeedforward;
+    private DigitalInput m_leftClawDigitalInput, m_rightClawDigitalInput;
 
 
     public static Climber getInstance() {
@@ -38,6 +40,9 @@ public class Climber extends PIDSubsystem {
         
         m_leftClawLock = new Servo(Constants.Climber.leftClawLockID);
         m_rightClawLock = new Servo(Constants.Climber.rightClawLockID);
+
+        m_leftClawDigitalInput = new DigitalInput(Constants.Climber.leftClawSensorID);
+        m_rightClawDigitalInput = new DigitalInput(Constants.Climber.rightClawSensorID);
         
         m_ElevatorFeedforward = new ElevatorFeedforward(Constants.Climber.rotationStaticGain, Constants.Climber.gravityGain, Constants.Climber.velocityGain, Constants.Climber.accelerationGain);
     }
@@ -50,12 +55,16 @@ public class Climber extends PIDSubsystem {
         m_rotationMotor.set(ControlMode.Position, position);
     }
 
-    // public void setRotationMotorMagicPosition(double position) {
-    //     m_rotationMotor.set(ControlMode.MotionMagic, position);
-    // }
-
     public double getRotationMotorPosition() {
         return m_rotationMotor.getActiveTrajectoryPosition();
+    }
+
+    public boolean getLeftClawSensor() {
+        return m_leftClawDigitalInput.get();
+    }
+
+    public boolean getRightClawSensor() {
+        return m_rightClawDigitalInput.get();
     }
 
     public void setLeftClawSpeed(double power) {
@@ -83,7 +92,7 @@ public class Climber extends PIDSubsystem {
     }
 
     public void setRightClawPosition(double position) {
-       m_rightClaw.set(position);
+       m_rightClawDigitalInput.set(position);
     }
 
     public double getRightClawLockPosition() {
