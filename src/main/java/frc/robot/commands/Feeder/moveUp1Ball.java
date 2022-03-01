@@ -1,10 +1,10 @@
 package frc.robot.commands.Feeder;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Feeder;
 
-public class moveUp1Ball extends InstantCommand {
+public class moveUp1Ball extends CommandBase {
 
     public final Feeder m_Feeder = Feeder.getInstance();
 

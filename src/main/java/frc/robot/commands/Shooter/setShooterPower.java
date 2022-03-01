@@ -1,9 +1,9 @@
 package frc.robot.commands.Shooter;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class setShooterPower extends InstantCommand{
+public class setShooterPower extends CommandBase{
     
     private Shooter m_Shooter;
     private double m_leftShooterPower, m_rightShooterPower;

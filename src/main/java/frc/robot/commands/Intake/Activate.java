@@ -1,8 +1,8 @@
 package frc.robot.commands.Intake;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class Activate extends InstantCommand {
+public class Activate extends CommandBase {
 
     private Intake m_Intake = Intake.getInstance();
     private double m_speed;
