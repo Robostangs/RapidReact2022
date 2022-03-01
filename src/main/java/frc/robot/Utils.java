@@ -3,7 +3,7 @@ package frc.robot;
 public final class Utils {
     
     public static double deadzone(double input) {
-        return deadzone(input, 2);
+        return deadzone(input, 1.6);
     }
 
     public static double deadzone(double input, double power) {
@@ -14,7 +14,7 @@ public final class Utils {
         if (input <= lower_maxzone) {
             return -1;
         } else if (lower_maxzone < input && input < lower_deadzone) {
-            return Math.pow((-input + lower_deadzone) / (lower_deadzone - lower_maxzone), power);
+            return -Math.pow((-input + lower_deadzone) / (lower_deadzone - lower_maxzone), power);
         } else if (lower_deadzone <= input && input <= higher_deadzone) {
             return 0;
         } else if (higher_deadzone < input && input < higher_maxzone) {
@@ -23,4 +23,23 @@ public final class Utils {
             return 1;
         }
     }
+
+    public static double dist(double tx, double ty) {
+        return Constants.Limelight.targetHeight / (Math.tan(degToRad(ty + Constants.Limelight.limelightAngle)));
+    }
+
+    public static double degToRad(double x) {
+        return (Math.PI / 180.0) * x;
+    }
+    
+    public static double motorConversionInches(double encoderMax, double distance) {
+        //Update wheel diameter in constants
+        double rotations = distance / 2*Math.PI*Constants.Drivetrain.wheelDiameter;
+        return encoderMax * rotations;
+    }
+
+    public static double getEncoderDrivetrain(double distance) {
+        // distance in meters
+        return (distance / 0.15*Math.PI) * 7.82887701 / 2048;  
+   }
 }
