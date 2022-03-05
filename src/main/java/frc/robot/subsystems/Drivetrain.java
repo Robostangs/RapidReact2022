@@ -7,7 +7,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,6 +24,7 @@ public class Drivetrain extends SubsystemBase {
     
 
     public static Drivetrain Instance;
+    public DifferentialDriveOdometry m_dtOdometry;
     private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
     private AHRS m_gyro;
     
@@ -28,7 +35,6 @@ public class Drivetrain extends SubsystemBase {
     private PIDController m_rightPIDController;
     private SimpleMotorFeedforward m_leftFeedForward;
     private SimpleMotorFeedforward m_rightFeedForward;   
-
     public static Drivetrain getInstance() {
         if(Instance == null) {
             Instance = new Drivetrain();
@@ -42,6 +48,8 @@ public class Drivetrain extends SubsystemBase {
 
         m_rightTop = new TalonFX(Constants.Drivetrain.RT);
         m_rightBottom = new TalonFX(Constants.Drivetrain.RB);
+
+        //m_dtOdometry = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(1.5, 0, new Rotation2d()));
 
         // m_leftTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
 		// 		30);
@@ -103,18 +111,29 @@ public class Drivetrain extends SubsystemBase {
 
     // @Override
     // public void periodic() {
-    //     double leftOutput = m_leftPIDController.calculate(getLeftPosition());
-    //     double rightOutput = m_rightPIDController.calculate(getRightPosition());
-    //     drivePower(
-    //         leftOutput + m_leftFeedForward.calculate(getLeftVelocity()),
-    //         rightOutput + m_rightFeedForward.calculate(getRightVelocity())
-    //     );
+    //     m_dtOdometry.update(getGyroRotation2d(), getDriveDistanceLeft(), getDriveDistanceRight());
     // }
 
     // public void setPoint(double leftSetpoint, double rightSetpoint) {
     //     m_leftPIDController.setSetpoint(leftSetpoint);
     //     m_rightPIDController.setSetpoint(rightSetpoint);
     // }
+
+    // public Rotation2d getGyroRotation2d() {
+    //     return m_gyro.getRotation2d();
+    // }
+
+    public double getGyroRate() {
+        return m_gyro.getRate();
+    }
+
+    public double getGyroVelocityX() {
+        return m_gyro.getVelocityX();
+    }
+
+    public double getGyroVelocityY() {
+        return m_gyro.getVelocityY();
+    }
 
     public void driveDistance(double distance) {
         lastEncoderValueLeft = 0;

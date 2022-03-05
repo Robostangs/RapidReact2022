@@ -1,7 +1,16 @@
 package frc.robot;
 
 public final class Utils {
-    
+    public static double saturate(double input, double min, double max) {
+        if(input > max) {
+            return max;
+        } else if(input < min) {
+            return min;
+        } else {
+            return input;
+        }
+    }
+
     public static double deadzone(double input) {
         return deadzone(input, 1.6);
     }
@@ -24,7 +33,7 @@ public final class Utils {
         }
     }
 
-    public static double dist(double tx, double ty) {
+    public static double dist(double ty) {
         return Constants.Limelight.targetHeight / (Math.tan(degToRad(ty + Constants.Limelight.limelightAngle)));
     }
 

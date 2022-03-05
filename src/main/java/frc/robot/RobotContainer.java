@@ -63,7 +63,9 @@ public class RobotContainer {
             new ArcadeDrive(() -> {return -driver.getLeftX();},
                             () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
 
-        new JoystickButton(driver, XboxController.Button.kA.value).whenPressed(new Activate(50));
+        m_Intake.setDefaultCommand(new Activate(
+            driver.getBButton() ? 50.0 : 0
+        ));
         new JoystickButton(driver, XboxController.Button.kA.value).whenPressed(new moveUp1Ball());
 
         m_Turret.setDefaultCommand(new defaultLimelight(manip::getLeftY));

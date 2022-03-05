@@ -3,7 +3,12 @@
 
 package frc.robot;
 
+import java.nio.channels.GatheringByteChannel;
+
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +24,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 import frc.robot.auto.simpleAuto;
 import frc.robot.commands.Intake.Activate;
+import frc.robot.commands.Shooter.home;
+import frc.robot.commands.Shooter.setShooterPower;
+import frc.robot.commands.Turret.goHome;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 
@@ -39,6 +47,7 @@ public class Robot extends TimedRobot {
     // private Intake m_Intake;
     private Shooter m_Shooter;
     private Turret m_Turret;
+    private PowerDistribution pdp;
     
     // private ColorSensorV3 color;
 
@@ -59,7 +68,7 @@ public class Robot extends TimedRobot {
         // m_Intake = Intake.getInstance();
         
         m_Shooter = Shooter.getInstance();
-
+        pdp = new PowerDistribution();
     }
 
     /**
@@ -76,6 +85,7 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         Limelight.refresh();
+        SmartDashboard.putData("PDP", pdp);
         CommandScheduler.getInstance().run();
     }
 
@@ -113,7 +123,6 @@ public class Robot extends TimedRobot {
         // Limelight.ledOn();
 
         // color = new ColorSensorV3(I2C.Port.kOnboard);
-
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
@@ -121,7 +130,7 @@ public class Robot extends TimedRobot {
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {       
+    public void teleopPeriodic() { 
         // m_Feeder.update();
         // m_Shooter.test();
         

@@ -9,7 +9,7 @@ public class Activate extends CommandBase {
 
     public Activate(double speed) {
         this.addRequirements(m_Intake);
-        m_speed = speed; 
+        m_speed = speed;
         this.setName("Auto Activate");
     }
 

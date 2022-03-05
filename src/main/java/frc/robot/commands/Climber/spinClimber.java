@@ -18,12 +18,4 @@ public class spinClimber extends CommandBase{
     public void initialize() {
         m_climber.setRotationMotorSpeed(m_speed);
     }
-
-    @Override
-    public void execute() {
-        if(m_climber.getLeftClawSensor() || m_climber.getRightClawSensor()) {
-            m_climber.setRotationMotorSpeed(0);
-        }
-    }
-
 }

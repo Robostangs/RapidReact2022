@@ -7,22 +7,49 @@ import frc.robot.subsystems.Turret;
 
 public class goHome extends CommandBase{
     private Turret m_Turret = Turret.getInstance();
+    private Timer m_timer;
 
     public goHome() {
         this.addRequirements(m_Turret);
         this.setName("Take Me Home, Country Road");
+        m_timer = new Timer();
+    }
+
+    @Override
+    public void initialize() {
+        m_timer.reset();
+        m_Turret.setSoftLimitEnable(false);
+        m_timer.start();
+        m_Turret.setClearPosition(true);
     }
 
     @Override
     public void execute() {
-        m_Turret.setSpeed(Constants.Turret.rightSpeedMaxAuto);
-        Timer.delay(3);
-        m_Turret.setSpeed(0);
-        m_Turret.resetEncoder();
+        if(m_timer.get() <= 5) {
+            System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+            m_Turret.setSpeed(Constants.Turret.rotationMotorSpeed);
+        } else {
+            System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
+
+            m_Turret.setSpeed(0);
+            m_Turret.setMaxSpeed(0.2);
+            this.cancel();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return m_Turret.getReverseLimit();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if(!interrupted) {
+            m_Turret.setSoftLimitEnable(true);
+            m_Turret.setMaxSpeed(1);
+            m_Turret.setHomed(true);
+        }
+        m_Turret.setClearPosition(false);
+
     }
 }

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Climber extends PIDSubsystem {
+public class Climber extends SubsystemBase {
     
     public static Climber instance;
     private TalonFX m_rotationMotor;  
@@ -31,7 +31,6 @@ public class Climber extends PIDSubsystem {
     }
 
     public Climber() {
-        super(new PIDController(Constants.Climber.rotationKP, Constants.Climber.rotationKI, Constants.Climber.rotationKD));
         m_rotationMotor = new TalonFX(Constants.Climber.rotationMotorID);
         m_elevatorServo = new Servo(Constants.Climber.elevatorID);
 
@@ -92,7 +91,7 @@ public class Climber extends PIDSubsystem {
     }
 
     public void setRightClawPosition(double position) {
-       m_rightClawDigitalInput.set(position);
+       m_rightClaw.set(position);
     }
 
     public double getRightClawLockPosition() {
@@ -111,13 +110,15 @@ public class Climber extends PIDSubsystem {
         return m_elevatorServo.getPosition();
     }
 
-    @Override
-    protected void useOutput(double output, double setpoint) {
-        setRotationMotorSpeed(output + m_ElevatorFeedforward.calculate(setpoint));
-    }
 
-    @Override
-    protected double getMeasurement() {
-        return m_rotationMotor.getActiveTrajectoryPosition();
-    }
+
+    // @Override
+    // protected void useOutput(double output, double setpoint) {
+    //     setRotationMotorSpeed(output + m_ElevatorFeedforward.calculate(setpoint));
+    // }
+
+    // @Override
+    // protected double getMeasurement() {
+    //     return m_rotationMotor.getActiveTrajectoryPosition();
+    // }
 }

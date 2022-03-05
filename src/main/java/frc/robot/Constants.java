@@ -36,12 +36,14 @@ public final class Constants {
 
         public static final double elevatorReleaseConstant = 500;
         public static final double clawMoveConstant = 500;
+
+        public static final double moveClimberSpeed = 0.5;
     }
     public static final class Shooter {
         public static final int alignmentID = -1;
-        public static final int leftShooterID = 3;
-        public static final int rightShooterID = 1;
-        public static final int angleShooterID = -1;
+        public static final int leftShooterID = 13;
+        public static final int rightShooterID = 15;
+        public static final int angleShooterID = 9;
 
         public static final double alignmentMotorKP = 1;
         public static final double alignmentMotorKI = 1;
@@ -60,12 +62,14 @@ public final class Constants {
         public static final double angleMotorKD = 1;
 
         public static final double ticksPerDegree = 10;
+
+        public static final double homeSpeed = -0.1;
     }
 
 
     public static final class Feeder {
-        public static final int beltMotorID = 5;
-        public static final int elevatorMotorID = 0; 
+        public static final int beltMotorID = 4;
+        public static final int elevatorMotorID = 5; 
         public static final int dcolorIntakeID = 1;
         public static final int colorIntakeID = 0;
         public static final int dcolorShooterID = 3;
@@ -87,7 +91,7 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static final double kIntakeSpeed = 1; //TODO: Set intake speed\
-        public static final int intakeMotorID = 10;
+        public static final int intakeMotorID = 8;
         public static final int sensorID = 2;
 
         public static final double kP = 0;
@@ -97,11 +101,11 @@ public final class Constants {
 
 
     public static final class Drivetrain {
-        public static final int LT = 2;
-        public static final int LB = 6;
+        public static final int LT = 1;
+        public static final int LB = 20;
 
-        public static final int RT = 7;
-        public static final int RB = 8;
+        public static final int RT = 3;
+        public static final int RB = 2;
 
         public static final int gyro = 7;
         public static final int falcon_encoder_max = 2048;
@@ -121,30 +125,30 @@ public final class Constants {
         public static final double kRightS = 0.6924;
         public static final double kRightV = 1.8045;
         public static final double kRightA = 0.14905;
+
+        //Odometry
+        public static final double trackWidth = 0;
     }
 
     public static class Turret {
-        public static final int rotationMotorID = 4;
-        public static final double rotationMotorKp = 1;
-        public static final double rotationMotorKi = 1;
-        public static final double rotationMotorKd = 1;
-
-        public static final double rotationMotorMax = 2048;
-        public static final double rotationMotorMin = 0;
-
-        public static final double leftLimit = 0;
-        public static final double rightLimit = 5000;
-
-        public static final double leftSpeedMaxAuto = 0.3;
-        public static final double rightSpeedMaxAuto = 0.3;
-
-        public static final int goHomeIDOn = 0;
-        public static final int goHomeIDOff = 1;
+        public static final int rotationMotorID = 6;
+        public static final double rotationMotorKp = 0.1;
+        public static final double rotationMotorKi = 0.001;
+        public static final double rotationMotorKd = 0;
+        public static final double rotationMotorFF = -0.3;
+        public static final double rotationMotorIZone = 1000;
+        
+        public static final double rotationMotorMax = 74000;
+        public static final double rotationMotorSoftLimitOffset = 2000;
         public static final double rotationMotorSpeed = -0.2;
+        public static final double backPosition = 34595;
+        public static final double leftNinety = 63428;
+
+        public static final double filterConstant = 0.5;
     }
     
     public static class Limelight {
-        public static final double targetHeight = 104;
-        public static final double limelightAngle = 30; 
+        public static final double targetHeight = 78.5;
+        public static final double limelightAngle = 46; 
     }
 }

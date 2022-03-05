@@ -22,10 +22,7 @@ public class autoShoot extends SequentialCommandGroup{
 
         m_leftShooterPower = leftShooterPower;
         m_rightShooterPower = rightShooterPower;
-    }
 
-    @Override
-    public void initialize() {
         this.addCommands(new setShooterPower(m_leftShooterPower, m_rightShooterPower));
         this.addCommands(new WaitCommand(1.5));
         this.addCommands(new setElevatorPower(-1));
@@ -38,5 +35,4 @@ public class autoShoot extends SequentialCommandGroup{
         this.addCommands(new setShooterPower(0, 0));
         this.addCommands(new setElevatorPower(0));
     }
-
 }

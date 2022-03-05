@@ -26,11 +26,8 @@ public class simpleAuto extends SequentialCommandGroup {
         this.addRequirements(m_Intake);
         this.addRequirements(m_Feeder);
         this.addRequirements(m_Shooter);
-    }
 
-    @Override
-    public void initialize() {
-        this.addCommands(new Activate(0.5));
+        this.addCommands(new Activate(50.0));
         //TODO: MAKE BETTER
         this.addCommands(new InstantCommand(() -> {
             frc.robot.subsystems.Drivetrain.getInstance().drivePower(

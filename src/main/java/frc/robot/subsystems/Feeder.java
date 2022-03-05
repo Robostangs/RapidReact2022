@@ -57,6 +57,7 @@ public class Feeder extends SubsystemBase {
        m_intakeSensorLight = new DigitalInput(Constants.Feeder.colorIntakeID);
        m_shooterSensorLight = new DigitalInput(Constants.Feeder.colorShooterID);
 
+       SmartDashboard.putNumber("Feeder Speed", 0);
     }
 
     public boolean getIntakeSensorDark() {
@@ -104,5 +105,10 @@ public class Feeder extends SubsystemBase {
         SmartDashboard.putBoolean("Shooter Dark Value", getShooterSensorDark());
         SmartDashboard.putBoolean("Shooter Light Value", getShooterSensorLight());
 
+    }
+
+    @Override
+    public void periodic() {
+        moveBelt(SmartDashboard.getNumber("Feeder Speed", 0));
     }
 }
