@@ -16,7 +16,7 @@ public class DriveDistance extends CommandBase {
         this.addRequirements(mDrivetrain);
         double encoderResult = Utils.motorConversionInches(Constants.Drivetrain.falcon_encoder_max, distance);
         // System.out.println(encoderResult);
-        mDrivetrain.driveDistance(encoderResult);
+        // mDrivetrain.driveDistance(encoderResult);
 
     }
 }

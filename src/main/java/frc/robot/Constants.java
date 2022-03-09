@@ -48,14 +48,20 @@ public final class Constants {
         public static final double alignmentMotorKP = 1;
         public static final double alignmentMotorKI = 1;
         public static final double alignmentMotorKD = 1;
+        public static final double angleMotorIZone = 100;
+        public static final double angleMotorReverseLimit = -3000;
 
-        public static final double leftMotorKP = 0.0002;
-        public static final double leftMotorKI = 0;
-        public static final double leftMotorKD = 0;
+        public static final double leftMotorKP = 0.01;
+        public static final double leftMotorKI = 0.0001;
+        public static final double leftMotorKD = 0.01;
+        public static final double leftMotorKF = 0.053;
+        public static final double leftMotorIntegralAccumulation = 0.00000001;
 
-        public static final double rightMotorKP = 0.0002;
-        public static final double rightMotorKI = 0;
-        public static final double rightMotorKD = 0;
+        public static final double rightMotorKP = 0.013;
+        public static final double rightMotorKI = 0.00005;
+        public static final double rightMotorKD = 0.01;
+        public static final double rightMotorKF = 0.053;
+        public static final double rightMotorIntegralAccumulation = 0.00000001;
 
         public static final double angleMotorKP = 1;
         public static final double angleMotorKI = 1;
@@ -63,7 +69,7 @@ public final class Constants {
 
         public static final double ticksPerDegree = 10;
 
-        public static final double homeSpeed = -0.1;
+        public static final double homeSpeed = 0.1;
     }
 
 
@@ -145,10 +151,11 @@ public final class Constants {
         public static final double leftNinety = 63428;
 
         public static final double filterConstant = 0.5;
+        public static final double drivingOffset = 0;
     }
     
     public static class Limelight {
-        public static final double targetHeight = 78.5;
-        public static final double limelightAngle = 46; 
+        public static final double targetHeight = 80.25;
+        public static final double limelightAngle = 41.3; 
     }
 }

@@ -3,31 +3,13 @@
 
 package frc.robot;
 
-import java.nio.channels.GatheringByteChannel;
-
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
-import frc.robot.auto.simpleAuto;
-import frc.robot.commands.Intake.Activate;
-import frc.robot.commands.Shooter.home;
-import frc.robot.commands.Shooter.setShooterPower;
-import frc.robot.commands.Turret.goHome;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 
 // import com.revrobotics.ColorSensorV3;
@@ -69,6 +51,9 @@ public class Robot extends TimedRobot {
         
         m_Shooter = Shooter.getInstance();
         pdp = new PowerDistribution();
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: ");System.out.println( c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHEd: ");System.out.println(c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTER: ");System.out.println( c.getName());});
     }
 
     /**
@@ -85,8 +70,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         Limelight.refresh();
-        SmartDashboard.putData("PDP", pdp);
+        // SmartDashboard.putData("PDP", pdp);
         CommandScheduler.getInstance().run();
+        // CommandScheduler.getInstance().onCommandInitialize(System.out.println());
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

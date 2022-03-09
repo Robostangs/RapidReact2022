@@ -5,56 +5,64 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Limelight;
 
 public class defaultLimelight extends CommandBase {
-    
+
     private Turret m_Turret;
+    private Drivetrain dt;
     private Supplier<Double> m_manip;
+    private Supplier<Boolean> m_manipButton;
     private double lastTx;
 
-    public defaultLimelight(Supplier<Double> manip) {
+    public defaultLimelight(Supplier<Double> manip, Supplier<Boolean> manipButton) {
         m_Turret = Turret.getInstance();
+        dt = Drivetrain.getInstance();
         this.addRequirements(m_Turret);
         this.setName("Full Auto");
         m_manip = manip;
+        m_manipButton = manipButton;
         lastTx = 1;
     }
 
+    int counter = 50;
+
     @Override
     public void execute() {
-        // double outreq;
-        // if (Limelight.getTv() != 0 && (Math.abs(m_manip.get()) < 0.1)) {
-        //     outreq = 0.05 * Limelight.getTx();
-        // } else {
-        //     outreq = (m_manip.get());
-        // }
-
-        // if (outreq > 0.5){
-        //     outreq = 0.5;
-        // }
-        // else if (outreq < -0.5){
-        //     outreq = -0.5;
-        // }        
-        // m_Turret.setSpeed(outreq);
-        /*
-            m_Turret.setAngle(Limelight.getTV());
-        */
-        if(Limelight.getTv() == 1) {
-            lastTx = Limelight.getTx();
-            m_Turret.limelightSetAngle(Limelight.getTx());
-        } else {
-            double m_position = 200 * Math.signum(lastTx);
-            m_Turret.setAngle(m_position);
-            if((m_Turret.getTurrentPosition() >= Constants.Turret.rotationMotorMax - 4000.0) && (Math.signum(m_position) > 0)) {
-                lastTx = -lastTx;
-            } else if((m_Turret.getTurrentPosition() <= 4000.0) && (Math.signum(m_position) < 0)){
-                lastTx = -lastTx;  
+            if (Feeder.getInstance().getShooterSensorLight()) {
+                counter = 50;
             }
-            SmartDashboard.putNumber("m_position", m_position);
-            SmartDashboard.putNumber("m_tx", lastTx);
-        }
+            if (Feeder.getInstance().getShooterSensorLight() || counter > 0) {
+                Limelight.ledOn();
+                if (Limelight.getTv() == 1) {
+                    // double Vx = dt.getGyroVelocityX() * Math.sin(180 -
+                    // m_Turret.getTurrentAngle());
+                    // lastTx = Limelight.getTx();
+                    // double theta = Math.atan2((Constants.Turret.drivingOffset * Vx),
+                    // (Utils.dist(Limelight.getTy())));
+                    // // theta + Limelight.getTx()
+                    m_Turret.limelightSetAngle(Limelight.getTx());
+                } else {
+                    if (m_manipButton.get()) {
+                        double m_position = 200 * Math.signum(lastTx);
+                        m_Turret.setAngle(m_position);
+                        if ((m_Turret.getTurrentPosition() >= Constants.Turret.rotationMotorMax - 4000.0)
+                                && (Math.signum(m_position) > 0)) {
+                            lastTx = -lastTx;
+                        } else if ((m_Turret.getTurrentPosition() <= 4000.0) && (Math.signum(m_position) < 0)) {
+                            lastTx = -lastTx;
+                        }
+                        SmartDashboard.putNumber("m_position", m_position);
+                        SmartDashboard.putNumber("m_tx", lastTx);
+                    }
+                }
 
-    }
+            } else {
+                m_Turret.setAngle(-90);
+                Limelight.ledOff();
+            }
+            --counter;
+        }
 }

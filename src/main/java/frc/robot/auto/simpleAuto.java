@@ -27,7 +27,7 @@ public class simpleAuto extends SequentialCommandGroup {
         this.addRequirements(m_Feeder);
         this.addRequirements(m_Shooter);
 
-        this.addCommands(new Activate(50.0));
+        this.addCommands(new Activate());
         //TODO: MAKE BETTER
         this.addCommands(new InstantCommand(() -> {
             frc.robot.subsystems.Drivetrain.getInstance().drivePower(
@@ -36,6 +36,6 @@ public class simpleAuto extends SequentialCommandGroup {
         this.addCommands(new WaitCommand(1.5));
         this.addCommands(new moveUp1Ball());
         this.addCommands(new WaitCommand(1.5));
-        this.addCommands(new autoShoot(-0.55, 0.4));
+        // this.addCommands(new autoShoot(-0.55, 0.4));
     }
 }

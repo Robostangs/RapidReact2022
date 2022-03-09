@@ -2,18 +2,30 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
+import frc.robot.commands.Shooter.home;
 
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
     public final TalonFX m_leftShooter, m_rightShooter, m_Elevator, m_angleChanger;
-    public ColorSensorV3 colorSensor;
+    public ColorSensorV3 m_colorSensor;
+    private boolean isHomed;
+    enum cargoColor {
+        blue,
+        red, 
+        none 
+    }
     //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
     public static Shooter getInstance() {
@@ -28,31 +40,33 @@ public class Shooter extends SubsystemBase {
         m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
         m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
         m_Elevator = new TalonFX(Constants.Feeder.elevatorMotorID);
-        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        m_colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
-        // m_leftShooter.configFactoryDefault();
-        // m_rightShooter.configFactoryDefault();
-        // m_angleChanger.configFactoryDefault();
-    
-        // m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
-        // m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
+        m_leftShooter.configFactoryDefault();
+        m_rightShooter.configFactoryDefault();
+        m_angleChanger.configFactoryDefault();
 
-        // m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
+        m_leftShooter.config_kP(0, Constants.Shooter.leftMotorKP);
+        m_leftShooter.config_kI(0, Constants.Shooter.leftMotorKI);
+        m_leftShooter.config_kD(0, Constants.Shooter.leftMotorKD);
+        m_leftShooter.configMaxIntegralAccumulator(0, Constants.Shooter.leftMotorIntegralAccumulation);
+        m_leftShooter.config_kF(0, Constants.Shooter.leftMotorKF);        
         
-        // m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
-
-        // m_leftShooter.config_kP(0, Constants.Shooter.leftMotorKP);
-        // m_leftShooter.config_kI(0, Constants.Shooter.leftMotorKI);
-
-        // m_rightShooter.config_kP(0, Constants.Shooter.rightMotorKP);
-        // m_rightShooter.config_kI(0, Constants.Shooter.rightMotorKI);
-
-        // SmartDashboard.putNumber("RightVelocity", 0);
-        // SmartDashboard.putNumber("LeftVelocity", 0);
-        // SmartDashboard.putNumber("AllignmentVelocity", 0);
-        // SmartDashboard.putNumber("Elevator", 0);
-
+        m_rightShooter.config_kP(0, Constants.Shooter.leftMotorKP);
+        m_rightShooter.config_kI(0, Constants.Shooter.leftMotorKI);
+        m_rightShooter.config_kD(0, Constants.Shooter.leftMotorKD);
+        m_rightShooter.configMaxIntegralAccumulator(0, Constants.Shooter.leftMotorIntegralAccumulation);
+        m_rightShooter.config_kF(0, Constants.Shooter.leftMotorKF);        
         
+        m_angleChanger.configNeutralDeadband(0);
+        m_angleChanger.setNeutralMode(NeutralMode.Brake);
+        m_angleChanger.config_kP(0, Constants.Shooter.angleMotorKP);
+        m_angleChanger.config_kI(0, Constants.Shooter.angleMotorKI);
+        m_angleChanger.config_kD(0, Constants.Shooter.angleMotorKD);
+        m_angleChanger.config_IntegralZone(0, Constants.Shooter.angleMotorIZone);
+        m_angleChanger.configReverseSoftLimitThreshold(Constants.Shooter.angleMotorReverseLimit);
+        m_angleChanger.configForwardSoftLimitThreshold(0);
+
         SmartDashboard.putNumber("LeftVelo", 0);
         SmartDashboard.putNumber("RightVelo", 0);
         SmartDashboard.putNumber("Hood Position", 0);
@@ -74,16 +88,24 @@ public class Shooter extends SubsystemBase {
         m_leftShooter.set(ControlMode.PercentOutput, power);
     }
 
+    public void getBallColor() {
+        if(m_colorSensor.getRed() > m_colorSensor.getBlue()) {
+            color
+        } else if(m_colorSensor.getRed() < m_colorSensor.getBlue()){
+
+        }
+    }
+
     public boolean getHoodLimitSwitch() {
         return m_angleChanger.isFwdLimitSwitchClosed() == 1;
     }
 
     public void setLeftShooterVelo(double velocity) {
-        m_leftShooter.set(ControlMode.Velocity, velocity);
+        m_leftShooter.set(ControlMode.Velocity, velocity/ (600.0/2048.0));
     }
     
     public void setRightShooterVelo(double velocity) {
-        m_rightShooter.set(ControlMode.Velocity, velocity);
+        m_rightShooter.set(ControlMode.Velocity, velocity/ (600.0/2048.0));
     }
 
     public void setRightShooterPower(double power) {
@@ -110,41 +132,48 @@ public class Shooter extends SubsystemBase {
         return m_rightShooter.getSelectedSensorVelocity();
     }
 
-    // public double getAlignmentPosition() {
-    //     return m_Alignment.getActiveTrajectoryPosition();
-    // }
+    public void setSoftLimitEnable(boolean value) {
+        m_angleChanger.configForwardSoftLimitEnable(value);
+        m_angleChanger.configReverseSoftLimitEnable(value);
+    }
 
-    // public double getLeftShooterPosition() {
-    //     return m_leftShooter.getActiveTrajectoryPosition();
-    // }
+    public void setClearPosition(boolean value) {
+        m_angleChanger.configClearPositionOnLimitF(value, 100);
+    }
 
-    // public double getRightShooterPosition() {
-    //     return m_rightShooter.getActiveTrajectoryPosition();
-    // }
+    public void setMaxSpeed(double speed) {
+        m_angleChanger.configPeakOutputForward(speed);
+        m_angleChanger.configPeakOutputReverse(-2*speed);
+    }
+    
+    public boolean getForwardLimit() {
+        return m_angleChanger.isFwdLimitSwitchClosed() == 1;
+    }
 
-    // public double getAnglePosition() {
-    //     return m_angleChanger.getActiveTrajectoryPosition();
-    // }
-    // public double getAlignmentEncoder() {
+    public void setHomed(boolean value) {
+        isHomed = value;
+    }
 
-        
-    //     return m_Alignment.getActiveTrajectoryPosition();
-    // }
-
-    // public double getLeftShooterEncoder() {
-    //     return m_leftShooter.getActiveTrajectoryPosition();
-    // }
-
-    // public double getRightShooterEncoder() {
-    //     return m_rightShooter.getActiveTrajectoryPosition();
-    // }
+    public void resetHoodEncoder() {
+        m_angleChanger.setSelectedSensorPosition(0);
+    }
 
     @Override
     public void periodic() {
-    SmartDashboard.putNumber("Distance Limelight", Utils.dist(Limelight.getTy()));
-    m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo", 0.0) / (600.0/2048.0)));
-    m_rightShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
-    setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
-    setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));    
-}
+        if(m_angleChanger.hasResetOccurred()) {
+            isHomed = false;
+        }
+        if(!isHomed){
+            new home().schedule(); 
+        }
+    }
+
+    // @Override
+    // public void periodic() {
+    //     SmartDashboard.putNumber("Distance Limelight", Utils.dist(Limelight.getTy()));
+    //     m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo", 0.0) / (600.0/2048.0)));
+    //     m_rightShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
+    //     // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
+    //     setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));    
+    // }
 }

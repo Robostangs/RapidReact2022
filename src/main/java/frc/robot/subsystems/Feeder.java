@@ -107,8 +107,8 @@ public class Feeder extends SubsystemBase {
 
     }
 
-    @Override
-    public void periodic() {
-        moveBelt(SmartDashboard.getNumber("Feeder Speed", 0));
-    }
+    // @Override
+    // public void periodic() {
+    //     moveBelt(SmartDashboard.getNumber("Feeder Speed", 0));
+    // }
 }

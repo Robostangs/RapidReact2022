@@ -1,10 +1,9 @@
 package frc.robot.commands.Shooter;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Shooter;
 
-public class angle extends CommandBase {
+public class angle extends InstantCommand {
     private final Shooter mShooter = Shooter.getInstance();
     private final double m_anglePosition;
 
@@ -16,13 +15,6 @@ public class angle extends CommandBase {
 
     @Override
     public void execute() {
-        // double currentPosition = mShooter.getAnglePosition();
-        // double change = m_anglePosition - currentPosition / Constants.Shooter.ticksPerDegree;
-        // mShooter.setAnglePositionPID(change);               
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
+        mShooter.setAnglePositionPID(m_anglePosition);                  
     }
 }

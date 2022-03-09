@@ -11,6 +11,22 @@ public final class Utils {
         }
     }
 
+    public static double LinearFront(double distance) {
+        return (7.98808*distance + 1724.21);
+    }
+
+    public static double LinearBack(double distance) {
+        return (7.36177*distance + 1458.81);
+    }
+
+    public static double QuadFront(double distance) {
+        return ((0.0352101 * Math.pow(distance, 2)) + (-2.67594 * distance) + 2377.43);
+    }
+    
+    public static double QuadBack(double distance) {
+        return ((0.0402967 * Math.pow(distance, 2)) + (-4.84282 * distance) + 2206.4);
+    }
+
     public static double deadzone(double input) {
         return deadzone(input, 1.6);
     }

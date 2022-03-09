@@ -28,8 +28,8 @@ public class Intake extends SubsystemBase {
         m_intakeMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    @Override
-    public void periodic() {
-        setSpeed(SmartDashboard.getNumber("Intake Speed", 0));
-    }
+    // @Override
+    // public void periodic() {
+    //     setSpeed(SmartDashboard.getNumber("Intake Speed", 0));
+    // }
 }

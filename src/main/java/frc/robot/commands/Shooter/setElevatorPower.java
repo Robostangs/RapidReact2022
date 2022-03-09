@@ -1,15 +1,17 @@
 package frc.robot.commands.Shooter;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Shooter;
 
-public class setElevatorPower extends CommandBase{
+public class setElevatorPower extends InstantCommand{
     
     private Shooter m_Shooter;
     private double m_power;
 
     public setElevatorPower(double power) {
         m_Shooter = Shooter.getInstance();
+        this.addRequirements(m_Shooter);
         m_power = power;
     }
 

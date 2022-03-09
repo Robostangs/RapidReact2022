@@ -3,19 +3,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 
-public class Activate extends InstantCommand {
+public class deactivate extends InstantCommand {
 
     private Intake m_Intake = Intake.getInstance();
     // private double m_speed;
 
-    public Activate() {
+    public deactivate() {
         this.addRequirements(m_Intake);
         // m_speed = speed;
-        this.setName("Auto Activate");
+        this.setName("Auto deactivate");
     }
 
     @Override
     public void initialize() {
-        m_Intake.setSpeed(0.5);
+        m_Intake.setSpeed(0);
     }
 }

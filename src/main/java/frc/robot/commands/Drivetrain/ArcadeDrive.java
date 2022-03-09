@@ -20,6 +20,7 @@ public class ArcadeDrive extends CommandBase {
         this.setName("Arcade Drive");
         mFuncForward = funcForward;
         mFuncTurn = funcTurn;
+        // mDrivetrain.resetRotation();
     }
 
     @Override

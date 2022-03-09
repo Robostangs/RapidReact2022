@@ -25,7 +25,7 @@ public class goHome extends CommandBase{
 
     @Override
     public void execute() {
-        if(m_timer.get() <= 5) {
+        if(m_timer.get() <= 3) {
             System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
             m_Turret.setSpeed(Constants.Turret.rotationMotorSpeed);
         } else {
@@ -48,6 +48,7 @@ public class goHome extends CommandBase{
             m_Turret.setSoftLimitEnable(true);
             m_Turret.setMaxSpeed(1);
             m_Turret.setHomed(true);
+        
         }
         m_Turret.setClearPosition(false);
 
