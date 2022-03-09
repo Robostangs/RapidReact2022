@@ -55,10 +55,10 @@ public class autoShoot extends SequentialCommandGroup{
         System.out.println(m_rightShooterPower);
         
 
-        // this.addCommands(new setShooterPower(-m_leftShooterPower, m_rightShooterPower));
-        // this.addCommands(new angle(m_angle));
-        this.addCommands(new setShooterPower(-leftShooterPower, rightShooterPower));
-        //this.addCommands(new angle(angle));
+        this.addCommands(new setShooterPower(-m_leftShooterPower, m_rightShooterPower));
+        this.addCommands(new angle(m_angle));
+        // this.addCommands(new setShooterPower(-leftShooterPower, rightShooterPower));
+        // //this.addCommands(new angle(angle));
         this.addCommands(new WaitCommand(1));
         this.addCommands(new setElevatorPower(-1));
         // this.addCommands(new WaitCommand(0.1));
@@ -68,7 +68,7 @@ public class autoShoot extends SequentialCommandGroup{
         // this.addCommands(new WaitCommand(0.1));
         this.addCommands(new setShooterPower(0, 0));
         this.addCommands(new setElevatorPower(0));
-        //this.addCommands(new angle(0));
+        this.addCommands(new angle(0));
 
     }
 }

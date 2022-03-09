@@ -88,11 +88,13 @@ public class Shooter extends SubsystemBase {
         m_leftShooter.set(ControlMode.PercentOutput, power);
     }
 
-    public void getBallColor() {
+    public cargoColor getBallColor() {
         if(m_colorSensor.getRed() > m_colorSensor.getBlue()) {
-            color
+            return cargoColor.red;
         } else if(m_colorSensor.getRed() < m_colorSensor.getBlue()){
-
+            return cargoColor.blue;
+        } else {
+            return cargoColor.none;
         }
     }
 
