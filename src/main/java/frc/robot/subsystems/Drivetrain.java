@@ -6,7 +6,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -29,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
     public static Drivetrain Instance;
     public DifferentialDriveOdometry m_dtOdometry;
     public DifferentialDriveKinematics m_dtKinematics;
-    private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
+    private WPI_TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
     private AHRS m_gyro;
     
     //Stabilization STUFFFF
@@ -47,11 +47,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public Drivetrain() {
-        m_leftTop = new TalonFX(Constants.Drivetrain.LT);
-        m_leftBottom = new TalonFX(Constants.Drivetrain.LB);
+        m_leftTop = new WPI_TalonFX(Constants.Drivetrain.LT);
+        m_leftBottom = new WPI_TalonFX(Constants.Drivetrain.LB);
 
-        m_rightTop = new TalonFX(Constants.Drivetrain.RT);
-        m_rightBottom = new TalonFX(Constants.Drivetrain.RB);
+        m_rightTop = new WPI_TalonFX(Constants.Drivetrain.RT);
+        m_rightBottom = new WPI_TalonFX(Constants.Drivetrain.RB);
 
         m_leftTop.setNeutralMode(NeutralMode.Brake);
         m_rightTop.setNeutralMode(NeutralMode.Brake);

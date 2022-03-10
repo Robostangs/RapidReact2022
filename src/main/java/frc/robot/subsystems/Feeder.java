@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +12,7 @@ import frc.robot.Constants;
 public class Feeder extends SubsystemBase {
     
     public static Feeder Instance;
-    private TalonFX m_beltMotor; 
+    private WPI_TalonFX m_beltMotor; 
     private DigitalInput m_intakeSensorDark, m_shooterSensorDark,  m_intakeSensorLight, m_shooterSensorLight;
 
     public static Feeder getInstance() {
@@ -23,7 +23,7 @@ public class Feeder extends SubsystemBase {
     }
 
     public Feeder() {
-       m_beltMotor = new TalonFX(Constants.Feeder.beltMotorID);
+       m_beltMotor = new WPI_TalonFX(Constants.Feeder.beltMotorID);
 
        m_beltMotor.configFactoryDefault();
 

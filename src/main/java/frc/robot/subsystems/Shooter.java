@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
@@ -18,7 +18,7 @@ import frc.robot.commands.Shooter.home;
 
 public class Shooter extends SubsystemBase {
     public static Shooter instance;
-    public final TalonFX m_leftShooter, m_rightShooter, m_Elevator, m_angleChanger;
+    public final WPI_TalonFX m_leftShooter, m_rightShooter, m_Elevator, m_angleChanger;
     public ColorSensorV3 m_colorSensor;
     private boolean isHomed;
     enum cargoColor {
@@ -36,10 +36,10 @@ public class Shooter extends SubsystemBase {
     }
 
     public Shooter() {
-        m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
-        m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
-        m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
-        m_Elevator = new TalonFX(Constants.Feeder.elevatorMotorID);
+        m_leftShooter = new WPI_TalonFX(Constants.Shooter.leftShooterID);
+        m_rightShooter = new WPI_TalonFX(Constants.Shooter.rightShooterID);
+        m_angleChanger = new WPI_TalonFX(Constants.Shooter.angleShooterID);
+        m_Elevator = new WPI_TalonFX(Constants.Feeder.elevatorMotorID);
         m_colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
         m_leftShooter.configFactoryDefault();

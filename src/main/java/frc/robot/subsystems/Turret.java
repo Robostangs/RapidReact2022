@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,13 +21,12 @@ import frc.robot.Constants.Drivetrain;
 import frc.robot.commands.Turret.goHome;
 
 public class Turret extends SubsystemBase {
-    private final TalonFX rotationMotor;
+    private final WPI_TalonFX rotationMotor;
     public static Turret instance;
     public static DigitalInput m_homeSensorOn, m_homeSensorOff;
     private boolean isHomed;
     private double filter;
     private frc.robot.subsystems.Drivetrain mDrivetrain;
-    //private TalonFXSensorCollection m_sensorCollection;
 
     public static Turret getInstance() {
         if(instance == null) {
@@ -37,7 +36,7 @@ public class Turret extends SubsystemBase {
     }
 
     public Turret() {
-        rotationMotor = new TalonFX(Constants.Turret.rotationMotorID);
+        rotationMotor = new WPI_TalonFX(Constants.Turret.rotationMotorID);
         rotationMotor.setNeutralMode(NeutralMode.Brake);
         rotationMotor.configFactoryDefault();
         

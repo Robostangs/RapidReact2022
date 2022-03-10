@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -20,7 +20,7 @@ public class Music {
         m_Orchestra = new Orchestra();
     }
 
-    public static void loadMusic(TalonFX Falcon1, TalonFX Falcon2,TalonFX Falcon3,TalonFX Falcon4,TalonFX Falcon5,TalonFX Falcon6,TalonFX Falcon7,TalonFX Falcon8,TalonFX Falcon9,TalonFX Falcon10,TalonFX Falcon11,TalonFX Falcon12,TalonFX Falcon13,TalonFX Falcon14,TalonFX Falcon15,TalonFX Falcon16,TalonFX Falcon17, String musicFilePath) {
+    public static void loadMusic(WPI_TalonFX Falcon1, WPI_TalonFX Falcon2,WPI_TalonFX Falcon3,WPI_TalonFX Falcon4,WPI_TalonFX Falcon5,WPI_TalonFX Falcon6,WPI_TalonFX Falcon7,WPI_TalonFX Falcon8,WPI_TalonFX Falcon9,WPI_TalonFX Falcon10,WPI_TalonFX Falcon11,WPI_TalonFX Falcon12,WPI_TalonFX Falcon13,WPI_TalonFX Falcon14,WPI_TalonFX Falcon15,WPI_TalonFX Falcon16,WPI_TalonFX Falcon17, String musicFilePath) {
         m_Orchestra.addInstrument(Falcon1);
         m_Orchestra.addInstrument(Falcon2);
         m_Orchestra.addInstrument(Falcon3);

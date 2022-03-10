@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -16,7 +16,7 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
     
     public static Climber instance;
-    private TalonFX m_rotationMotor;  
+    private WPI_TalonFX m_rotationMotor;  
     private CANSparkMax m_leftClaw, m_rightClaw;
     private Servo m_leftClawLock, m_rightClawLock, m_elevatorServo;
     private ElevatorFeedforward m_ElevatorFeedforward;
@@ -31,7 +31,7 @@ public class Climber extends SubsystemBase {
     }
 
     public Climber() {
-        m_rotationMotor = new TalonFX(Constants.Climber.rotationMotorID);
+        m_rotationMotor = new WPI_TalonFX(Constants.Climber.rotationMotorID);
         m_elevatorServo = new Servo(Constants.Climber.elevatorID);
 
         m_leftClaw = new CANSparkMax(Constants.Climber.leftClawID, MotorType.kBrushless);
