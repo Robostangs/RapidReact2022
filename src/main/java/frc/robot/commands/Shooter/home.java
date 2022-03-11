@@ -27,10 +27,10 @@ public class Home extends CommandBase {
     public void execute() {
         if (mTimer.get() <= 3) {
             System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-            mShooter.setAnglePower(Constants.Shooter.kHomeSpeed);
+            mShooter.setHoodPower(Constants.Shooter.kHomeSpeed);
         } else {
             System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
-            mShooter.setAnglePower(0);
+            mShooter.setHoodPower(0);
             mShooter.setMaxSpeed(0.25);
             mShooter.resetHoodEncoder();
             cancel();
@@ -45,7 +45,7 @@ public class Home extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         if (!interrupted) {
-            mShooter.setAnglePower(0);
+            mShooter.setHoodPower(0);
             mShooter.setMaxSpeed(1);
             mShooter.setHomed(true);
         }

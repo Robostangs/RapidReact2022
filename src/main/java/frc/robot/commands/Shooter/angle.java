@@ -15,6 +15,6 @@ public class Angle extends InstantCommand {
 
     @Override
     public void execute() {
-        mShooter.setAnglePositionPID(mAngleSetpoint);
+        mShooter.setHoodPositionPID(mAngleSetpoint);
     }
 }

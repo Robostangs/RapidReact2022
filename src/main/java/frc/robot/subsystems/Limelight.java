@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
@@ -25,6 +26,15 @@ public class Limelight extends SubsystemBase {
         ty = LimelightTable.getEntry("ty").getDouble(0);
         tv = LimelightTable.getEntry("tv").getDouble(0);
         ta = LimelightTable.getEntry("ta").getDouble(0);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("tx", () -> tx, null);
+        builder.addDoubleProperty("ty", () -> ty, null);
+        builder.addDoubleProperty("tv", () -> tv, null);
+        builder.addDoubleProperty("ta", () -> ta, null);
     }
 
     public static double getTx() {

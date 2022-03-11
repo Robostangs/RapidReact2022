@@ -18,7 +18,7 @@ public class SetShooterPower extends InstantCommand {
 
     @Override
     public void initialize() {
-        mShooter.setLeftShooterVelocity(mLeftShooterPower);
-        mShooter.setRightShooterVelocity(mRightShooterPower);
+        mShooter.setBottomShooterVelocity(mLeftShooterPower);
+        mShooter.setTopShooterVelocity(mRightShooterPower);
     }
 }

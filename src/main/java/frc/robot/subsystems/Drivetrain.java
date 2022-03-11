@@ -10,8 +10,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -68,6 +68,11 @@ public class Drivetrain extends SubsystemBase {
         mRightTop.setNeutralMode(NeutralMode.Brake);
 
         resetEncoder();
+    }
+
+    @Override
+    public void periodic() {
+        updateOdometry();
     }
 
     public Rotation2d getGyroRotation2d() {
@@ -148,14 +153,10 @@ public class Drivetrain extends SubsystemBase {
         drivePower(0, 0);
     }
 
-    @Override
-    public void periodic() {
+    private void updateOdometry() {
         mDrivetrainOdometry.update(
             getGyroRotation2d(),
             mLeftTop.getSelectedSensorPosition() * ((0.15 * Math.PI) * 0.11 / 2048),
             -mRightTop.getSelectedSensorPosition() * ((0.15 * 0.11 * Math.PI) / 2048));
-        SmartDashboard.putString("Pose 2D", mDrivetrainOdometry.getPoseMeters().toString());
-        SmartDashboard.putNumber("leftDistance", mLeftTop.getSelectedSensorPosition() * ((0.15 * Math.PI) / 2048));
-        SmartDashboard.putNumber("rightDistance", -mRightTop.getSelectedSensorPosition() * ((0.15 * Math.PI) / 2048));
     }
 }

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,8 +37,12 @@ public class Turret extends SubsystemBase {
 
         mFilter = 0;
         mIsHomed = false;
-        SmartDashboard.putNumber("Turret", 0);
-        SmartDashboard.putNumber("Yaw Feed", 0);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Turret", this::getTurrentAngle, null);
     }
 
     public void setClearPosition(boolean value) {

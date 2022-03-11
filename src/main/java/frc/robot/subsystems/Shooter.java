@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,7 +53,14 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("RightVelo", 0);
         SmartDashboard.putNumber("Hood Position", 0);
         SmartDashboard.putNumber("Elevator Speed", 0);
+    }
 
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Bottom Shooter Velocity", this::getTopVelocity, null);
+        builder.addDoubleProperty("Top Shooter Velocity", this::getBottomVelocity, null);
+        builder.addDoubleProperty("Hood Position", mHood::getSelectedSensorPosition, null);
     }
 
     // @Override
@@ -64,7 +72,7 @@ public class Shooter extends SubsystemBase {
     // setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
     // }
 
-    public void setLeftShooterPower(double power) {
+    public void setBottomShooterPower(double power) {
         mBottomShooter.set(ControlMode.PercentOutput, power);
     }
 
@@ -82,23 +90,23 @@ public class Shooter extends SubsystemBase {
         return mHood.isFwdLimitSwitchClosed() == 1;
     }
 
-    public void setLeftShooterVelocity(double velocity) {
+    public void setBottomShooterVelocity(double velocity) {
         mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
     }
 
-    public void setRightShooterVelocity(double velocity) {
+    public void setTopShooterVelocity(double velocity) {
         mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
     }
 
-    public void setRightShooterPower(double power) {
+    public void setTopShooterPower(double power) {
         mTopShooter.set(ControlMode.PercentOutput, power);
     }
 
-    public void setAnglePower(double power) {
+    public void setHoodPower(double power) {
         mHood.set(ControlMode.PercentOutput, power);
     }
 
-    public void setAnglePositionPID(double position) {
+    public void setHoodPositionPID(double position) {
         mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
     }
 
@@ -106,11 +114,11 @@ public class Shooter extends SubsystemBase {
         mElevator.set(ControlMode.PercentOutput, power);
     }
 
-    public double getLeftVelocity() {
+    public double getBottomVelocity() {
         return mBottomShooter.getSelectedSensorVelocity();
     }
 
-    public double getRightVelocity() {
+    public double getTopVelocity() {
         return mTopShooter.getSelectedSensorVelocity();
     }
 
