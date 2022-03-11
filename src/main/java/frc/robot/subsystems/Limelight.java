@@ -2,11 +2,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Limelight {
+public class Limelight extends SubsystemBase {
 
-    public static Limelight instance;
-
+    @SuppressWarnings("unused")
+    private static final Limelight instance = new Limelight();;
     private static final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     private static double tx = 0;
@@ -14,19 +15,12 @@ public class Limelight {
     private static double tv = 0;
     private static double ta = 0;
 
-    public Limelight getInstance() {
-        if (instance == null) {
-            instance = new Limelight();
-        }
-        return instance;
-    }
-
-    public Limelight() {
+    private Limelight() {
         LimelightTable.getEntry("pipeline").setNumber(0);
     }
 
-    public static void refresh() {
-        // LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    @Override
+    public void periodic() {
         tx = LimelightTable.getEntry("tx").getDouble(0);
         ty = LimelightTable.getEntry("ty").getDouble(0);
         tv = LimelightTable.getEntry("tv").getDouble(0);
@@ -49,15 +43,15 @@ public class Limelight {
         return ta;
     }
 
-    public static void ledOn() {
+    public static void enableLEDs() {
         LimelightTable.getEntry("ledMode").setNumber(0);
     }
 
-    public static void ledOff() {
+    public static void disableLEDs() {
         LimelightTable.getEntry("ledMode").setNumber(1);
     }
 
-    public static void ledBlink() {
+    public static void blinkLEDs() {
         LimelightTable.getEntry("ledMode").setNumber(2);
     }
 }

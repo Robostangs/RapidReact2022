@@ -29,7 +29,7 @@ public class DefaultLimelight extends CommandBase {
             counter = 50;
         }
         if (Feeder.getInstance().getShooterSensorLight() || counter > 0) {
-            Limelight.ledOn();
+            Limelight.enableLEDs();
             if (Limelight.getTv() == 1) {
                 // double Vx = dt.getGyroVelocityX() * Math.sin(180 -
                 // m_Turret.getTurrentAngle());
@@ -55,7 +55,7 @@ public class DefaultLimelight extends CommandBase {
 
         } else {
             mTurret.setAngle(-90);
-            Limelight.ledOff();
+            Limelight.disableLEDs();
         }
         --counter;
     }
