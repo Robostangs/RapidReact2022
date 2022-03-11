@@ -3,39 +3,31 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.Feeder.moveUp1Ball;
-import frc.robot.commands.Intake.Activate;
-import frc.robot.commands.Shooter.autoShoot;
-import frc.robot.subsystems.*;
+import frc.robot.commands.feeder.MoveUp1Ball;
+import frc.robot.commands.intake.Activate;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class simpleAuto extends SequentialCommandGroup {
+public class SimpleAuto extends SequentialCommandGroup {
 
-    private Drivetrain m_Drivetrain;
-    private Intake m_Intake;
-    private Feeder m_Feeder;
-    private Shooter m_Shooter;
+    private final Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private final Intake mIntake = Intake.getInstance();
+    private final Feeder mFeeder = Feeder.getInstance();
+    private final Shooter mShooter = Shooter.getInstance();
 
-    public simpleAuto() {
-        this.setName("auto");
-        m_Drivetrain = Drivetrain.getInstance();
-        m_Intake = Intake.getInstance();
-        m_Feeder = Feeder.getInstance();
-        m_Shooter = Shooter.getInstance();
-
-        this.addRequirements(m_Drivetrain);
-        this.addRequirements(m_Intake);
-        this.addRequirements(m_Feeder);
-        this.addRequirements(m_Shooter);
-
-        this.addCommands(new Activate());
-        //TODO: MAKE BETTER
-        this.addCommands(new InstantCommand(() -> {
-            frc.robot.subsystems.Drivetrain.getInstance().drivePower(
-                0.6, -0.6);
-        }));
-        this.addCommands(new WaitCommand(1.5));
-        this.addCommands(new moveUp1Ball());
-        this.addCommands(new WaitCommand(1.5));
-        // this.addCommands(new autoShoot(-0.55, 0.4));
+    public SimpleAuto() {
+        addRequirements(mDrivetrain, mIntake, mFeeder, mShooter);
+        setName("Simple Auto");
+        // TODO: MAKE BETTER
+        addCommands(
+            new Activate(),
+            new InstantCommand(() -> {
+                frc.robot.subsystems.Drivetrain.getInstance().drivePower(0.6, -0.6);}),
+            new WaitCommand(1.5),
+            new MoveUp1Ball(),
+            new WaitCommand(1.5));
+            // new autoShoot(-0.55, 0.4));
     }
 }

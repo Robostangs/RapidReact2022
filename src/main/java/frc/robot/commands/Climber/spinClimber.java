@@ -1,21 +1,21 @@
-package frc.robot.commands.Climber;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class spinClimber extends CommandBase{
-    private Climber m_climber = new Climber();
-    private final double m_speed;
+public class SpinClimber extends CommandBase {
 
+    private final double mSpeed;
+    private final Climber mClimber = Climber.getInstance();
 
-    public spinClimber(double speed) {
-        this.addRequirements(m_climber);
-        this.setName("Spinning Climber");
-        m_speed = speed;
+    public SpinClimber(double speed) {
+        addRequirements(mClimber);
+        setName("Spinning Climber");
+        mSpeed = speed;
     }
 
     @Override
     public void initialize() {
-        m_climber.setRotationMotorSpeed(m_speed);
+        mClimber.setRotationMotorSpeed(mSpeed);
     }
 }

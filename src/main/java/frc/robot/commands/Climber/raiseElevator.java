@@ -1,20 +1,20 @@
-package frc.robot.commands.Climber;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class raiseElevator extends CommandBase{
-    
-    private Climber m_climber = new Climber();
+public class RaiseElevator extends CommandBase {
 
-    public raiseElevator() {
-        this.addRequirements(m_climber);
-        this.setName("Raise Elevator");
+    private final Climber mClimber = Climber.getInstance();
+
+    public RaiseElevator() {
+        addRequirements(mClimber);
+        setName("Raise Elevator");
     }
 
     @Override
     public void initialize() {
-        m_climber.setElevatorPosition(Constants.Climber.elevatorReleaseConstant);
+        mClimber.setElevatorPosition(Constants.Climber.kElevatorReleaseConstant);
     }
 }

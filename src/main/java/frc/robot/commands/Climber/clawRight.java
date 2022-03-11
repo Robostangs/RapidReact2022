@@ -1,21 +1,21 @@
-package frc.robot.commands.Climber;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class clawRight extends CommandBase{
+public class ClawRight extends CommandBase {
 
-    private double m_position;
-    private Climber m_climber = new Climber();
+    private final double mPosition;
+    private final Climber mClimber = Climber.getInstance();
 
-    public clawRight(double position) {
-        this.addRequirements(m_climber);
-        this.setName("Right Claw");
-        m_position = position;
+    public ClawRight(double position) {
+        addRequirements(mClimber);
+        setName("Right Claw");
+        mPosition = position;
     }
 
     @Override
     public void initialize() {
-        m_climber.setLeftClawPosition(m_position);
+        mClimber.setLeftClawPosition(mPosition);
     }
 }

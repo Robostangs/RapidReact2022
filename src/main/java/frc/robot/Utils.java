@@ -2,13 +2,7 @@ package frc.robot;
 
 public final class Utils {
     public static double saturate(double input, double min, double max) {
-        if(input > max) {
-            return max;
-        } else if(input < min) {
-            return min;
-        } else {
-            return input;
-        }
+        return Math.min(Math.max(input, min), max);
     }
 
     public static double LinearFront(double distance) {
@@ -50,7 +44,7 @@ public final class Utils {
     }
 
     public static double dist(double ty) {
-        return Constants.Limelight.targetHeight / (Math.tan(degToRad(ty + Constants.Limelight.limelightAngle)));
+        return Constants.Limelight.kTargetHeight / (Math.tan(degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
 
     public static double degToRad(double x) {
@@ -59,7 +53,7 @@ public final class Utils {
     
     public static double motorConversionInches(double encoderMax, double distance) {
         //Update wheel diameter in constants
-        double rotations = distance / 2*Math.PI*Constants.Drivetrain.wheelDiameter;
+        double rotations = distance / 2*Math.PI*Constants.Drivetrain.kWheelDiameter;
         return encoderMax * rotations;
     }
 

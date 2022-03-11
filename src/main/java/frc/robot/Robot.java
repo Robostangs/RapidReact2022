@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
-import frc.robot.subsystems.Feeder;
 
 // import com.revrobotics.ColorSensorV3;
 
@@ -21,15 +18,17 @@ import frc.robot.subsystems.Feeder;
  * project.
  */
 public class Robot extends TimedRobot {
-    private Command m_autonomousCommand;
+
+    private final RobotContainer mRobotContainer = new RobotContainer();
+    private Command mAutonomousCommand;
+    @SuppressWarnings("unused")
+    private final PowerDistribution mPowerDistributionPanel = new PowerDistribution();
     // private Drivetrain m_Drivetrain;
     // private XboxController driver, manip;
-    private RobotContainer m_robotContainer;
-    private Feeder m_Feeder;
+    // private Feeder m_Feeder;
     // private Intake m_Intake;
-    private Shooter m_Shooter;
-    private Turret m_Turret;
-    private PowerDistribution pdp;
+    // private Shooter m_Shooter;
+    // private Turret m_Turret;
     
     // private ColorSensorV3 color;
 
@@ -41,19 +40,18 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
         // m_Drivetrain  = Drivetrain.getInstance();
         // driver = new XboxController(0);
-        m_Feeder = Feeder.getInstance();
-        m_Turret = Turret.getInstance();
+        // m_Feeder = Feeder.getInstance();
+        // m_Turret = Turret.getInstance();
         // // manip = new XboxController(1);
         // m_Intake = Intake.getInstance();
         
-        m_Shooter = Shooter.getInstance();
-        pdp = new PowerDistribution();
-        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: ");System.out.println( c.getName());});
-        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHEd: ");System.out.println(c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTER: ");System.out.println( c.getName());});
+        // m_Shooter = Shooter.getInstance();
+        // NetworkTableInstance.reportWarning(warning, printTrace);
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTED: " + c.getName());});
     }
 
     /**
@@ -69,7 +67,7 @@ public class Robot extends TimedRobot {
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
-        Limelight.refresh();
+        Limelight.refresh(); // Use limelight periodic
         // SmartDashboard.putData("PDP", pdp);
         CommandScheduler.getInstance().run();
         // CommandScheduler.getInstance().onCommandInitialize(System.out.println());
@@ -87,17 +85,18 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        mAutonomousCommand = mRobotContainer.getAutonomousCommand();
         // schedule the autonomous command (example)
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
+        if (mAutonomousCommand != null) {
+            mAutonomousCommand.schedule();
         }
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        Turret.getInstance().periodic();
+        // Subsystem periodic methods are automatically called by the Command Scheduler periodically
+        // Turret.getInstance().periodic();
     }
 
     @Override
@@ -109,8 +108,8 @@ public class Robot extends TimedRobot {
         // Limelight.ledOn();
 
         // color = new ColorSensorV3(I2C.Port.kOnboard);
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.cancel();
+        if (mAutonomousCommand != null) {
+            mAutonomousCommand.cancel();
         }
     }
 

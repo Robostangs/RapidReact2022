@@ -15,90 +15,90 @@ package frc.robot;
 public final class Constants {
 
     public static class Climber {
-        public static final int rotationMotorID = 0;        
-        public static final int leftClawID = 1;
-        public static final int rightClawID = 2;
-        public static final int leftClawLockID = 3;
-        public static final int rightClawLockID = 4;
-        public static final int elevatorID = 5;
+        public static final int kRotationMotorID = 0;        
+        public static final int kLeftClawID = 1;
+        public static final int kRightClawID = 2;
+        public static final int kLeftClawLockID = 3;
+        public static final int kRightClawLockID = 4;
+        public static final int kElevatorID = 5;
 
-        public static final int leftClawSensorID = 0;
-        public static final int rightClawSensorID = 0;
+        public static final int kLeftClawSensorID = 0;
+        public static final int kRightClawSensorID = 0;
 
-        public static final double rotationKP = 1;
-        public static final double rotationKI = 1;
-        public static final double rotationKD = 1;
+        public static final double kRotationKp = 1;
+        public static final double kRotationKi = 1;
+        public static final double kRotationKd = 1;
 
-        public static final double rotationStaticGain = 1;
-        public static final double gravityGain = 1;
-        public static final double velocityGain = 1;
-        public static final double accelerationGain = 1;
+        public static final double kRotationStaticGain = 1;
+        public static final double kGravityGain = 1;
+        public static final double kVelocityGain = 1;
+        public static final double kAccelerationGain = 1;
 
-        public static final double elevatorReleaseConstant = 500;
-        public static final double clawMoveConstant = 500;
+        public static final double kElevatorReleaseConstant = 500;
+        public static final double kClawMoveConstant = 500;
 
-        public static final double moveClimberSpeed = 0.5;
+        public static final double kMoveClimberSpeed = 0.5;
     }
     public static final class Shooter {
-        public static final int alignmentID = -1;
-        public static final int leftShooterID = 13;
-        public static final int rightShooterID = 15;
-        public static final int angleShooterID = 9;
+        public static final int kAlignmentID = -1;
+        public static final int kLeftShooterID = 13;
+        public static final int kRightShooterID = 15;
+        public static final int kAngleShooterID = 9;
 
-        public static final double alignmentMotorKP = 1;
-        public static final double alignmentMotorKI = 1;
-        public static final double alignmentMotorKD = 1;
-        public static final double angleMotorIZone = 100;
-        public static final double angleMotorReverseLimit = -3000;
+        public static final double kAlignmentMotorKp = 1;
+        public static final double kAlignmentMotorKi = 1;
+        public static final double kAlignmentMotorKd = 1;
+        public static final double kAngleMotorIZone = 100;
+        public static final double kAngleMotorReverseLimit = -3000;
 
-        public static final double leftMotorKP = 0.01;
+        public static final double kLeftMotorKP = 0.01;
         public static final double leftMotorKI = 0.0001;
-        public static final double leftMotorKD = 0.01;
-        public static final double leftMotorKF = 0.053;
-        public static final double leftMotorIntegralAccumulation = 0.00000001;
+        public static final double kLeftMotorKd = 0.01;
+        public static final double kLeftMotorKf = 0.053;
+        public static final double kLeftMotorIntegralAccumulation = 0.00000001;
 
-        public static final double rightMotorKP = 0.013;
-        public static final double rightMotorKI = 0.00005;
-        public static final double rightMotorKD = 0.01;
-        public static final double rightMotorKF = 0.053;
-        public static final double rightMotorIntegralAccumulation = 0.00000001;
+        public static final double kRightMotorKp = 0.013;
+        public static final double kRightMotorKi = 0.00005;
+        public static final double kRightMotorKd = 0.01;
+        public static final double kRightMotorKf = 0.053;
+        public static final double kRrightMotorIntegralAccumulation = 0.00000001;
 
-        public static final double angleMotorKP = 1;
-        public static final double angleMotorKI = 1;
-        public static final double angleMotorKD = 1;
+        public static final double kAngleMotorKp = 1;
+        public static final double kAngleMotorKi = 1;
+        public static final double kAngleMotorKd = 1;
 
-        public static final double ticksPerDegree = 10;
+        public static final double kTicksPerDegree = 10;
 
-        public static final double homeSpeed = 0.1;
+        public static final double kHomeSpeed = 0.1;
     }
 
 
     public static final class Feeder {
-        public static final int beltMotorID = 4;
+        public static final int kBeltMotorID = 4;
         public static final int elevatorMotorID = 5; 
-        public static final int dcolorIntakeID = 1;
-        public static final int colorIntakeID = 0;
-        public static final int dcolorShooterID = 3;
-        public static final int colorShooterID = 2;
+        public static final int kDarkColorIntakeID = 1;
+        public static final int kLightColorIntakeID = 0;
+        public static final int kDarkColorShooterID = 3;
+        public static final int kLightColorShooterID = 2;
 
-        public static final double belt_kP = 1;
-        public static final double belt_kI = 1;
-        public static final double belt_kD = 1; 
-        public static final double belt_kF = 1; 
+        public static final double kBeltKp = 1;
+        public static final double kBeltKi = 1;
+        public static final double kBeltKd = 1; 
+        public static final double kBeltKf = 1; 
 
-        public static final double elevator_kP = 1;
-        public static final double elevator_kI = 1;
-        public static final double elevator_kD = 1; 
-        public static final double elevator_kF = 1; 
+        public static final double kElevatorKp = 1;
+        public static final double kElevatorKi = 1;
+        public static final double KelevatorKd = 1; 
+        public static final double kElevatorKf = 1; 
 
-        public static final double slowBeltSpeed = -0.8;
-        public static final double slowElevatorSpeed = 0.1;
+        public static final double KslowBeltSpeed = -0.8;
+        public static final double kSlowElevatorSpeed = 0.1;
     }
 
     public static final class IntakeConstants {
         public static final double kIntakeSpeed = 1; //TODO: Set intake speed\
-        public static final int intakeMotorID = 8;
-        public static final int sensorID = 2;
+        public static final int kIntakeMotorID = 8;
+        public static final int kSensorID = 2;
 
         public static final double kP = 0;
         public static final double kI = 0;
@@ -107,15 +107,15 @@ public final class Constants {
 
 
     public static final class Drivetrain {
-        public static final int LT = 1;
-        public static final int LB = 20;
+        public static final int kLeftTopID = 1;
+        public static final int kLeftBackID = 20;
 
-        public static final int RT = 3;
-        public static final int RB = 2;
+        public static final int kRightTopID = 3;
+        public static final int kRightBackID = 2;
 
-        public static final int gyro = 7;
-        public static final int falcon_encoder_max = 2048;
-        public static final double wheelDiameter = 3;
+        public static final int kGyro = 7;
+        public static final int kFalconEncoderMax = 2048;
+        public static final double kWheelDiameter = 3;
 
         //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
         public static final double kLeftP = 6.6416;
@@ -133,29 +133,29 @@ public final class Constants {
         public static final double kRightA = 0.14905;
 
         //Odometry
-        public static final double trackWidth = 0;
+        public static final double kTrackWidth = 0;
     }
 
     public static class Turret {
-        public static final int rotationMotorID = 6;
-        public static final double rotationMotorKp = 0.1;
-        public static final double rotationMotorKi = 0.001;
-        public static final double rotationMotorKd = 0;
-        public static final double rotationMotorFF = -0.3;
-        public static final double rotationMotorIZone = 1000;
+        public static final int kRotationMotorID = 6;
+        public static final double kRotationMotorKp = 0.1;
+        public static final double kRotationMotorKi = 0.001;
+        public static final double kRotationMotorKd = 0;
+        public static final double kRotationMotorKf = -0.3;
+        public static final double kRotationMotorIZone = 1000;
         
-        public static final double rotationMotorMax = 74000;
-        public static final double rotationMotorSoftLimitOffset = 2000;
-        public static final double rotationMotorSpeed = -0.2;
-        public static final double backPosition = 34595;
-        public static final double leftNinety = 63428;
+        public static final double kRotationMotorMax = 74000;
+        public static final double kRotationMotorSoftLimitOffset = 2000;
+        public static final double kRotationMotorSpeed = -0.2;
+        public static final double kBackPosition = 34595;
+        public static final double kLeftNinety = 63428;
 
-        public static final double filterConstant = 0.5;
-        public static final double drivingOffset = 0;
+        public static final double kFilterConstant = 0.5;
+        public static final double kDrivingOffset = 0;
     }
     
     public static class Limelight {
-        public static final double targetHeight = 80.25;
-        public static final double limelightAngle = 41.3; 
+        public static final double kTargetHeight = 80.25;
+        public static final double kLimelightAngle = 41.3; 
     }
 }

@@ -1,58 +1,56 @@
-package frc.robot.commands.Shooter;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
-public class home extends CommandBase{
-    
-    private Shooter m_Shooter = Shooter.getInstance();
-    private Timer m_timer;
+public class Home extends CommandBase {
 
-    public home() {
-        this.addRequirements(m_Shooter);
-        this.setName("Home Hood");
-        m_timer = new Timer();
+    private final Shooter mShooter = Shooter.getInstance();
+    private final Timer mTimer = new Timer();
+
+    public Home() {
+        addRequirements(mShooter);
+        setName("Home Hood");
     }
 
     @Override
     public void initialize() {
-        m_timer.reset();
-        m_Shooter.setSoftLimitEnable(false);
-        m_timer.start();
-        m_Shooter.setClearPosition(true);
+        mTimer.reset();
+        mTimer.start();
+        mShooter.setSoftLimitEnable(false);
+        mShooter.setClearPosition(true);
     }
 
     @Override
     public void execute() {
-        if(m_timer.get() <= 3) {
+        if (mTimer.get() <= 3) {
             System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-            m_Shooter.setAnglePower(Constants.Shooter.homeSpeed);
+            mShooter.setAnglePower(Constants.Shooter.kHomeSpeed);
         } else {
             System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
-            m_Shooter.setAnglePower(0);
-            m_Shooter.setMaxSpeed(0.25);
-            m_Shooter.resetHoodEncoder();
-            this.cancel();
-            
+            mShooter.setAnglePower(0);
+            mShooter.setMaxSpeed(0.25);
+            mShooter.resetHoodEncoder();
+            cancel();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return m_Shooter.getForwardLimit() || (m_timer.get() >= 5);
+        return mShooter.getForwardLimit() || (mTimer.get() >= 5);
     }
 
     @Override
     public void end(boolean interrupted) {
-        if(!interrupted) {
-            m_Shooter.setAnglePower(0);
-            m_Shooter.setMaxSpeed(1);
-            m_Shooter.setHomed(true);
+        if (!interrupted) {
+            mShooter.setAnglePower(0);
+            mShooter.setMaxSpeed(1);
+            mShooter.setHomed(true);
         }
-        m_Shooter.setSoftLimitEnable(true);
-        m_Shooter.setClearPosition(false);
-        m_Shooter.setHomed(true);
+        mShooter.setSoftLimitEnable(true);
+        mShooter.setClearPosition(false);
+        mShooter.setHomed(true);
     }
 }

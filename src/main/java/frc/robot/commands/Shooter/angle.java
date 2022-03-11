@@ -1,20 +1,20 @@
-package frc.robot.commands.Shooter;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Shooter;
 
-public class angle extends InstantCommand {
+public class Angle extends InstantCommand {
     private final Shooter mShooter = Shooter.getInstance();
-    private final double m_anglePosition;
+    private final double mAngleSetpoint;
 
-    public angle(double position) {
-        this.addRequirements(mShooter);
-        this.setName("Set Angle");
-        m_anglePosition = position;
+    public Angle(double position) {
+        addRequirements(mShooter);
+        setName("Set Angle");
+        mAngleSetpoint = position;
     }
 
     @Override
     public void execute() {
-        mShooter.setAnglePositionPID(m_anglePosition);                  
+        mShooter.setAnglePositionPID(mAngleSetpoint);
     }
 }

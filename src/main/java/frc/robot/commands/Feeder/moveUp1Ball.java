@@ -1,43 +1,41 @@
-package frc.robot.commands.Feeder;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Feeder;
 
-public class moveUp1Ball extends CommandBase {
+public class MoveUp1Ball extends CommandBase {
 
-    public final Feeder m_Feeder = Feeder.getInstance();
-    private Timer m_timer;
+    private final Feeder mFeeder = Feeder.getInstance();
+    private final Timer mTimer = new Timer();
 
-    public moveUp1Ball() {
-        this.addRequirements(m_Feeder);
-        this.setName("Move Feeder");
-        m_timer = new Timer();
+    public MoveUp1Ball() {
+        addRequirements(mFeeder);
+        setName("Move Feeder");
     }
 
     @Override
     public void initialize() {
-        m_timer.reset();
-        m_timer.start();
-        m_Feeder.moveBelt(Constants.Feeder.slowBeltSpeed);
+        mTimer.reset();
+        mTimer.start();
+        mFeeder.moveBelt(Constants.Feeder.KslowBeltSpeed);
     }
 
     @Override
-    public void execute() {  
-        if (m_timer.get() <= 1) {      
-            if (m_Feeder.getShooterSensorLight()) {
-                m_Feeder.moveBelt(0);
+    public void execute() {
+        if (mTimer.get() <= 1) {
+            if (mFeeder.getShooterSensorLight()) {
+                mFeeder.moveBelt(0);
             }
         } else {
-            m_Feeder.moveBelt(0);
-            this.cancel();
+            mFeeder.moveBelt(0);
+            cancel();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return m_Feeder.getShooterSensorLight() || (m_timer.get() >= 3);
+        return mFeeder.getShooterSensorLight() || (mTimer.get() >= 3);
     }
-    
 }

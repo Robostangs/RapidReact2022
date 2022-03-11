@@ -1,24 +1,24 @@
-package frc.robot.commands.Feeder;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Feeder;
 
-public class defaultFeeder extends CommandBase {
+public class DefaultFeeder extends CommandBase {
 
-    public final Feeder m_Feeder = Feeder.getInstance();
+    private final Feeder mFeeder = Feeder.getInstance();
 
-    public defaultFeeder() {
-        this.addRequirements(m_Feeder);
-        this.setName("Move Feeder");
+    public DefaultFeeder() {
+        addRequirements(mFeeder);
+        setName("Move Feeder");
     }
 
     @Override
-    public void execute() {  
-        if(m_Feeder.getIntakeSensorLight() && !m_Feeder.getShooterSensorLight()) {
-            m_Feeder.moveBelt(Constants.Feeder.slowBeltSpeed);
+    public void execute() {
+        if (mFeeder.getIntakeSensorLight() && !mFeeder.getShooterSensorLight()) {
+            mFeeder.moveBelt(Constants.Feeder.KslowBeltSpeed);
         } else {
-            m_Feeder.moveBelt(0);
+            mFeeder.moveBelt(0);
         }
-    }    
+    }
 }

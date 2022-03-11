@@ -1,29 +1,23 @@
-package frc.robot.commands.Feeder;
+package frc.robot.commands.feeder;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
 
-public class controlManual extends CommandBase {
-    
-    private Feeder m_Feeder = Feeder.getInstance();
-    private Supplier<Double> m_beltPower;
+public class ControlManual extends CommandBase {
 
-    public controlManual(Supplier<Double> beltPower) {
-        this.addRequirements(m_Feeder);
-        this.setName("Manual Move Feeder");
-        m_beltPower = beltPower;
+    private final Feeder mFeeder = Feeder.getInstance();
+    private final Supplier<Double> mPowerSupplier;
+
+    public ControlManual(Supplier<Double> powerSupplier) {
+        addRequirements(mFeeder);
+        setName("Manual Move Feeder");
+        mPowerSupplier = powerSupplier;
     }
 
     @Override
     public void execute() {
-        m_Feeder.moveBelt(m_beltPower.get());
+        mFeeder.moveBelt(mPowerSupplier.get());
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
 }
