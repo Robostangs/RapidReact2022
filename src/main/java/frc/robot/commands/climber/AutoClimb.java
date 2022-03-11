@@ -28,7 +28,7 @@ public class AutoClimb extends SequentialCommandGroup {
         if (mClimber.getRightClawSensor()) {
             addCommands(
                 new SpinClimber(0),
-                new ClawRight(Constants.Climber.kClawMoveConstant),
+                new ClawRighta(Constants.Climber.kClawMoveConstant),
                 new WaitCommand(0.5));
             // notHeld = new DigitalInput(Constants.Climber.leftClawSensorID);
             // held = new DigitalInput(Constants.Climber.rightClawSensorID);

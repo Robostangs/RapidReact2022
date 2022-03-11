@@ -119,7 +119,7 @@ public final class Constants {
         public static final double kWheelDiameter = 3;
 
         // Odometry
-        public static final double kTrackWidth = 0;
+        public static final double kTrackWidth = 0.88817;
     }
 
     public static class Turret {
