@@ -13,7 +13,7 @@ public class AutoShoot extends SequentialCommandGroup {
         angle = {10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10};
 
     private final Shooter mShooter = Shooter.getInstance();
-    private final double mLeftShooterPower, mRightShooterPower, mAngle;
+    private /*final*/ double mLeftShooterPower, mRightShooterPower, mAngle;
 
     // public autoShoot(double limelightDistance) {
     public AutoShoot(double bottomShooterPower, double topShooterPower, double angle) {
@@ -29,12 +29,9 @@ public class AutoShoot extends SequentialCommandGroup {
         // }
         // }
 
-        System.out.println(mLeftShooterPower);
-        System.out.println(mRightShooterPower);
-
         addCommands(
-            new SetShooterPower(-mLeftShooterPower, mRightShooterPower),
-            new Angle(mAngle),
+            new SetShooterPower(-bottomShooterPower, topShooterPower),
+            new Angle(angle),
             // new setShooterPower(-leftShooterPower, rightShooterPower),
             // new angle(angle),
             new WaitCommand(1),

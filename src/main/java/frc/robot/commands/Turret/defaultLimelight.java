@@ -11,7 +11,6 @@ import frc.robot.subsystems.Limelight;
 public class DefaultLimelight extends CommandBase {
 
     private final Turret mTurret = Turret.getInstance();
-    private final Supplier<Double> m_manip; // XXX: Value is unused
     private final Supplier<Boolean> mManipButton;
     private double lastTx = 1;
     private int counter = 50;
@@ -19,7 +18,6 @@ public class DefaultLimelight extends CommandBase {
     public DefaultLimelight(Supplier<Double> manip, Supplier<Boolean> manipButton) {
         addRequirements(mTurret);
         setName("Full Auto");
-        m_manip = manip;
         mManipButton = manipButton;
     }
 

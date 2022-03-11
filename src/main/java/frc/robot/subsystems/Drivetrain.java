@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
@@ -22,7 +21,6 @@ public class Drivetrain extends SubsystemBase {
 
     private final DifferentialDriveOdometry mDrivetrainOdometry
         = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(0, 0, new Rotation2d(0, 0)));
-    private final DifferentialDriveKinematics mDrivetrainKinematics = new DifferentialDriveKinematics(0.65);
     private final WPI_TalonFX mLeftTop = new WPI_TalonFX(Constants.Drivetrain.kLeftTopID);
     private final WPI_TalonFX mLeftBottom = new WPI_TalonFX(Constants.Drivetrain.kLeftBackID);
     private final WPI_TalonFX mRightTop = new WPI_TalonFX(Constants.Drivetrain.kRightTopID);
@@ -75,11 +73,20 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Left Position", this::getLeftPosition, null);
+        builder.addDoubleProperty("Right Position", this::getRightPosition, null);
+        builder.addDoubleProperty("Left Velocity", this::getLeftVelocity, null);
+        builder.addDoubleProperty("Right Velocity", this::getRightVelocity, null);
+    }
+
     public Rotation2d getGyroRotation2d() {
-        if (mGyro.getRotation2d() != null) {
+        if (mGyro != null && mGyro.getRotation2d() != null) {
             return mGyro.getRotation2d();
         } else {
-            return null;
+            return new Rotation2d();
         }
     }
 
