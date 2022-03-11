@@ -42,26 +42,11 @@ public class Shooter extends SubsystemBase {
         mTopShooter.configFactoryDefault();
         mHood.configFactoryDefault();
 
-        mBottomShooter.config_kP(0, Constants.Shooter.kLeftMotorKP);
-        mBottomShooter.config_kI(0, Constants.Shooter.leftMotorKI);
-        mBottomShooter.config_kD(0, Constants.Shooter.kLeftMotorKd);
-        mBottomShooter.configMaxIntegralAccumulator(0, Constants.Shooter.kLeftMotorIntegralAccumulation);
-        mBottomShooter.config_kF(0, Constants.Shooter.kLeftMotorKf);
+        mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
+        mTopShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig); // XXX: Is this supposed to be Bottom config?
+        mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
-        mTopShooter.config_kP(0, Constants.Shooter.kLeftMotorKP);
-        mTopShooter.config_kI(0, Constants.Shooter.leftMotorKI);
-        mTopShooter.config_kD(0, Constants.Shooter.kLeftMotorKd);
-        mTopShooter.configMaxIntegralAccumulator(0, Constants.Shooter.kLeftMotorIntegralAccumulation);
-        mTopShooter.config_kF(0, Constants.Shooter.kLeftMotorKf);
-
-        mHood.configNeutralDeadband(0);
         mHood.setNeutralMode(NeutralMode.Brake);
-        mHood.config_kP(0, Constants.Shooter.kAngleMotorKp);
-        mHood.config_kI(0, Constants.Shooter.kAngleMotorKi);
-        mHood.config_kD(0, Constants.Shooter.kAngleMotorKd);
-        mHood.config_IntegralZone(0, Constants.Shooter.kAngleMotorIZone);
-        mHood.configReverseSoftLimitThreshold(Constants.Shooter.kAngleMotorReverseLimit);
-        mHood.configForwardSoftLimitThreshold(0);
 
         SmartDashboard.putNumber("LeftVelo", 0);
         SmartDashboard.putNumber("RightVelo", 0);

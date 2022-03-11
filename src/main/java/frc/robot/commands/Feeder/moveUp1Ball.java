@@ -19,7 +19,7 @@ public class MoveUp1Ball extends CommandBase {
     public void initialize() {
         mTimer.reset();
         mTimer.start();
-        mFeeder.moveBelt(Constants.Feeder.KslowBeltSpeed);
+        mFeeder.moveBelt(Constants.Feeder.kSlowBeltSpeed);
     }
 
     @Override

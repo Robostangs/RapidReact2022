@@ -29,24 +29,11 @@ public class Feeder extends SubsystemBase {
     public Feeder() {
         mBeltMotor.configFactoryDefault();
 
+        mBeltMotor.configAllSettings(Constants.Feeder.kBeltConfig);
         mBeltMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
-        mBeltMotor.configNeutralDeadband(0.001, 30);
 
         /* Set Motion Magic gains in slot0 - see documentation */
         mBeltMotor.selectProfileSlot(0, 0);
-
-        // SmartDashboard.putNumber("kLeftP", 0.1);
-        // SmartDashboard.putNumber("kLeftI", 0);
-        // SmartDashboard.putNumber("kLeftD", 0);
-
-        // SmartDashboard.putNumber("kRightP", 0.1);
-        // SmartDashboard.putNumber("kRightI", 0);
-        // SmartDashboard.putNumber("kRightD", 0);
-
-        mBeltMotor.config_kP(0, Constants.Feeder.kBeltKp);
-        mBeltMotor.config_kI(0, Constants.Feeder.kBeltKi);
-        mBeltMotor.config_kD(0, Constants.Feeder.kBeltKd);
-        mBeltMotor.config_kF(0, Constants.Feeder.kBeltKf);
 
         /* Set acceleration and vcruise velocity - see documentation */
         mBeltMotor.configMotionCruiseVelocity(20000, 30);

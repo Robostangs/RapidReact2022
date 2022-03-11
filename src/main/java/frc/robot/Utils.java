@@ -44,13 +44,13 @@ public final class Utils {
     }
 
     public static double dist(double ty) {
-        return Constants.Limelight.kTargetHeight / (Math.tan(degToRad(ty + Constants.Limelight.kLimelightAngle)));
+        return Constants.Limelight.kTargetHeightDelta / (Math.tan(degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
 
     public static double degToRad(double x) {
         return (Math.PI / 180.0) * x;
     }
-    
+
     public static double motorConversionInches(double encoderMax, double distance) {
         //Update wheel diameter in constants
         double rotations = distance / 2*Math.PI*Constants.Drivetrain.kWheelDiameter;

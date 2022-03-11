@@ -16,7 +16,7 @@ public class DefaultFeeder extends CommandBase {
     @Override
     public void execute() {
         if (mFeeder.getIntakeSensorLight() && !mFeeder.getShooterSensorLight()) {
-            mFeeder.moveBelt(Constants.Feeder.KslowBeltSpeed);
+            mFeeder.moveBelt(Constants.Feeder.kSlowBeltSpeed);
         } else {
             mFeeder.moveBelt(0);
         }
