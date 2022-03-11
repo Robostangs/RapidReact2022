@@ -96,7 +96,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 1; //TODO: Set intake speed\
+        public static final double kIntakeSpeed = 1; //TODO: Set intake speed
         public static final int kIntakeMotorID = 8;
         public static final int kSensorID = 2;
 
@@ -117,7 +117,7 @@ public final class Constants {
         public static final int kFalconEncoderMax = 2048;
         public static final double kWheelDiameter = 3;
 
-        //PID - never used, PID controllers don't work on Falcons, they use custom built MotionMagic Profiles?
+        // XXX: Never used, convert to integrated pid
         public static final double kLeftP = 6.6416;
         public static final double kLeftI = 0.01;
         public static final double kLeftD = 0.34565;

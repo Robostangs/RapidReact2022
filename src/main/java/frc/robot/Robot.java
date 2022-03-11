@@ -7,9 +7,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Limelight;
-
-// import com.revrobotics.ColorSensorV3;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,14 +20,6 @@ public class Robot extends TimedRobot {
     private Command mAutonomousCommand;
     @SuppressWarnings("unused")
     private final PowerDistribution mPowerDistributionPanel = new PowerDistribution();
-    // private Drivetrain m_Drivetrain;
-    // private XboxController driver, manip;
-    // private Feeder m_Feeder;
-    // private Intake m_Intake;
-    // private Shooter m_Shooter;
-    // private Turret m_Turret;
-    
-    // private ColorSensorV3 color;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -40,15 +29,6 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        // m_Drivetrain  = Drivetrain.getInstance();
-        // driver = new XboxController(0);
-        // m_Feeder = Feeder.getInstance();
-        // m_Turret = Turret.getInstance();
-        // // manip = new XboxController(1);
-        // m_Intake = Intake.getInstance();
-        
-        // m_Shooter = Shooter.getInstance();
-        // NetworkTableInstance.reportWarning(warning, printTrace);
         CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: " + c.getName());});
         CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHED: " + c.getName());});
         CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTED: " + c.getName());});
@@ -67,9 +47,7 @@ public class Robot extends TimedRobot {
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
-        // SmartDashboard.putData("PDP", pdp);
         CommandScheduler.getInstance().run();
-        // CommandScheduler.getInstance().onCommandInitialize(System.out.println());
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -93,10 +71,7 @@ public class Robot extends TimedRobot {
 
     /** This function is called periodically during autonomous. */
     @Override
-    public void autonomousPeriodic() {
-        // Subsystem periodic methods are automatically called by the Command Scheduler periodically
-        // Turret.getInstance().periodic();
-    }
+    public void autonomousPeriodic() {}
 
     @Override
     public void teleopInit() {
@@ -104,9 +79,7 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        // Limelight.ledOn();
 
-        // color = new ColorSensorV3(I2C.Port.kOnboard);
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
@@ -117,10 +90,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() { 
         // m_Feeder.update();
         // m_Shooter.test();
-        
-        // SmartDashboard.putNumber("Color Red", color.getRed());
-        // SmartDashboard.putNumber("Color Blue", color.getBlue());
-        // SmartDashboard.putNumber("Color Green", color.getGreen());
+
         // m_Shooter.setRightShooterPower(driver.getRightX());
     }
 
