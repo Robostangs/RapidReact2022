@@ -10,7 +10,7 @@ Prep:
 Climb
 1. Elevate
 2. Rotate to correct position (~+30)
-3. Drive until hand (probably HandA) hits mid bar
+3. Drive until hand (probably HandA) hits mid bar; limit will hit
 4. Close Hand A
 5. 
     - Rotate climber to High bar (~+130); limit will hit
