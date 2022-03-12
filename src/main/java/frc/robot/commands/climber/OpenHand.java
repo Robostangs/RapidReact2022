@@ -5,26 +5,26 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class OpenHand extends CommandBase {
-    protected Climber.Hand mHand;
+    private final HandHolder mHandHolder;
 
-    public OpenHand(Climber.Hand hand) {
+    public OpenHand(HandHolder hand) {
         addRequirements(Climber.getInstance());
         setName("Open Hand");
-        mHand = hand;
+        mHandHolder = hand;
     }
 
     @Override
     public void initialize() {
-        mHand.setClawSpeed(Constants.Climber.Hand.kClawDefaultOpenSpeed);
+        mHandHolder.hand.setClawSpeed(Constants.Climber.Hand.kClawDefaultOpenSpeed);
     }
 
     @Override
     public boolean isFinished() {
-        return mHand.isFullyOpen();
+        return mHandHolder.hand.isFullyOpen();
     }
 
     @Override
     public void end(boolean interrupted) {
-        mHand.setClawSpeed(0);
+        mHandHolder.hand.setClawSpeed(0);
     }
 }

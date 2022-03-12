@@ -5,32 +5,32 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class CloseHand extends CommandBase {
-    protected Climber.Hand mHand;
+    private final HandHolder mHandContainer;
     private final double mPosition;
 
-    public CloseHand(Climber.Hand hand, double position) {
+    public CloseHand(HandHolder handHolder, double position) {
         addRequirements(Climber.getInstance());
         setName("Close Hand");
-        mHand = hand;
+        mHandContainer = handHolder;
         mPosition = position;
     }
 
-    public CloseHand(Climber.Hand hand) {
+    public CloseHand(HandHolder hand) {
         this(hand, Constants.Climber.Hand.kClawForwardSoftLimit);
     }
 
     @Override
     public void initialize() {
-        mHand.setClawReference(mPosition);
+        mHandContainer.hand.setClawReference(mPosition);
     }
 
     @Override
     public boolean isFinished() {
-        return mHand.atReference();
+        return mHandContainer.hand.atReference();
     }
 
     @Override
     public void end(boolean interrupted) {
-        mHand.setClawSpeed(0);
+        mHandContainer.hand.setClawSpeed(0);
     }
 }

@@ -60,6 +60,8 @@ public final class Constants {
         public static final double kClawMoveConstant = 500;
         
         public static final double kDefaultClimberRotationSpeed = 0.5;
+        public static final double kRotationPositionTolerance = 20;
+        public static final double kRotationSpeedTolerance = 1;
         public static final double kDefaultClimberDriveSpeed = 0;
     }
 

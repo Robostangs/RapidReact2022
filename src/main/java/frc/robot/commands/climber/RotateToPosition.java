@@ -1,26 +1,26 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class Rotate extends CommandBase {
+public class RotateToPosition extends CommandBase {
     private final Climber mClimber = Climber.getInstance();
-    private final double mSpeed;
+    private final double mPosition;
 
-    public Rotate(double speed) {
+    public RotateToPosition(double position) {
         addRequirements(mClimber);
         setName("Rotate Climber");
-        mSpeed = speed;
-    }
-
-    public Rotate() {
-        this(Constants.Climber.kDefaultClimberRotationSpeed);
+        mPosition = position;
     }
 
     @Override
     public void initialize() {
-        mClimber.setRotationMotorPower(mSpeed);
+        mClimber.setRotationMotorPosition(mPosition);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return mClimber.atState(mPosition, 0);
     }
 
     @Override

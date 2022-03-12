@@ -17,7 +17,6 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 
 public class Climber extends SubsystemBase {
-
     public class Hand extends SubsystemBase {
         private final CANSparkMax claw;
         private final RelativeEncoder clawEncoder;
@@ -117,7 +116,7 @@ public class Climber extends SubsystemBase {
         builder.addDoubleProperty("ElevatorRelease Speed", () -> mElevatorRelease.getSpeed(), null);
     }
 
-    public void setRotationMotorSpeed(double power) {
+    public void setRotationMotorPower(double power) {
         mRotationMotor.set(ControlMode.PercentOutput, power);
     }
 
@@ -131,6 +130,12 @@ public class Climber extends SubsystemBase {
 
     public double getRotationMotorVelocity() {
         return mRotationMotor.getSelectedSensorVelocity();
+    }
+
+    public boolean atState(double position, double velocity) {
+        return
+            Utils.roughlyEqual(getRotationMotorPosition(), position, Constants.Climber.kRotationPositionTolerance)
+            && Utils.roughlyEqual(getRotationMotorVelocity(), velocity, Constants.Climber.kRotationSpeedTolerance);
     }
 
     public void setElevatorReleasePosition(double position) {

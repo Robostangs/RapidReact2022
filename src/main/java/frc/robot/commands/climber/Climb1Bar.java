@@ -6,12 +6,12 @@ import frc.robot.subsystems.Climber;
 public class Climb1Bar extends SequentialCommandGroup {
     private final Climber mClimber = Climber.getInstance();
 
-    public Climb1Bar(Climber.Hand rotationHand, Climber.Hand grabHand) {
+    public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder) {
         addRequirements(mClimber);
         setName("Climb 1 Bar");
         this.addCommands(
-            new Rotate().until(() -> (grabHand.getEngaged())),
-            new CloseHand(grabHand),
-            new OpenHand(rotationHand));
+            new Rotate().until(() -> (grabHandHolder.hand.getEngaged())),
+            new CloseHand(grabHandHolder),
+            new OpenHand(rotationHandHolder));
     }
 }
