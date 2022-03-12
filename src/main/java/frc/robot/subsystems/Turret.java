@@ -29,7 +29,7 @@ public class Turret extends SubsystemBase {
         return instance;
     }
 
-    public Turret() {
+    private Turret() {
         mRotationMotor.configFactoryDefault();
         mRotationMotor.configAllSettings(Constants.Turret.kRotationConfig);
 

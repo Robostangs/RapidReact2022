@@ -18,6 +18,8 @@ public class Music {
         return instance;
     }
 
+    private Music() {}
+
     public static void loadMusic(String musicFilePath, WPI_TalonFX... Falcons) {
         for (WPI_TalonFX Falcon : Falcons) {
             mOrchestra.addInstrument(Falcon);

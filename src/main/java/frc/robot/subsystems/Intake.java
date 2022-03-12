@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
         return instance;
     }
 
-    public Intake() {}
+    private Intake() {}
 
     @Override
     public void initSendable(SendableBuilder builder) {

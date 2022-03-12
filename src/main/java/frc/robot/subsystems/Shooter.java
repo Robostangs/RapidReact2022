@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
         return instance;
     }
 
-    public Shooter() {
+    private Shooter() {
         mBottomShooter.configFactoryDefault();
         mTopShooter.configFactoryDefault();
         mHood.configFactoryDefault();
@@ -48,11 +48,6 @@ public class Shooter extends SubsystemBase {
         mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
         mHood.setNeutralMode(NeutralMode.Brake);
-
-        SmartDashboard.putNumber("LeftVelo", 0);
-        SmartDashboard.putNumber("RightVelo", 0);
-        SmartDashboard.putNumber("Hood Position", 0);
-        SmartDashboard.putNumber("Elevator Speed", 0);
     }
 
     @Override

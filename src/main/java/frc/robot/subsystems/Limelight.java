@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Limelight extends SubsystemBase {
 
     @SuppressWarnings("unused")
-    private static final Limelight instance = new Limelight();;
+    private static final Limelight instance = new Limelight();
     private static final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     private static double tx = 0;

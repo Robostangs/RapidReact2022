@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
         return Instance;
     }
 
-    public Drivetrain() {
+    private Drivetrain() {
         mLeftTop.setNeutralMode(NeutralMode.Brake);
         mRightTop.setNeutralMode(NeutralMode.Brake);
         mLeftBottom.setNeutralMode(NeutralMode.Brake);

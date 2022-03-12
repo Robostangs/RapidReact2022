@@ -31,7 +31,7 @@ public class Climber extends SubsystemBase {
         return instance;
     }
 
-    public Climber() {
+    private Climber() {
         // mElevatorFeedforward = new ElevatorFeedforward(Constants.Climber.rotationStaticGain,
         //         Constants.Climber.gravityGain, Constants.Climber.velocityGain, Constants.Climber.accelerationGain);
     }

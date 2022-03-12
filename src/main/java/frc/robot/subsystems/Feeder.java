@@ -27,7 +27,7 @@ public class Feeder extends SubsystemBase {
         return Instance;
     }
 
-    public Feeder() {
+    private Feeder() {
         mBeltMotor.configFactoryDefault();
 
         mBeltMotor.configAllSettings(Constants.Feeder.kBeltConfig);
