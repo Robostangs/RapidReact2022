@@ -8,7 +8,6 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.shooter.Home;
@@ -44,7 +43,7 @@ public class Shooter extends SubsystemBase {
         mHood.configFactoryDefault();
 
         mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
-        mTopShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig); // XXX: Is this supposed to be Bottom config?
+        mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
         mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
         mHood.setNeutralMode(NeutralMode.Brake);
