@@ -86,8 +86,8 @@ public class Climber extends SubsystemBase {
     private static Climber instance;
 
     private final WPI_TalonFX mRotationMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
-    private final Hand HandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
-    private final Hand HandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
+    private final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
+    private final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
     private final Servo mElevatorRelease = new Servo(Constants.Climber.kElevatorID);
 
     private Climber() {
@@ -108,8 +108,8 @@ public class Climber extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        addChild("Hand A", HandA);
-        addChild("Hand B", HandB);
+        addChild("Hand A", mHandA);
+        addChild("Hand B", mHandB);
         builder.addDoubleProperty("Rotation Position", this::getRotationMotorPosition, null);
         builder.addDoubleProperty("Rotation Velocity", this::getRotationMotorVelocity, null);
         builder.addDoubleProperty("ElevatorRelease Position", this::getElevatorReleasePosition, null);
@@ -147,6 +147,26 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean getInclusiveEngaged() {
-        return HandA.getEngaged() || HandB.getEngaged();
+        return mHandA.getEngaged() || mHandB.getEngaged();
+    }
+
+    public Hand getEngagedHand() {
+        if (mHandA.getEngaged()) {
+            return mHandA;
+        } else if (mHandB.getEngaged()) {
+            return mHandB;
+        } else {
+            return null;
+        }
+    }
+
+    public Hand getDisengagedHand() {
+        if (mHandA.getEngaged()) {
+            return mHandB;
+        } else if (mHandB.getEngaged()) {
+            return mHandA;
+        } else {
+            return null;
+        }
     }
 }
