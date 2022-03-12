@@ -23,6 +23,7 @@ public class Climber extends SubsystemBase {
         private final RelativeEncoder clawEncoder;
         private final SparkMaxPIDController clawPIDController;
         private final SparkMaxLimitSwitch engagementSwitch;
+        private final SparkMaxLimitSwitch openLimit;
         private final Servo lock;
         private double mSetpoint;
 
@@ -31,6 +32,7 @@ public class Climber extends SubsystemBase {
             clawEncoder = claw.getEncoder();
             clawPIDController = claw.getPIDController();
             engagementSwitch = claw.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+            openLimit = claw.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
             lock = new Servo(lockID);
             Constants.Climber.Hand.configClawMotor(claw);
         }
@@ -75,6 +77,10 @@ public class Climber extends SubsystemBase {
 
         public void setLockPosition(double position) {
             lock.set(position);
+        }
+
+        public boolean isFullyOpen() {
+            return openLimit.isPressed();
         }
     }
 

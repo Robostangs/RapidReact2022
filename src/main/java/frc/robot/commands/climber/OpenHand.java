@@ -4,29 +4,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class CloseHand extends CommandBase {
+public class OpenHand extends CommandBase {
     protected Climber.Hand mHand;
-    private final double mPosition;
 
-    public CloseHand(Climber.Hand hand, double position) {
+    public OpenHand(Climber.Hand hand) {
         addRequirements(Climber.getInstance());
-        setName("Close Hand");
+        setName("Open Hand");
         mHand = hand;
-        mPosition = position;
-    }
-
-    public CloseHand(Climber.Hand hand) {
-        this(hand, Constants.Climber.Hand.kClawForwardSoftLimit);
     }
 
     @Override
     public void initialize() {
-        mHand.setClawReference(mPosition);
+        mHand.setClawSpeed(Constants.Climber.Hand.kClawDefaultOpenSpeed);
     }
 
     @Override
     public boolean isFinished() {
-        return mHand.atReference();
+        return mHand.isFullyOpen();
     }
 
     @Override
