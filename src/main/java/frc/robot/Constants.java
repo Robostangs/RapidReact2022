@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -35,17 +36,16 @@ public final class Constants {
             public static final int kLockAID = 3;
             public static final int kLockBID = 4;
 
+            public static final int kClawForwardSoftLimit = 20;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 // TODO: Check if this should be forward or reverse
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
+                clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
             }
         }
         public static final int kRotationMotorID = 0;
         public static final int kElevatorID = 5;
-
-        public static final int kLeftClawSensorID = 0;
-        public static final int kRightClawSensorID = 0;
-
+        
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
         static {
             kRotationConfig.slot0 = new SlotConfiguration();
@@ -53,16 +53,13 @@ public final class Constants {
             kRotationConfig.slot0.kI = 0;
             kRotationConfig.slot0.kD = 0;
         }
-
-        public static final double kRotationStaticGain = 1;
-        public static final double kGravityGain = 1;
-        public static final double kVelocityGain = 1;
-        public static final double kAccelerationGain = 1;
-
-        public static final double kElevatorReleaseConstant = 500;
+        
+        public static final double kElevatorReleaseDefaultPosition = 0;
+        public static final double kElevatorReleasePosition = 1;
         public static final double kClawMoveConstant = 500;
-
-        public static final double kMoveClimberSpeed = 0.5;
+        
+        public static final double kDefaultClimberRotationSpeed = 0.5;
+        public static final double kDefaultClimberDriveSpeed = 0;
     }
 
     public static final class Shooter {
