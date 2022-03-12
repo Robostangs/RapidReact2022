@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -22,19 +24,35 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 public final class Constants {
 
     public static class Climber {
+        public static class Hand {
+            // TODO: Set actual values
+            public static final double kClawDefaultMoveSpeed = 0.5;
+            public static final double kMaxLockExtension = 0; 
+            public static final double kMinLockExtension = 0;
+
+            public static final int kClawAID = 1;
+            public static final int kClawBID = 2;
+            public static final int kLockAID = 3;
+            public static final int kLockBID = 4;
+
+            public static final void configClawMotor(CANSparkMax clawMotor) {
+                // TODO: Check if this should be forward or reverse
+                clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
+            }
+        }
         public static final int kRotationMotorID = 0;
-        public static final int kLeftClawID = 1;
-        public static final int kRightClawID = 2;
-        public static final int kLeftClawLockID = 3;
-        public static final int kRightClawLockID = 4;
         public static final int kElevatorID = 5;
 
         public static final int kLeftClawSensorID = 0;
         public static final int kRightClawSensorID = 0;
 
-        public static final double kRotationKp = 1;
-        public static final double kRotationKi = 1;
-        public static final double kRotationKd = 1;
+        public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
+        static {
+            kRotationConfig.slot0 = new SlotConfiguration();
+            kRotationConfig.slot0.kP = 0;
+            kRotationConfig.slot0.kI = 0;
+            kRotationConfig.slot0.kD = 0;
+        }
 
         public static final double kRotationStaticGain = 1;
         public static final double kGravityGain = 1;
