@@ -4,22 +4,20 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
-
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.auto.simpleAuto;
-import frc.robot.commands.Drivetrain.ArcadeDrive;
-import frc.robot.commands.Feeder.moveUp1Ball;
-import frc.robot.commands.Intake.Activate;
-import frc.robot.commands.Shooter.autoShoot;
-import frc.robot.commands.Turret.defaultLimelight;
+import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.feeder.DefaultFeeder;
+import frc.robot.commands.intake.Activate;
+import frc.robot.commands.intake.Deactivate;
+import frc.robot.commands.shooter.AutoShoot;
+import frc.robot.commands.shooter.SetElevatorPower;
+import frc.robot.commands.shooter.SetShooterPower;
+import frc.robot.commands.turret.DefaultLimelight;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -31,23 +29,17 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-    private Drivetrain m_Drivetrain;
-    private XboxController driver, manip;
-    private Intake m_Intake;
-    private Feeder m_Feeder;
-    private Turret m_Turret;
-    
+    private Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private XboxController driver = new XboxController(0);
+    private final XboxController manip = new XboxController(1);
+    private Turret mTurret = Turret.getInstance();
+    private Feeder mFeeder = Feeder.getInstance();
+
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         // Configure the button bindings
-        m_Drivetrain  = Drivetrain.getInstance();
-        driver = new XboxController(0);
-        manip = new XboxController(1);
-        m_Intake = Intake.getInstance();
-        m_Feeder = Feeder.getInstance();
-        m_Turret = Turret.getInstance();
         configureButtonBindings();
     }
 
@@ -58,29 +50,19 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {    
-
-        m_Drivetrain.setDefaultCommand(
+        mDrivetrain.setDefaultCommand(
             new ArcadeDrive(() -> {return -driver.getLeftX();},
                             () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
+        mFeeder.setDefaultCommand(new DefaultFeeder());
+        mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
 
-        m_Intake.setDefaultCommand(new Activate(
-            driver.getBButton() ? 50.0 : 0
-        ));
-        new JoystickButton(driver, XboxController.Button.kA.value).whenPressed(new moveUp1Ball());
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whenPressed(new Activate())
+            .whenInactive(new Deactivate());
 
-        m_Turret.setDefaultCommand(new defaultLimelight(manip::getLeftY));
-        new JoystickButton(manip, XboxController.Button.kB.value).whenPressed(new autoShoot(-0.5, 0.4));
-    
-
-        //Stabilization stuffff
-        // double left = Utils.deadzone(-driver.getLeftY());
-        // double rightPwr = Utils.deadzone(driver.getLeftY()) + (m_Drivetrain.getAngle() * m_Drivetrain.getConstant() * (1 - Utils.deadzone(driver.getLeftY())));
-        // m_Drivetrain.drivePower(
-        //     left, 
-        //     rightPwr
-        // );
-        // System.out.println(m_Drivetrain.getConstant());
-        // System.out.println(rightPwr);        
+        new JoystickButton(manip, XboxController.Button.kB.value)
+            .whenPressed(new AutoShoot(4800, 2500, 0))
+            .whenInactive(() -> {new SetShooterPower(0, 0); new SetElevatorPower(0);});
     }
 
     /**
@@ -91,6 +73,6 @@ public class RobotContainer {
   
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new simpleAuto();
+        return null;
     }
 }

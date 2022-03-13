@@ -2,13 +2,23 @@ package frc.robot;
 
 public final class Utils {
     public static double saturate(double input, double min, double max) {
-        if(input > max) {
-            return max;
-        } else if(input < min) {
-            return min;
-        } else {
-            return input;
-        }
+        return Math.min(Math.max(input, min), max);
+    }
+
+    public static double LinearFront(double distance) {
+        return (7.98808*distance + 1724.21);
+    }
+
+    public static double LinearBack(double distance) {
+        return (7.36177*distance + 1458.81);
+    }
+
+    public static double QuadFront(double distance) {
+        return ((0.0352101 * Math.pow(distance, 2)) + (-2.67594 * distance) + 2377.43);
+    }
+    
+    public static double QuadBack(double distance) {
+        return ((0.0402967 * Math.pow(distance, 2)) + (-4.84282 * distance) + 2206.4);
     }
 
     public static double deadzone(double input) {
@@ -34,16 +44,16 @@ public final class Utils {
     }
 
     public static double dist(double ty) {
-        return Constants.Limelight.targetHeight / (Math.tan(degToRad(ty + Constants.Limelight.limelightAngle)));
+        return Constants.Limelight.kTargetHeightDelta / (Math.tan(degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
 
     public static double degToRad(double x) {
         return (Math.PI / 180.0) * x;
     }
-    
+
     public static double motorConversionInches(double encoderMax, double distance) {
         //Update wheel diameter in constants
-        double rotations = distance / 2*Math.PI*Constants.Drivetrain.wheelDiameter;
+        double rotations = distance / 2*Math.PI*Constants.Drivetrain.kWheelDiameter;
         return encoderMax * rotations;
     }
 
