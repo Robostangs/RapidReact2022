@@ -51,17 +51,30 @@ public final class Constants {
 
             public static final double kClawLockUnlockedPositon = 0.8;
             public static final double kClawLockLockedPositon = 1;
+            public static final double kHandLockWaitTime = 0.5;
             public static final void configClawLock(Servo lock) {}
+
+            public static final double kGrabHandDebounceTime = 0.05;
         }
         
         public static class Rotator {
             public static final double kEncoderCountsPerDegree = 0; // TODO: Get this value
-            public static final double kShortAngle = -70;
+
+            public static final double kHorizontalAngle = -70;
+            public static final double kStartingAngle = -20;
+            
+            public static final double kPositionTolerance = 20;
+            public static final double kSpeedTolerance = 1;
+
+            public static final double kClimbRotationSpeed = 0.5;
+            public static final double kClimbHoldSpeed = 0.2;
+            public static final double kToCGSpeed = -0.5;
+            public static final double kCGHoldSpeed = -0.2;
         }
 
         public static final int kRotationMotorID = 27;
         public static final int kElevatorID = 5;
-        
+
         public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
         static {
@@ -76,12 +89,11 @@ public final class Constants {
         public static final double kElevatorReleaseDefaultPosition = 0;
         public static final double kElevatorReleasePosition = 1;
         public static final double kClawMoveConstant = 500;
-        
-        public static final double kDefaultClimberRotationSpeed = 0.5;
-        public static final double kRotationPositionTolerance = 20;
-        public static final double kRotationSpeedTolerance = 1;
-        public static final double kDefaultClimberDriveSpeed = 0;
 
+        public static final double kFirstCGPosition = 100;
+        public static final double kSecondCGPosition = 300;
+
+        public static final double kDefaultDriveSpeed = 0.1;
     }
 
     public static final class Shooter {

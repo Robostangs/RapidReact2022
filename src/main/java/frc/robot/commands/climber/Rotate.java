@@ -15,7 +15,7 @@ public class Rotate extends CommandBase {
     }
 
     public Rotate() {
-        this(Constants.Climber.kDefaultClimberRotationSpeed);
+        this(Constants.Climber.Rotator.kClimbRotationSpeed);
     }
 
     @Override

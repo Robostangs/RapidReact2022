@@ -17,9 +17,9 @@ public class DriveToMidBar extends CommandBase {
     }
 
     public DriveToMidBar() {
-        this(Constants.Climber.kDefaultClimberDriveSpeed);
+        this(Constants.Climber.kDefaultDriveSpeed);
     }
-    
+
     @Override
     public void initialize() {
         mDrivetrain.drivePower(mDriveSpeed, mDriveSpeed);

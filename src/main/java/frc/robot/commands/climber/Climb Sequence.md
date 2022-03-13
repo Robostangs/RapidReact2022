@@ -23,7 +23,7 @@ Climb
         2. 
             - Hold climer at that point (Set a feedforward with position PID)
             - Open Hand A
-    - Unlock Hand B
+    - ~~Unlock Hand B~~
 9. Rotate to vertical (~+180)
 10. Close Hand A
 11. Lock Hand A

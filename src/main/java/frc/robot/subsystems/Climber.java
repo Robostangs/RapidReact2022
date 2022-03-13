@@ -165,8 +165,8 @@ public class Climber extends SubsystemBase {
 
         public boolean atState(double position, double velocity) {
             return
-                Utils.roughlyEqual(getPosition(), position, Constants.Climber.kRotationPositionTolerance)
-                && Utils.roughlyEqual(getVelocity(), velocity, Constants.Climber.kRotationSpeedTolerance);
+                Utils.roughlyEqual(getPosition(), position, Constants.Climber.Rotator.kPositionTolerance)
+                && Utils.roughlyEqual(getVelocity(), velocity, Constants.Climber.Rotator.kSpeedTolerance);
         }
     }
     private static Climber instance;

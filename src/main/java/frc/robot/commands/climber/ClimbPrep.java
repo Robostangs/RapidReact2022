@@ -27,7 +27,7 @@ public class ClimbPrep extends SequentialCommandGroup {
         addRequirements(mClimber);
         final Climber.Hand[] hands = mClimber.getHands();
         addCommands(
-            new RotateToPosition(Constants.Climber.Rotator.kShortAngle),
+            new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
             new ParallelCommandGroup(
                 new PrepHand(hands[0]),
                 new PrepHand(hands[1])));

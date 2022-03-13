@@ -6,7 +6,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Climber;
@@ -76,6 +75,14 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {}
 
+    private final Climber.Hand mHandA;
+    private final Climber.Hand mHandB;
+    {
+        final Climber.Hand[] mHands = Climber.getInstance().getHands();
+        mHandA = mHands[0];
+        mHandB = mHands[1];
+    }
+
     @Override
     public void teleopInit() {
         // This makes sure that the autonomous stops running when
@@ -86,8 +93,8 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
-        mClimber.mHandA.setLockReference(0.8);
-        mClimber.mHandB.setLockReference(0.8);
+        mHandA.setLockReference(0.8);
+        mHandB.setLockReference(0.8);
     }
 
     private final XboxController mDriver = new XboxController(0);
@@ -102,24 +109,23 @@ public class Robot extends TimedRobot {
         } else {
             mClimber.getRotator().setPower(-mDriver.getRightTriggerAxis());
         }
-        mClimber.mHandA.setClawSpeed(mDriver.getLeftY());
-        mClimber.mHandB.setClawSpeed(mDriver.getRightY());
+        mHandA.setClawSpeed(mDriver.getLeftY());
+        mHandB.setClawSpeed(mDriver.getRightY());
 
         if (mDriver.getAButton()) {
-            mClimber.mHandA.setLockReference(1);
+            mHandA.setLockReference(1);
         }
         if (mDriver.getXButton()) {
-            mClimber.mHandA.setLockReference(0.8);
+            mHandA.setLockReference(0.8);
         }
         if (mDriver.getBButton()) {
-            mClimber.mHandB.setLockReference(1);
+            mHandB.setLockReference(1);
         }
         if (mDriver.getYButton()) {
-            mClimber.mHandB.setLockReference(0.8);
+            mHandB.setLockReference(0.8);
         }
         // m_Shooter.setRightShooterPower(driver.getRightX());
     }
-
 
     @Override
     public void testInit() {
