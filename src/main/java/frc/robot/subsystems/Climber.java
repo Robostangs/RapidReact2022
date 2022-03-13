@@ -23,8 +23,9 @@ public class Climber extends SubsystemBase {
         kCalibrating,
         kCalibrated
     }
+    
     public class Hand extends SubsystemBase {
-
+        
         private final CANSparkMax claw;
         private final RelativeEncoder clawEncoder;
         private final SparkMaxPIDController clawPIDController;
@@ -33,8 +34,8 @@ public class Climber extends SubsystemBase {
         private final Servo lock;
         private double mSetpoint;
         private double mLockSetpoint;
-        private HandCallibrationStatus mCallibrationStatus;
-
+        private HandCallibrationStatus mCallibrationStatus = HandCallibrationStatus.kNotCalibrated;
+        
         private Hand(int clawID, int lockID) {
             claw = new CANSparkMax(clawID, MotorType.kBrushless);
             clawEncoder = claw.getEncoder();
@@ -45,7 +46,7 @@ public class Climber extends SubsystemBase {
             Constants.Climber.Hand.configClawMotor(claw);
             Constants.Climber.Hand.configClawLock(lock);
         }
-
+        
         @Override
         public void initSendable(SendableBuilder builder) {
             super.initSendable(builder);
@@ -54,64 +55,71 @@ public class Climber extends SubsystemBase {
             builder.addDoubleProperty("Claw/Velocity", this::getClawSpeed, null);
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
         }
-
+        
         public boolean getEngaged() {
             return engagementSwitch.isPressed();
         }
-
+        
         public double getClawPosition() {
             return clawEncoder.getPosition();
         }
-
+        
         public double getClawSpeed() {
             return clawEncoder.getVelocity();
         }
-
+        
         public void setClawSpeed(double speed) {
             claw.set(speed);
         }
-
+        
         public void setClawReference(double position) {
             mSetpoint = position;
             clawPIDController.setReference(position, ControlType.kPosition);
         }
-
+        
         public void resetClawEncoder(double newPosition) {
             clawEncoder.setPosition(newPosition);
         }
-
+        
         public void zeroClawEncoder() {
             resetClawEncoder(0);
         }
-
+        
         public boolean atReference() {
             return Utils.roughlyEqual(getClawPosition(), mSetpoint);
         }
-
+        
         public void setLockReference(double setpoint) {
             mLockSetpoint = setpoint;
             lock.set(setpoint);
         }
-
+        
         public double getLockPosition() {
             return lock.get();
         }
-
+        
         public boolean atLockReference() {
             return Utils.roughlyEqual(getLockPosition(), mLockSetpoint);
         }
-
+        
         public boolean isFullyOpen() {
             return openLimit.isPressed();
         }
-
+        
         public void setCallibrationStatus(HandCallibrationStatus status) {
             mCallibrationStatus = status;
         }
-
+        
         public HandCallibrationStatus getCallibrationStatus() {
             return mCallibrationStatus;
         }
+    }
+
+    public enum State {
+        kStarting,
+        kPriming,
+        kPrimed,
+        kClimbing
     }
 
     public class Rotator extends SubsystemBase {
@@ -164,10 +172,11 @@ public class Climber extends SubsystemBase {
     private static Climber instance;
 
     private final Rotator mRotator = new Rotator();
-    // XXX: Change back to private
-    public final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
-    public final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
+    private final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
+    private final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
     private final Servo mElevatorRelease = new Servo(Constants.Climber.kElevatorID);
+
+    private State mState = State.kStarting;
 
     private Climber() {
         mElevatorRelease.set(Constants.Climber.kElevatorReleaseDefaultPosition);
@@ -228,5 +237,13 @@ public class Climber extends SubsystemBase {
         } else {
             return null;
         }
+    }
+
+    public void setState(State state) {
+        mState = state;
+    }
+
+    public State getState() {
+        return mState;
     }
 }
