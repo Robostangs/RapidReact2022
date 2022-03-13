@@ -2,15 +2,21 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import java.util.function.BiConsumer;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -64,6 +70,12 @@ public class Drivetrain extends SubsystemBase {
 
         mLeftTop.setNeutralMode(NeutralMode.Brake);
         mRightTop.setNeutralMode(NeutralMode.Brake);
+
+        mLeftTop.configFactoryDefault();
+        mLeftTop.configAllSettings(Constants.Drivetrain.kLeftMotorsConfig);
+
+        mRightTop.configFactoryDefault();
+        mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
 
         resetEncoder();
     }
@@ -158,6 +170,15 @@ public class Drivetrain extends SubsystemBase {
 
     public void brake() {
         drivePower(0, 0);
+    }
+
+    public Pose2d getPose() {
+        return mDrivetrainOdometry.getPoseMeters();
+    }
+
+    public void setDriveVelos(double leftVelo, double rightVelo) {
+        mLeftTop.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kEncoderCountsPerMeter / 10));
+        mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kEncoderCountsPerMeter / 10));
     }
 
     private void updateOdometry() {
