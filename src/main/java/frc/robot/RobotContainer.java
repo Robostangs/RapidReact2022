@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.ArcadeDrive;
@@ -51,10 +52,9 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
-            new ArcadeDrive(() -> {return -driver.getLeftX();},
-                            () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
+            new ArcadeDrive(() -> Utils.deadzone(driver.getLeftX()), () -> Utils.deadzone(driver.getLeftTriggerAxis() > 0.01 ? -driver.getLeftTriggerAxis() : driver.getRightTriggerAxis())));
         mFeeder.setDefaultCommand(new DefaultFeeder());
-        mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
+        // mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
 
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new Activate())

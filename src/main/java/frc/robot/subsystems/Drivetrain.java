@@ -92,6 +92,7 @@ public class Drivetrain extends SubsystemBase {
         builder.addDoubleProperty("Right Position", this::getRightPosition, null);
         builder.addDoubleProperty("Left Velocity", this::getLeftVelocity, null);
         builder.addDoubleProperty("Right Velocity", this::getRightVelocity, null);
+        builder.addStringProperty("Pose", () -> getPose() + "", null);
     }
 
     public Rotation2d getGyroRotation2d() {
