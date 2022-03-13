@@ -29,8 +29,8 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 0.5;
-            public static final double kClawDefaultOpenSpeed = 0.5;
+            public static final double kClawDefaultMoveSpeed = 0.1;
+            public static final double kClawDefaultOpenSpeed = 0.1;
             public static final double kMaxLockExtension = 0; 
             public static final double kMinLockExtension = 0;
 

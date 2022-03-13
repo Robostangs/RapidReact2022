@@ -60,10 +60,6 @@ public class Climber extends SubsystemBase {
             return clawEncoder.getVelocity();
         }
 
-        public void setClawSpeed() {
-            setClawSpeed(Constants.Climber.Hand.kClawDefaultMoveSpeed);
-        }
-
         public void setClawSpeed(double speed) {
             claw.set(speed);
         }
@@ -97,6 +93,7 @@ public class Climber extends SubsystemBase {
 
     public class Rotator extends SubsystemBase {
         private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
+        // TODO: Rotator limit switch
 
         public Rotator() {
             mMotor.configFactoryDefault();
