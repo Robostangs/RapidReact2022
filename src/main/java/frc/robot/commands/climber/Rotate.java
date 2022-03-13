@@ -5,11 +5,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class Rotate extends CommandBase {
-    private final Climber mClimber = Climber.getInstance();
+    private final Climber.Rotator mRotator = Climber.getInstance().getRotator();
     private final double mSpeed;
 
     public Rotate(double speed) {
-        addRequirements(mClimber);
+        addRequirements(mRotator);
         setName("Rotate Climber");
         mSpeed = speed;
     }
@@ -20,11 +20,11 @@ public class Rotate extends CommandBase {
 
     @Override
     public void initialize() {
-        mClimber.setRotationMotorPower(mSpeed);
+        mRotator.setPower(mSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        mClimber.setRotationMotorPower(0);
+        mRotator.setPower(0);
     }
 }

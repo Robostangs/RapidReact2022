@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
+import edu.wpi.first.wpilibj.Servo;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -43,18 +45,25 @@ public final class Constants {
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
                 clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
             }
+
+            public static final double kClawLockUnlockedPositon = 0;
+            public static final double kClawLockLockedPositon = 1;
+            public static final void configClawLock(Servo lock) {}
         }
         public static final int kRotationMotorID = 0;
         public static final int kElevatorID = 5;
         
+        public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
         static {
             kRotationConfig.slot0 = new SlotConfiguration();
             kRotationConfig.slot0.kP = 0;
             kRotationConfig.slot0.kI = 0;
             kRotationConfig.slot0.kD = 0;
+            kRotationConfig.peakOutputForward = kPeakRotationOutput;
+            kRotationConfig.peakOutputReverse = -kPeakRotationOutput;
         }
-        
+
         public static final double kElevatorReleaseDefaultPosition = 0;
         public static final double kElevatorReleasePosition = 1;
         public static final double kClawMoveConstant = 500;
@@ -174,4 +183,6 @@ public final class Constants {
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
         public static final double kLimelightAngle = 41.3;
     }
+
+    public static final double kMaxVoltage = 12;
 }
