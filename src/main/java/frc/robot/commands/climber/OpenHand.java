@@ -3,6 +3,7 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Climber.HandCallibrationStatus;
 
 public class OpenHand extends CommandBase {
     private final HandHolder mHandContainer;
@@ -37,6 +38,9 @@ public class OpenHand extends CommandBase {
         if (mHandContainer != null) {
             mHand = mHandContainer.hand;
         }
+        if(mHand.getCallibrationStatus() == Climber.HandCallibrationStatus.kNotCalibrated) {
+            mHand.setCallibrationStatus(HandCallibrationStatus.kCalibrating);
+        }
         mHand.setClawSpeed(mSpeed);
     }
 
@@ -47,6 +51,10 @@ public class OpenHand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        if(interrupted && mHand.getCallibrationStatus() == Climber.HandCallibrationStatus.kCalibrating) {
+            mHand.setCallibrationStatus(HandCallibrationStatus.kNotCalibrated);
+            System.out.println("Hand calibration interrupted!");
+        }   
         mHandContainer.hand.setClawSpeed(0);
     }
 }

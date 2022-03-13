@@ -18,7 +18,13 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 
 public class Climber extends SubsystemBase {
+    public enum HandCallibrationStatus {
+        kNotCalibrated,
+        kCalibrating,
+        kCalibrated
+    }
     public class Hand extends SubsystemBase {
+
         private final CANSparkMax claw;
         private final RelativeEncoder clawEncoder;
         private final SparkMaxPIDController clawPIDController;
@@ -27,6 +33,7 @@ public class Climber extends SubsystemBase {
         private final Servo lock;
         private double mSetpoint;
         private double mLockSetpoint;
+        private HandCallibrationStatus mCallibrationStatus;
 
         private Hand(int clawID, int lockID) {
             claw = new CANSparkMax(clawID, MotorType.kBrushless);
@@ -46,13 +53,6 @@ public class Climber extends SubsystemBase {
             builder.addDoubleProperty("Claw/Position", this::getClawPosition, null);
             builder.addDoubleProperty("Claw/Velocity", this::getClawSpeed, null);
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
-        }
-
-        @Override
-        public void periodic() {
-            if(isFullyOpen() && getClawPosition() != 0) {
-                zeroClawEncoder();
-            }
         }
 
         public boolean getEngaged() {
@@ -76,8 +76,12 @@ public class Climber extends SubsystemBase {
             clawPIDController.setReference(position, ControlType.kPosition);
         }
 
+        public void resetClawEncoder(double newPosition) {
+            clawEncoder.setPosition(newPosition);
+        }
+
         public void zeroClawEncoder() {
-            clawEncoder.setPosition(0);
+            resetClawEncoder(0);
         }
 
         public boolean atReference() {
@@ -99,6 +103,14 @@ public class Climber extends SubsystemBase {
 
         public boolean isFullyOpen() {
             return openLimit.isPressed();
+        }
+
+        public void setCallibrationStatus(HandCallibrationStatus status) {
+            mCallibrationStatus = status;
+        }
+
+        public HandCallibrationStatus getCallibrationStatus() {
+            return mCallibrationStatus;
         }
     }
 
@@ -124,7 +136,11 @@ public class Climber extends SubsystemBase {
         }
 
         public void setPosition(double position, double feedforward) {
-            mMotor.set(ControlMode.Position, position, DemandType.ArbitraryFeedForward, feedforward);
+            mMotor.set(
+                ControlMode.Position,
+                position * Constants.Climber.Rotator.kEncoderCountsPerDegree,
+                DemandType.ArbitraryFeedForward,
+                feedforward);
         }
 
         public void setPosition(double position) {
@@ -132,7 +148,7 @@ public class Climber extends SubsystemBase {
         }
 
         public double getPosition() {
-            return mMotor.getSelectedSensorPosition();
+            return mMotor.getSelectedSensorPosition() / Constants.Climber.Rotator.kEncoderCountsPerDegree;
         }
 
         public double getVelocity() {
@@ -176,6 +192,10 @@ public class Climber extends SubsystemBase {
 
     public Rotator getRotator() {
         return mRotator;
+    }
+
+    public Hand[] getHands() {
+        return new Hand[] { mHandA, mHandB };
     }
 
     public void setElevatorReleasePosition(double position) {

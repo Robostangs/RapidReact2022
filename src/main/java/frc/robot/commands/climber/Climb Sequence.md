@@ -1,11 +1,11 @@
 Prep:
 - Rotate climber to -90
 - 
-    a. Open both hands
-    b. Zero when hand hits limit
-    c. Close hands
-    d. Engage both locks
-    e. Open both hands
+    1. Open both hands
+    2. Zero when hand hits limit
+    3. Close hands
+    4. Engage both locks
+    5. Open both hands
 
 
 Climb
@@ -19,9 +19,8 @@ Climb
 6. Close Hand B
 7. 
     -
-        a. Rotate climber to CG point (~+100)
-        b.
- 
+        1. Rotate climber to CG point (~+100)
+        2. 
             - Hold climer at that point (Set a feedforward with position PID)
             - Open Hand A
     - Unlock Hand B

@@ -30,7 +30,7 @@ public final class Constants {
         public static class Hand {
             // TODO: Set actual values
             public static final double kClawDefaultMoveSpeed = 0.1;
-            public static final double kClawDefaultOpenSpeed = 0.1;
+            public static final double kClawDefaultOpenSpeed = -0.1;
             public static final double kMaxLockExtension = 0; 
             public static final double kMinLockExtension = 0;
 
@@ -49,9 +49,14 @@ public final class Constants {
                 clawMotor.setSmartCurrentLimit(30);
             }
 
-            public static final double kClawLockUnlockedPositon = 0;
+            public static final double kClawLockUnlockedPositon = 0.8;
             public static final double kClawLockLockedPositon = 1;
             public static final void configClawLock(Servo lock) {}
+        }
+        
+        public static class Rotator {
+            public static final double kEncoderCountsPerDegree = 0; // TODO: Get this value
+            public static final double kShortAngle = -70;
         }
 
         public static final int kRotationMotorID = 27;
@@ -76,6 +81,7 @@ public final class Constants {
         public static final double kRotationPositionTolerance = 20;
         public static final double kRotationSpeedTolerance = 1;
         public static final double kDefaultClimberDriveSpeed = 0;
+
     }
 
     public static final class Shooter {
