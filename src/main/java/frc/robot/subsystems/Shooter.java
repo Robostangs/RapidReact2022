@@ -14,6 +14,38 @@ import frc.robot.commands.shooter.Home;
 
 public class Shooter extends SubsystemBase {
 
+    public static class State {
+        public double topSpeed;
+        public double bottomSpeed;
+        public double angle;
+
+        public State(double topSpeed, double bottomSpeed, double angle) {
+            this.topSpeed = topSpeed;
+            this.bottomSpeed = bottomSpeed;
+            this.angle = angle;
+        }
+
+        public State(double topSpeed, double bottomSpeed) {
+            this(topSpeed, bottomSpeed, 0);
+        }
+
+        public State(double topSpeed) {
+            this(topSpeed, topSpeed * Constants.Shooter.kDefaultBottomSpeedMultiplier, 0);
+        }
+
+        public String toString() {
+            return "ShooterState(topSpeed=" + topSpeed + ", bottomSpeed=" + bottomSpeed + ", angle=" + angle + ")";
+        }
+
+        public boolean equals(Object o) {
+            if (o instanceof State) {
+                State other = (State) o;
+                return topSpeed == other.topSpeed && bottomSpeed == other.bottomSpeed && angle == other.angle;
+            }
+            return false;
+        }
+    }
+
     private static Shooter instance;
     private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
     private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
@@ -52,9 +84,7 @@ public class Shooter extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addDoubleProperty("Bottom Shooter Velocity", this::getTopVelocity, null);
-        builder.addDoubleProperty("Top Shooter Velocity", this::getBottomVelocity, null);
-        builder.addDoubleProperty("Hood Position", mHood::getSelectedSensorPosition, null);
+        builder.addStringProperty("Shooter State", () -> getState().toString(), null);
     }
 
     // @Override
@@ -70,6 +100,43 @@ public class Shooter extends SubsystemBase {
         mBottomShooter.set(ControlMode.PercentOutput, power);
     }
 
+    public void setBottomShooterVelocity(double velocity) {
+        mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+    }
+
+    public void setTopShooterPower(double power) {
+        mTopShooter.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setTopShooterVelocity(double velocity) {
+        mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+    }
+
+    public void setHoodPositionPID(double position) {
+        mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+    }
+
+    public void setHoodPower(double power) {
+        mHood.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setElevatorPower(double power) {
+        mElevator.set(ControlMode.PercentOutput, power);
+    }
+
+    public State getState() {
+        return new State(
+            mTopShooter.getSelectedSensorVelocity(),
+            mBottomShooter.getSelectedSensorVelocity(),
+            mHood.getSelectedSensorPosition());
+    }
+
+    public void setState(State state) {
+        setTopShooterVelocity(state.topSpeed);
+        setBottomShooterPower(state.bottomSpeed);
+        setHoodPositionPID(state.angle);
+    }
+
     public cargoColor getBallColor() {
         if (mColorSensor.getRed() > mColorSensor.getBlue()) {
             return cargoColor.red;
@@ -82,38 +149,6 @@ public class Shooter extends SubsystemBase {
 
     public boolean getHoodLimitSwitch() {
         return mHood.isFwdLimitSwitchClosed() == 1;
-    }
-
-    public void setBottomShooterVelocity(double velocity) {
-        mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
-    }
-
-    public void setTopShooterVelocity(double velocity) {
-        mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
-    }
-
-    public void setTopShooterPower(double power) {
-        mTopShooter.set(ControlMode.PercentOutput, power);
-    }
-
-    public void setHoodPower(double power) {
-        mHood.set(ControlMode.PercentOutput, power);
-    }
-
-    public void setHoodPositionPID(double position) {
-        mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
-    }
-
-    public void setElevatorPower(double power) {
-        mElevator.set(ControlMode.PercentOutput, power);
-    }
-
-    public double getBottomVelocity() {
-        return mBottomShooter.getSelectedSensorVelocity();
-    }
-
-    public double getTopVelocity() {
-        return mTopShooter.getSelectedSensorVelocity();
     }
 
     public void setSoftLimitEnable(boolean value) {

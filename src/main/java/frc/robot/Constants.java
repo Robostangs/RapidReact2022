@@ -83,6 +83,7 @@ public final class Constants {
 
         public static final double kTicksPerDegree = 10;
         public static final double kHomeSpeed = 0.1;
+        public static final double kDefaultBottomSpeedMultiplier = 1;
     }
 
     public static final class Feeder {
