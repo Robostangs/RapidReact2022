@@ -34,23 +34,27 @@ public final class Constants {
             public static final double kMaxLockExtension = 0; 
             public static final double kMinLockExtension = 0;
 
-            public static final int kClawAID = 1;
-            public static final int kClawBID = 2;
-            public static final int kLockAID = 3;
-            public static final int kLockBID = 4;
+            public static final int kClawAID = 10;
+            public static final int kClawBID = 9;
+            public static final int kLockAID = 2;
+            public static final int kLockBID = 3;
 
-            public static final int kClawForwardSoftLimit = 20;
+            public static final int kClawForwardSoftLimit = 70;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 // TODO: Check if this should be forward or reverse
+                clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
                 clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
+                clawMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+                clawMotor.setSmartCurrentLimit(30);
             }
 
             public static final double kClawLockUnlockedPositon = 0;
             public static final double kClawLockLockedPositon = 1;
             public static final void configClawLock(Servo lock) {}
         }
-        public static final int kRotationMotorID = 0;
+
+        public static final int kRotationMotorID = 27;
         public static final int kElevatorID = 5;
         
         public static final double kPeakRotationOutput = 0.75;

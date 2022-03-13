@@ -48,6 +48,13 @@ public class Climber extends SubsystemBase {
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
         }
 
+        @Override
+        public void periodic() {
+            if(isFullyOpen() && getClawPosition() != 0) {
+                zeroClawEncoder();
+            }
+        }
+
         public boolean getEngaged() {
             return engagementSwitch.isPressed();
         }
@@ -67,6 +74,10 @@ public class Climber extends SubsystemBase {
         public void setClawReference(double position) {
             mSetpoint = position;
             clawPIDController.setReference(position, ControlType.kPosition);
+        }
+
+        public void zeroClawEncoder() {
+            clawEncoder.setPosition(0);
         }
 
         public boolean atReference() {
@@ -136,9 +147,10 @@ public class Climber extends SubsystemBase {
     }
     private static Climber instance;
 
-    private final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
-    private final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
     private final Rotator mRotator = new Rotator();
+    // XXX: Change back to private
+    public final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
+    public final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
     private final Servo mElevatorRelease = new Servo(Constants.Climber.kElevatorID);
 
     private Climber() {
@@ -158,8 +170,8 @@ public class Climber extends SubsystemBase {
         addChild("Hand A", mHandA);
         addChild("Hand B", mHandB);
         addChild("Rotation Motor", mRotator);
-        builder.addDoubleProperty("ElevatorRelease Position", this::getElevatorReleasePosition, null);
-        builder.addDoubleProperty("ElevatorRelease Speed", () -> mElevatorRelease.getSpeed(), null);
+        builder.addDoubleProperty("Elevator Release Position", this::getElevatorReleasePosition, null);
+        builder.addDoubleProperty("Elevator Release Speed", () -> mElevatorRelease.getSpeed(), null);
     }
 
     public Rotator getRotator() {
