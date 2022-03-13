@@ -1,104 +1,116 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
+    
+    public static Climber instance;
+    private TalonFX m_rotationMotor;  
+    private CANSparkMax m_leftClaw, m_rightClaw;
+    private Servo m_leftClawLock, m_rightClawLock, m_elevatorServo;
+    private ElevatorFeedforward m_ElevatorFeedforward;
+    private DigitalInput m_leftClawDigitalInput, m_rightClawDigitalInput;
 
-    private static Climber instance;
-
-    private final WPI_TalonFX mRotationMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
-    private final CANSparkMax mLeftClaw = new CANSparkMax(Constants.Climber.kLeftClawID, MotorType.kBrushless);
-    private final CANSparkMax mRightClaw = new CANSparkMax(Constants.Climber.kRightClawID, MotorType.kBrushless);
-    private final Servo mLeftClawLock = new Servo(Constants.Climber.kLeftClawLockID);
-    private final Servo mRightClawLock = new Servo(Constants.Climber.kRightClawLockID);
-    private final Servo mElevatorServo = new Servo(Constants.Climber.kElevatorID);
-    // private final ElevatorFeedforward mElevatorFeedforward;
-    private final DigitalInput mLeftClawDigitalInput = new DigitalInput(Constants.Climber.kLeftClawSensorID);
-    private final DigitalInput mRightClawDigitalInput = new DigitalInput(Constants.Climber.kRightClawSensorID);
 
     public static Climber getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new Climber();
         }
         return instance;
     }
 
-    private Climber() {
-        // mElevatorFeedforward = new ElevatorFeedforward(Constants.Climber.rotationStaticGain,
-        //         Constants.Climber.gravityGain, Constants.Climber.velocityGain, Constants.Climber.accelerationGain);
+    public Climber() {
+        m_rotationMotor = new TalonFX(Constants.Climber.rotationMotorID);
+        m_elevatorServo = new Servo(Constants.Climber.elevatorID);
+
+        m_leftClaw = new CANSparkMax(Constants.Climber.leftClawID, MotorType.kBrushless);
+        m_rightClaw = new CANSparkMax(Constants.Climber.rightClawID, MotorType.kBrushless);
+        
+        m_leftClawLock = new Servo(Constants.Climber.leftClawLockID);
+        m_rightClawLock = new Servo(Constants.Climber.rightClawLockID);
+
+        m_leftClawDigitalInput = new DigitalInput(Constants.Climber.leftClawSensorID);
+        m_rightClawDigitalInput = new DigitalInput(Constants.Climber.rightClawSensorID);
+        
+        m_ElevatorFeedforward = new ElevatorFeedforward(Constants.Climber.rotationStaticGain, Constants.Climber.gravityGain, Constants.Climber.velocityGain, Constants.Climber.accelerationGain);
     }
 
     public void setRotationMotorSpeed(double power) {
-        mRotationMotor.set(ControlMode.PercentOutput, power);
+        m_rotationMotor.set(ControlMode.PercentOutput, power);
     }
 
     public void setRotationMotorPosition(double position) {
-        mRotationMotor.set(ControlMode.Position, position);
+        m_rotationMotor.set(ControlMode.Position, position);
     }
 
     public double getRotationMotorPosition() {
-        return mRotationMotor.getActiveTrajectoryPosition();
+        return m_rotationMotor.getActiveTrajectoryPosition();
     }
 
     public boolean getLeftClawSensor() {
-        return mLeftClawDigitalInput.get();
+        return m_leftClawDigitalInput.get();
     }
 
     public boolean getRightClawSensor() {
-        return mRightClawDigitalInput.get();
+        return m_rightClawDigitalInput.get();
     }
 
     public void setLeftClawSpeed(double power) {
-        mLeftClaw.set(power);
+        m_leftClaw.set(power);
     }
 
     public void setRightClawSpeed(double power) {
-        mRightClaw.set(power);
+        m_rightClaw.set(power);
     }
 
     public double getLeftClawPosition() {
-        return mLeftClaw.getEncoder().getPosition();
+        return m_leftClaw.getEncoder().getPosition();
     }
 
     public double getRightClawPosition() {
-        return mRightClaw.getEncoder().getPosition();
+        return m_rightClaw.getEncoder().getPosition();
     }
 
     public void setRightClawLockPosition(double position) {
-        mRightClawLock.set(position);
+        m_rightClawLock.set(position);
     }
 
     public void setLeftClawPosition(double position) {
-        mLeftClaw.set(position);
+        m_leftClaw.set(position);
     }
 
     public void setRightClawPosition(double position) {
-        mRightClaw.set(position);
+       m_rightClaw.set(position);
     }
 
     public double getRightClawLockPosition() {
-        return mRightClawLock.getPosition();
+        return m_rightClawLock.getPosition();
     }
 
     public double getLeftClawLockPosition() {
-        return mLeftClawLock.getPosition();
+        return m_leftClawLock.getPosition();
     }
-
+    
     public void setElevatorPosition(double position) {
-        mElevatorServo.set(position);
+        m_elevatorServo.set(position);
     }
 
     public double getElevatorPosition() {
-        return mElevatorServo.getPosition();
+        return m_elevatorServo.getPosition();
     }
+
+
 
     // @Override
     // protected void useOutput(double output, double setpoint) {

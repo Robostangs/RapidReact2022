@@ -2,165 +2,149 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.ColorSensorV3;
-
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.shooter.Home;
+import frc.robot.Utils;
 
 public class Shooter extends SubsystemBase {
-
-    private static Shooter instance;
-    private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
-    private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
-    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.elevatorMotorID);
-    private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
-    private final ColorSensorV3 mColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-    private boolean isHomed;
-
-    enum cargoColor {
-        blue,
-        red,
-        none
-    }
-    // private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has
-    // the shooter sensor
+    public static Shooter instance;
+    public final TalonFX m_leftShooter, m_rightShooter, m_Elevator, m_angleChanger;
+    public ColorSensorV3 colorSensor;
+    //private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has the shooter sensor
 
     public static Shooter getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new Shooter();
         }
         return instance;
     }
 
-    private Shooter() {
-        mBottomShooter.configFactoryDefault();
-        mTopShooter.configFactoryDefault();
-        mHood.configFactoryDefault();
+    public Shooter() {
+        m_leftShooter = new TalonFX(Constants.Shooter.leftShooterID);
+        m_rightShooter = new TalonFX(Constants.Shooter.rightShooterID);
+        m_angleChanger = new TalonFX(Constants.Shooter.angleShooterID);
+        m_Elevator = new TalonFX(Constants.Feeder.elevatorMotorID);
+        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
-        mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
-        mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
-        mHood.configAllSettings(Constants.Shooter.kHoodConfig);
+        // m_leftShooter.configFactoryDefault();
+        // m_rightShooter.configFactoryDefault();
+        // m_angleChanger.configFactoryDefault();
+    
+        // m_leftShooterPID = new PIDController(Constants.Shooter.leftMotorKP, Constants.Shooter.leftMotorKI, Constants.Shooter.leftMotorKD);
+        // m_rightShooterPID = new PIDController(Constants.Shooter.rightMotorKP, Constants.Shooter.rightMotorKI, Constants.Shooter.rightMotorKD);
 
-        mHood.setNeutralMode(NeutralMode.Brake);
-    }
+        // m_angleChangerPID = new PIDController(Constants.Shooter.angleMotorKP, Constants.Shooter.angleMotorKI, Constants.Shooter.angleMotorKD);   
+        
+        // m_angleChanger.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 5, 7, 100));
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Bottom Shooter Velocity", this::getTopVelocity, null);
-        builder.addDoubleProperty("Top Shooter Velocity", this::getBottomVelocity, null);
-        builder.addDoubleProperty("Hood Position", mHood::getSelectedSensorPosition, null);
+        // m_leftShooter.config_kP(0, Constants.Shooter.leftMotorKP);
+        // m_leftShooter.config_kI(0, Constants.Shooter.leftMotorKI);
+
+        // m_rightShooter.config_kP(0, Constants.Shooter.rightMotorKP);
+        // m_rightShooter.config_kI(0, Constants.Shooter.rightMotorKI);
+
+        // SmartDashboard.putNumber("RightVelocity", 0);
+        // SmartDashboard.putNumber("LeftVelocity", 0);
+        // SmartDashboard.putNumber("AllignmentVelocity", 0);
+        // SmartDashboard.putNumber("Elevator", 0);
+
+        
+        SmartDashboard.putNumber("LeftVelo", 0);
+        SmartDashboard.putNumber("RightVelo", 0);
+        SmartDashboard.putNumber("Hood Position", 0);
+        SmartDashboard.putNumber("Elevator Speed", 0);
+
     }
 
     // @Override
     // public void periodic() {
-    // super.periodic();
-    // setAlignmentPower(m_alignmentPID.calculate(getAlignmentPosition()));
-    // setAnglePower(m_angleChangerPID.calculate(getAnglePosition()));
-    // setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
-    // setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
+    //     super.periodic();
+    //     setAlignmentPower(m_alignmentPID.calculate(getAlignmentPosition()));
+    //     setAnglePower(m_angleChangerPID.calculate(getAnglePosition()));
+    //     setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
+    //     setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
     // }
-
-    public void setBottomShooterPower(double power) {
-        mBottomShooter.set(ControlMode.PercentOutput, power);
-    }
-
-    public cargoColor getBallColor() {
-        if (mColorSensor.getRed() > mColorSensor.getBlue()) {
-            return cargoColor.red;
-        } else if (mColorSensor.getRed() < mColorSensor.getBlue()) {
-            return cargoColor.blue;
-        } else {
-            return cargoColor.none;
-        }
+    
+    
+    public void setLeftShooterPower(double power) {
+        m_leftShooter.set(ControlMode.PercentOutput, power);
     }
 
     public boolean getHoodLimitSwitch() {
-        return mHood.isFwdLimitSwitchClosed() == 1;
+        return m_angleChanger.isFwdLimitSwitchClosed() == 1;
     }
 
-    public void setBottomShooterVelocity(double velocity) {
-        mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+    public void setLeftShooterVelo(double velocity) {
+        m_leftShooter.set(ControlMode.Velocity, velocity);
+    }
+    
+    public void setRightShooterVelo(double velocity) {
+        m_rightShooter.set(ControlMode.Velocity, velocity);
     }
 
-    public void setTopShooterVelocity(double velocity) {
-        mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+    public void setRightShooterPower(double power) {
+        m_rightShooter.set(ControlMode.PercentOutput, power);
     }
 
-    public void setTopShooterPower(double power) {
-        mTopShooter.set(ControlMode.PercentOutput, power);
+    public void setAnglePower(double power) {
+        m_angleChanger.set(ControlMode.PercentOutput, power);
     }
 
-    public void setHoodPower(double power) {
-        mHood.set(ControlMode.PercentOutput, power);
-    }
-
-    public void setHoodPositionPID(double position) {
-        mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+    public void setAnglePositionPID(double position) {
+        m_angleChanger.set(ControlMode.Position, position * (-8192/90), DemandType.ArbitraryFeedForward, 0.04);
     }
 
     public void setElevatorPower(double power) {
-        mElevator.set(ControlMode.PercentOutput, power);
+        m_Elevator.set(ControlMode.PercentOutput, power);
     }
 
-    public double getBottomVelocity() {
-        return mBottomShooter.getSelectedSensorVelocity();
+    public double getLeftVelocity() {
+        return m_leftShooter.getSelectedSensorVelocity();
     }
 
-    public double getTopVelocity() {
-        return mTopShooter.getSelectedSensorVelocity();
+    public double getRightVelocity() {
+        return m_rightShooter.getSelectedSensorVelocity();
     }
 
-    public void setSoftLimitEnable(boolean value) {
-        mHood.configForwardSoftLimitEnable(value);
-        mHood.configReverseSoftLimitEnable(value);
-    }
+    // public double getAlignmentPosition() {
+    //     return m_Alignment.getActiveTrajectoryPosition();
+    // }
 
-    public void setClearPosition(boolean value) {
-        mHood.configClearPositionOnLimitF(value, 100);
-    }
+    // public double getLeftShooterPosition() {
+    //     return m_leftShooter.getActiveTrajectoryPosition();
+    // }
 
-    public void setMaxSpeed(double speed) {
-        mHood.configPeakOutputForward(speed);
-        mHood.configPeakOutputReverse(-2 * speed);
-    }
+    // public double getRightShooterPosition() {
+    //     return m_rightShooter.getActiveTrajectoryPosition();
+    // }
 
-    public boolean getForwardLimit() {
-        return mHood.isFwdLimitSwitchClosed() == 1;
-    }
+    // public double getAnglePosition() {
+    //     return m_angleChanger.getActiveTrajectoryPosition();
+    // }
+    // public double getAlignmentEncoder() {
 
-    public void setHomed(boolean value) {
-        isHomed = value;
-    }
+        
+    //     return m_Alignment.getActiveTrajectoryPosition();
+    // }
 
-    public void resetHoodEncoder() {
-        mHood.setSelectedSensorPosition(0);
-    }
+    // public double getLeftShooterEncoder() {
+    //     return m_leftShooter.getActiveTrajectoryPosition();
+    // }
+
+    // public double getRightShooterEncoder() {
+    //     return m_rightShooter.getActiveTrajectoryPosition();
+    // }
 
     @Override
     public void periodic() {
-        if (mHood.hasResetOccurred()) {
-            isHomed = false;
-        }
-        if (!isHomed) {
-            new Home().schedule();
-        }
-    }
-
-    // @Override
-    // public void periodic() {
-    // SmartDashboard.putNumber("Distance Limelight",
-    // Utils.dist(Limelight.getTy()));
-    // m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo",
-    // 0.0) / (600.0/2048.0)));
-    // m_rightShooter.set(ControlMode.Velocity,
-    // (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
-    // // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
-    // setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));
-    // }
+    SmartDashboard.putNumber("Distance Limelight", Utils.dist(Limelight.getTy()));
+    m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo", 0.0) / (600.0/2048.0)));
+    m_rightShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
+    setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
+    setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));    
+}
 }

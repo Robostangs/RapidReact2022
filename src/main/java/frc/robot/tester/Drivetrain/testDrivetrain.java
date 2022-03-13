@@ -1,14 +1,14 @@
-package frc.robot.test.drivetrain;
+package frc.robot.tester.Drivetrain;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 
-public class TestDrivetrain {
+public class testDrivetrain {
     
     private Drivetrain m_Drivetrain;
 
-    public TestDrivetrain() {
+    public testDrivetrain() {
         moveDrivetrainTime(0.1, 0.2);
         moveDrivetrainTime(0.2, 0.2);
         moveDrivetrainTime(0.3, 0.2);
@@ -33,4 +33,5 @@ public class TestDrivetrain {
         SmartDashboard.putNumber("right Voltage", m_Drivetrain.getRightVoltage());
         SmartDashboard.putNumber("right Current", m_Drivetrain.getRightCurrent());
     }
+
 }

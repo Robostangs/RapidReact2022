@@ -2,97 +2,113 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Feeder extends SubsystemBase {
-
-    private static Feeder Instance;
-
-    private final WPI_TalonFX mBeltMotor = new WPI_TalonFX(Constants.Feeder.kBeltMotorID);
-    private final DigitalInput mIntakeSensorDark = new DigitalInput(Constants.Feeder.kDarkColorIntakeID);
-    private final DigitalInput mShooterSensorDark = new DigitalInput(Constants.Feeder.kDarkColorShooterID);
-    private final DigitalInput mIntakeSensorLight = new DigitalInput(Constants.Feeder.kLightColorIntakeID);
-    private final DigitalInput mShooterSensorLight = new DigitalInput(Constants.Feeder.kLightColorShooterID);
+    
+    public static Feeder Instance;
+    private TalonFX m_beltMotor; 
+    private DigitalInput m_intakeSensorDark, m_shooterSensorDark,  m_intakeSensorLight, m_shooterSensorLight;
 
     public static Feeder getInstance() {
-        if (Instance == null) {
+        if(Instance == null) {
             Instance = new Feeder();
         }
         return Instance;
     }
 
-    private Feeder() {
-        mBeltMotor.configFactoryDefault();
+    public Feeder() {
+       m_beltMotor = new TalonFX(Constants.Feeder.beltMotorID);
 
-        mBeltMotor.configAllSettings(Constants.Feeder.kBeltConfig);
-        mBeltMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+       m_beltMotor.configFactoryDefault();
+
+       m_beltMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+       m_beltMotor.configNeutralDeadband(0.001, 30);
 
         /* Set Motion Magic gains in slot0 - see documentation */
-        mBeltMotor.selectProfileSlot(0, 0);
+        m_beltMotor.selectProfileSlot(0, 0);
+
+
+        // SmartDashboard.putNumber("kLeftP", 0.1);
+        // SmartDashboard.putNumber("kLeftI", 0);
+        // SmartDashboard.putNumber("kLeftD", 0);
+
+        // SmartDashboard.putNumber("kRightP", 0.1);
+        // SmartDashboard.putNumber("kRightI", 0);
+        // SmartDashboard.putNumber("kRightD", 0);
+
+        m_beltMotor.config_kP(0, Constants.Feeder.belt_kP);
+        m_beltMotor.config_kI(0, Constants.Feeder.belt_kI);
+        m_beltMotor.config_kD(0, Constants.Feeder.belt_kD);
+        m_beltMotor.config_kF(0, Constants.Feeder.belt_kF);
 
         /* Set acceleration and vcruise velocity - see documentation */
-        mBeltMotor.configMotionCruiseVelocity(20000, 30);
-        mBeltMotor.configMotionAcceleration(1500, 30);
-    }
-    
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Feeder Speed", this::beltVelocity, null);
-        builder.addBooleanProperty("Intake Dark Value", this::getIntakeSensorDark, null);
-        builder.addBooleanProperty("Intake Light Value", this::getIntakeSensorLight, null);
-        builder.addBooleanProperty("Shooter Dark Value", this::getShooterSensorDark, null);
-        builder.addBooleanProperty("Shooter Light Value", this::getShooterSensorLight, null);
+        m_beltMotor.configMotionCruiseVelocity(20000, 30);
+        m_beltMotor.configMotionAcceleration(1500, 30);          
+
+       m_intakeSensorDark = new DigitalInput(Constants.Feeder.dcolorIntakeID);
+       m_shooterSensorDark = new DigitalInput(Constants.Feeder.dcolorShooterID);
+
+       m_intakeSensorLight = new DigitalInput(Constants.Feeder.colorIntakeID);
+       m_shooterSensorLight = new DigitalInput(Constants.Feeder.colorShooterID);
+
+       SmartDashboard.putNumber("Feeder Speed", 0);
     }
 
     public boolean getIntakeSensorDark() {
-        return mIntakeSensorDark.get();
+        return m_intakeSensorDark.get();
     }
 
     public boolean getShooterSensorDark() {
-        return mShooterSensorDark.get();
+        return m_shooterSensorDark.get();
     }
 
     public boolean getIntakeSensorLight() {
-        return mIntakeSensorLight.get();
+        return m_intakeSensorLight.get();
     }
 
     public boolean getShooterSensorLight() {
-        return mShooterSensorLight.get();
+        return m_shooterSensorLight.get();
     }
-
     public void moveBelt(double beltPower) {
-        mBeltMotor.set(ControlMode.PercentOutput, beltPower);
+        m_beltMotor.set(ControlMode.PercentOutput, beltPower);
     }
-
+    
     public void moveBeltPosition(double position) {
-        mBeltMotor.set(ControlMode.Position, position);
+        m_beltMotor.set(ControlMode.Position, position);
     }
 
     public double beltEncoder() {
-        return mBeltMotor.getActiveTrajectoryPosition();
-    }
+        return m_beltMotor.getActiveTrajectoryPosition();
+    } 
 
     public double beltVelocity() {
-        return mBeltMotor.getSelectedSensorVelocity();
+        return m_beltMotor.getSelectedSensorVelocity();
     }
 
     public void resetBeltEncoder() {
-        mBeltMotor.setSelectedSensorPosition(0);
+        m_beltMotor.setSelectedSensorPosition(0);
     }
 
     public void brakeBelt() {
         moveBelt(0);
     }
 
-    // @Override
-    // public void periodic() {
-    // moveBelt(SmartDashboard.getNumber("Feeder Speed", 0));
-    // }
+    public void update() {
+        SmartDashboard.putBoolean("Intake Dark Value", getIntakeSensorDark());
+        SmartDashboard.putBoolean("Intake Light Value", getIntakeSensorLight());
+        SmartDashboard.putBoolean("Shooter Dark Value", getShooterSensorDark());
+        SmartDashboard.putBoolean("Shooter Light Value", getShooterSensorLight());
+
+    }
+
+    @Override
+    public void periodic() {
+        moveBelt(SmartDashboard.getNumber("Feeder Speed", 0));
+    }
 }
