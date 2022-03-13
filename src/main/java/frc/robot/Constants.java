@@ -145,7 +145,7 @@ public final class Constants {
         }
 
         // Odometry
-        public static final double kTrackWidth = 0.88817;
+        public static final double kTrackWidth = 0.471;
 
         
     }
