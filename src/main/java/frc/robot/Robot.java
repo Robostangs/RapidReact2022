@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.climber.AutoClimb;
+import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.subsystems.Climber;
 
 /**
@@ -93,37 +98,42 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
-        mHandA.setLockReference(0.8);
-        mHandB.setLockReference(0.8);
+        // mHandA.setLockReference(0.8);
+        // mHandB.setLockReference(0.8);
+        new JoystickButton(mDriver, XboxController.Button.kB.value)
+            .whenPressed(new ClimbPrep());
+        new JoystickButton(mDriver, XboxController.Button.kA.value)
+            .whenPressed(new AutoClimb());
+        new JoystickButton(mDriver, XboxController.Button.kX.value)
+            .whenPressed(new InstantCommand(() -> mClimber.getRotator().setEncoderPosition(0)));
     }
 
     private final XboxController mDriver = new XboxController(0);
     private final Climber mClimber = Climber.getInstance();
+    private final Drivetrain mDrivetrain = Drivetrain.getInstance();
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() { 
-        // m_Feeder.update();
-        // m_Shooter.test();
-        if(mDriver.getLeftTriggerAxis() >= 0.01) {
-            mClimber.getRotator().setPower(mDriver.getLeftTriggerAxis());
-        } else {
-            mClimber.getRotator().setPower(-mDriver.getRightTriggerAxis());
-        }
-        mHandA.setClawSpeed(mDriver.getLeftY());
-        mHandB.setClawSpeed(mDriver.getRightY());
+    public void teleopPeriodic() {
+        // if(mDriver.getLeftTriggerAxis() >= 0.01) {
+        //     mClimber.getRotator().setPower(mDriver.getLeftTriggerAxis());
+        // } else {
+        //     mClimber.getRotator().setPower(-mDriver.getRightTriggerAxis());
+        // }
+        // mHandA.setClawSpeed(mDriver.getLeftY());
+        // mHandB.setClawSpeed(mDriver.getRightY());
 
-        if (mDriver.getAButton()) {
-            mHandA.setLockReference(1);
-        }
-        if (mDriver.getXButton()) {
-            mHandA.setLockReference(0.8);
-        }
-        if (mDriver.getBButton()) {
-            mHandB.setLockReference(1);
-        }
-        if (mDriver.getYButton()) {
-            mHandB.setLockReference(0.8);
-        }
+        // if (mDriver.getAButton()) {
+        //     mHandA.setLockReference(1);
+        // }
+        // if (mDriver.getXButton()) {
+        //     mHandA.setLockReference(0.8);
+        // }
+        // if (mDriver.getBButton()) {
+        //     mHandB.setLockReference(1);
+        // }
+        // if (mDriver.getYButton()) {
+        //     mHandB.setLockReference(0.8);
+        // }
         // m_Shooter.setRightShooterPower(driver.getRightX());
     }
 

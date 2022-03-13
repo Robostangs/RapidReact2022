@@ -54,6 +54,7 @@ public class Climber extends SubsystemBase {
             builder.addDoubleProperty("Claw/Position", this::getClawPosition, null);
             builder.addDoubleProperty("Claw/Velocity", this::getClawSpeed, null);
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
+            builder.addStringProperty("Callibration Status", () -> getCallibrationStatus() + "", null);
         }
         
         public boolean getEngaged() {
@@ -157,6 +158,11 @@ public class Climber extends SubsystemBase {
 
         public double getPosition() {
             return mMotor.getSelectedSensorPosition() / Constants.Climber.Rotator.kEncoderCountsPerDegree;
+        }
+
+        public void setEncoderPosition(double position) {
+            System.out.println("setting position to " + position);
+            mMotor.setSelectedSensorPosition(position);
         }
 
         public double getVelocity() {

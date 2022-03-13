@@ -22,7 +22,7 @@ public class OpenHand extends CommandBase {
     }
 
     public OpenHand(Climber.Hand hand, double speed) {
-        addRequirements(Climber.getInstance());
+        addRequirements(hand);
         setName("Open Hand");
         mHandContainer = null;
         mHand = hand;
@@ -46,7 +46,7 @@ public class OpenHand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return mHandContainer.hand.isFullyOpen();
+        return mHand.isFullyOpen();
     }
 
     @Override
@@ -55,6 +55,6 @@ public class OpenHand extends CommandBase {
             mHand.setCallibrationStatus(HandCallibrationStatus.kNotCalibrated);
             System.out.println("Hand calibration interrupted!");
         }   
-        mHandContainer.hand.setClawSpeed(0);
+        mHand.setClawSpeed(0);
     }
 }

@@ -29,8 +29,8 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 0.1;
-            public static final double kClawDefaultOpenSpeed = -0.1;
+            public static final double kClawDefaultMoveSpeed = 0.2;
+            public static final double kClawDefaultOpenSpeed = -0.2;
             public static final double kMaxLockExtension = 0; 
             public static final double kMinLockExtension = 0;
 
@@ -58,13 +58,13 @@ public final class Constants {
         }
         
         public static class Rotator {
-            public static final double kEncoderCountsPerDegree = 0; // TODO: Get this value
+            public static final double kEncoderCountsPerDegree = 1170; // TODO: Get this value
 
-            public static final double kHorizontalAngle = -70;
+            public static final double kHorizontalAngle = -75;
             public static final double kStartingAngle = -20;
             
-            public static final double kPositionTolerance = 20;
-            public static final double kSpeedTolerance = 1;
+            public static final double kPositionTolerance = 1000;
+            public static final double kSpeedTolerance = 10;
 
             public static final double kClimbRotationSpeed = 0.5;
             public static final double kClimbHoldSpeed = 0.2;
@@ -94,6 +94,7 @@ public final class Constants {
         public static final double kSecondCGPosition = 300;
 
         public static final double kDefaultDriveSpeed = 0.1;
+        public static final double kWaitBeforePrep = 0.1;
     }
 
     public static final class Shooter {

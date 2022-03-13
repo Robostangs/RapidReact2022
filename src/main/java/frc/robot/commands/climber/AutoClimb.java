@@ -28,6 +28,7 @@ public class AutoClimb extends SequentialCommandGroup {
             new ProxyScheduleCommand(new DriveToMidBar()),
             new InstantCommand(this::initHands),
             new CloseHand(mRotationHandHolder),
+            new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon),
             new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition),
             new InstantCommand(this::switchHands),
             new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition),
