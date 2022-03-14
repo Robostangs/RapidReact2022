@@ -1,16 +1,21 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
-public class EnableElevator extends InstantCommand {
+public class RunElevator extends InstantCommand {
 
     private final Elevator mElevator = Elevator.getInstance();
     private final double mPower;
 
-    public EnableElevator(double power) {
+    public RunElevator(double power) {
         addRequirements(mElevator);
         mPower = power;
+    }
+
+    public RunElevator() {
+        this(Constants.Elevator.kDefaultPower);
     }
 
     @Override

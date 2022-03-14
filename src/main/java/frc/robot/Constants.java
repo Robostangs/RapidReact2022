@@ -92,6 +92,7 @@ public final class Constants {
     
     public static final class Elevator {
         public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
+        public static final double kDefaultPower = 0.5;
         static {}
     }
 
