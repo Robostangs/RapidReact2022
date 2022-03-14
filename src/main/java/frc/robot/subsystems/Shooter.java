@@ -79,6 +79,18 @@ public class Shooter extends SubsystemBase {
         mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
         mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 255);
+        //21?
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 255);
+
         mHood.setNeutralMode(NeutralMode.Brake);
     }
 
