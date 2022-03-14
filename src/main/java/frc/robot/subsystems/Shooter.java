@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
 import frc.robot.commands.shooter.Home;
 
 public class Shooter extends SubsystemBase {
@@ -40,6 +41,17 @@ public class Shooter extends SubsystemBase {
             if (o instanceof State) {
                 State other = (State) o;
                 return topSpeed == other.topSpeed && bottomSpeed == other.bottomSpeed && angle == other.angle;
+            }
+            return false;
+        }
+
+        public boolean roughlyEquals(Object o) {
+            if (o instanceof State) {
+                State other = (State) o;
+                return
+                    Utils.roughlyEqual(topSpeed, other.topSpeed, Constants.Shooter.kTopSpeedTolerance)
+                 && Utils.roughlyEqual(bottomSpeed, other.bottomSpeed, Constants.Shooter.kBottomSpeedTolerance)
+                 && Utils.roughlyEqual(angle, other.angle, Constants.Shooter.kAngleTolerance);
             }
             return false;
         }

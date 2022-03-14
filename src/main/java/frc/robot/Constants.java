@@ -84,8 +84,12 @@ public final class Constants {
         public static final double kTicksPerDegree = 10;
         public static final double kHomeSpeed = 0.1;
         public static final double kDefaultBottomSpeedMultiplier = 1;
-    }
 
+        public static final double kTopSpeedTolerance = 50;
+        public static final double kBottomSpeedTolerance = 50;
+        public static final double kAngleTolerance = 0.1;
+    }
+    
     public static final class Elevator {
         public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
         static {}
@@ -130,7 +134,7 @@ public final class Constants {
 
     public static class Turret {
         public static final int kRotationMotorID = 6;
-        
+
         public static final double kRotationMotorMax = 74000;
         public static final double kRotationMotorSoftLimitOffset = 2000;
         public static final double kRotationMotorSpeed = -0.2;

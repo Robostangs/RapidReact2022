@@ -51,7 +51,7 @@ public class ShooterMappings {
         }
     }
 
-    public static Shooter.State getShooterState(int distance) {
+    public static Shooter.State getShooterState(double distance) {
         return kShooterStates.get(getNearestKey(distance));
     }
 }

@@ -5,7 +5,7 @@ import frc.robot.subsystems.Shooter;
 
 public class SetShooterState extends CommandBase {
     private final Shooter mShooter = Shooter.getInstance();
-    private final Shooter.State mState;
+    protected Shooter.State mState;
 
     public SetShooterState(Shooter.State state) {
         addRequirements(mShooter);
@@ -13,7 +13,7 @@ public class SetShooterState extends CommandBase {
     }
 
     @Override
-    public void initialize() {
+    public void execute() {
         mShooter.setState(mState);
     }
 

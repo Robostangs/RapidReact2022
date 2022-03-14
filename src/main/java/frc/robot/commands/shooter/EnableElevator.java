@@ -3,12 +3,12 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elevator;
 
-public class SetElevatorPower extends InstantCommand {
+public class EnableElevator extends InstantCommand {
 
     private final Elevator mElevator = Elevator.getInstance();
     private final double mPower;
 
-    public SetElevatorPower(double power) {
+    public EnableElevator(double power) {
         addRequirements(mElevator);
         mPower = power;
     }
