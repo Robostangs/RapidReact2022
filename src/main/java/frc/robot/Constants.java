@@ -86,6 +86,11 @@ public final class Constants {
         public static final double kDefaultBottomSpeedMultiplier = 1;
     }
 
+    public static final class Elevator {
+        public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
+        static {}
+    }
+
     public static final class Feeder {
         public static final int kBeltMotorID = 4;
         public static final int elevatorMotorID = 5;

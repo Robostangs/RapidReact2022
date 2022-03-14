@@ -3,11 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.shooter.Home;
@@ -49,18 +48,8 @@ public class Shooter extends SubsystemBase {
     private static Shooter instance;
     private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
     private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
-    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.elevatorMotorID);
     private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
-    private final ColorSensorV3 mColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
     private boolean isHomed;
-
-    enum cargoColor {
-        blue,
-        red,
-        none
-    }
-    // private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has
-    // the shooter sensor
 
     public static Shooter getInstance() {
         if (instance == null) {
@@ -87,14 +76,16 @@ public class Shooter extends SubsystemBase {
         builder.addStringProperty("Shooter State", () -> getState().toString(), null);
     }
 
-    // @Override
-    // public void periodic() {
-    // super.periodic();
-    // setAlignmentPower(m_alignmentPID.calculate(getAlignmentPosition()));
-    // setAnglePower(m_angleChangerPID.calculate(getAnglePosition()));
-    // setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
-    // setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
-    // }
+    @Override
+    public void periodic() {
+        super.periodic();
+        if (mHood.hasResetOccurred()) {
+            isHomed = false;
+        }
+        if (!isHomed) {
+            new Home().schedule();
+        }
+    }
 
     public void setBottomShooterPower(double power) {
         mBottomShooter.set(ControlMode.PercentOutput, power);
@@ -120,10 +111,6 @@ public class Shooter extends SubsystemBase {
         mHood.set(ControlMode.PercentOutput, power);
     }
 
-    public void setElevatorPower(double power) {
-        mElevator.set(ControlMode.PercentOutput, power);
-    }
-
     public State getState() {
         return new State(
             mTopShooter.getSelectedSensorVelocity(),
@@ -135,16 +122,6 @@ public class Shooter extends SubsystemBase {
         setTopShooterVelocity(state.topSpeed);
         setBottomShooterPower(state.bottomSpeed);
         setHoodPositionPID(state.angle);
-    }
-
-    public cargoColor getBallColor() {
-        if (mColorSensor.getRed() > mColorSensor.getBlue()) {
-            return cargoColor.red;
-        } else if (mColorSensor.getRed() < mColorSensor.getBlue()) {
-            return cargoColor.blue;
-        } else {
-            return cargoColor.none;
-        }
     }
 
     public boolean getHoodLimitSwitch() {
@@ -177,25 +154,17 @@ public class Shooter extends SubsystemBase {
         mHood.setSelectedSensorPosition(0);
     }
 
-    @Override
-    public void periodic() {
-        if (mHood.hasResetOccurred()) {
-            isHomed = false;
-        }
-        if (!isHomed) {
-            new Home().schedule();
-        }
-    }
-
     // @Override
     // public void periodic() {
-    // SmartDashboard.putNumber("Distance Limelight",
-    // Utils.dist(Limelight.getTy()));
-    // m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo",
-    // 0.0) / (600.0/2048.0)));
-    // m_rightShooter.set(ControlMode.Velocity,
-    // (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
-    // // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
-    // setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));
+    //     SmartDashboard.putNumber(
+    //         "Distance Limelight",
+    //         Utils.dist(Limelight.getTy()));
+    //     mBottomShooter.set(
+    //         ControlMode.Velocity,
+    //         (SmartDashboard.getNumber("LeftVelo", 0.0) / (600.0/2048.0)));
+    //     mTopShooter.set(
+    //         ControlMode.Velocity,
+    //         (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
+    //     // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
     // }
 }
