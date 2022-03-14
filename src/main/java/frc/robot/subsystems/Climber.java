@@ -23,9 +23,9 @@ public class Climber extends SubsystemBase {
         kCalibrating,
         kCalibrated
     }
-    
+
     public class Hand extends SubsystemBase {
-        
+
         private final CANSparkMax claw;
         private final RelativeEncoder clawEncoder;
         private final SparkMaxPIDController clawPIDController;
@@ -35,8 +35,9 @@ public class Climber extends SubsystemBase {
         private double mSetpoint;
         private double mLockSetpoint;
         private HandCallibrationStatus mCallibrationStatus = HandCallibrationStatus.kNotCalibrated;
-        
+
         private Hand(int clawID, int lockID) {
+            System.out.println("Spark Max " + clawID + " init");
             claw = new CANSparkMax(clawID, MotorType.kBrushless);
             clawEncoder = claw.getEncoder();
             clawPIDController = claw.getPIDController();
@@ -46,55 +47,56 @@ public class Climber extends SubsystemBase {
             Constants.Climber.Hand.configClawMotor(claw);
             Constants.Climber.Hand.configClawLock(lock);
         }
-        
+
         @Override
         public void initSendable(SendableBuilder builder) {
             super.initSendable(builder);
             builder.addBooleanProperty("Engaged", this::getEngaged, null);
+            builder.addBooleanProperty("Is Fully Open?", this::isFullyOpen, null);
             builder.addDoubleProperty("Claw/Position", this::getClawPosition, null);
             builder.addDoubleProperty("Claw/Velocity", this::getClawSpeed, null);
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
             builder.addStringProperty("Callibration Status", () -> getCallibrationStatus() + "", null);
         }
-        
+
         public boolean getEngaged() {
             return engagementSwitch.isPressed();
         }
-        
+
         public double getClawPosition() {
             return clawEncoder.getPosition();
         }
-        
+
         public double getClawSpeed() {
             return clawEncoder.getVelocity();
         }
-        
+
         public void setClawSpeed(double speed) {
             claw.set(speed);
         }
-        
+
         public void setClawReference(double position) {
             mSetpoint = position;
             clawPIDController.setReference(position, ControlType.kPosition);
         }
-        
+
         public void resetClawEncoder(double newPosition) {
             clawEncoder.setPosition(newPosition);
         }
-        
+
         public void zeroClawEncoder() {
             resetClawEncoder(0);
         }
-        
+
         public boolean atReference() {
             return Utils.roughlyEqual(getClawPosition(), mSetpoint);
         }
-        
+
         public void setLockReference(double setpoint) {
             mLockSetpoint = setpoint;
             lock.set(setpoint);
         }
-        
+
         public double getLockPosition() {
             return lock.get();
         }
