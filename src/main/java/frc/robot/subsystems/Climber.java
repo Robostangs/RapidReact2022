@@ -33,7 +33,6 @@ public class Climber extends SubsystemBase {
         private final SparkMaxLimitSwitch openLimit;
         private final Servo lock;
         private double mSetpoint;
-        private double mLockSetpoint;
         private HandCallibrationStatus mCallibrationStatus = HandCallibrationStatus.kNotCalibrated;
 
         private Hand(int clawID, int lockID) {
@@ -46,6 +45,7 @@ public class Climber extends SubsystemBase {
             lock = new Servo(lockID);
             Constants.Climber.Hand.configClawMotor(claw);
             Constants.Climber.Hand.configClawLock(lock);
+            setLockReference(Constants.Climber.Hand.kClawLockUnlockedPositon);
         }
 
         @Override
@@ -93,26 +93,21 @@ public class Climber extends SubsystemBase {
         }
 
         public void setLockReference(double setpoint) {
-            mLockSetpoint = setpoint;
             lock.set(setpoint);
         }
 
         public double getLockPosition() {
             return lock.get();
         }
-        
-        public boolean atLockReference() {
-            return Utils.roughlyEqual(getLockPosition(), mLockSetpoint);
-        }
-        
+
         public boolean isFullyOpen() {
             return openLimit.isPressed();
         }
-        
+
         public void setCallibrationStatus(HandCallibrationStatus status) {
             mCallibrationStatus = status;
         }
-        
+
         public HandCallibrationStatus getCallibrationStatus() {
             return mCallibrationStatus;
         }
@@ -127,12 +122,21 @@ public class Climber extends SubsystemBase {
 
     public class Rotator extends SubsystemBase {
         private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
+        private double currentPosition = getPosition();
         // TODO: Rotator limit switch
 
         public Rotator() {
             mMotor.configFactoryDefault();
             mMotor.configAllSettings(Constants.Climber.kRotationConfig);
             mMotor.setNeutralMode(NeutralMode.Brake);
+        }
+
+        @Override
+        public void periodic() {
+            if(mMotor.hasResetOccurred()) {
+                setEncoderPosition(currentPosition);
+            }
+            currentPosition = getPosition();
         }
 
         @Override
@@ -149,9 +153,9 @@ public class Climber extends SubsystemBase {
         public void setPosition(double position, double feedforward) {
             mMotor.set(
                 ControlMode.Position,
-                position * Constants.Climber.Rotator.kEncoderCountsPerDegree,
-                DemandType.ArbitraryFeedForward,
-                feedforward);
+                position * Constants.Climber.Rotator.kEncoderCountsPerDegree);
+                // DemandType.ArbitraryFeedForward,
+                // feedforward);
         }
 
         public void setPosition(double position) {
@@ -163,7 +167,6 @@ public class Climber extends SubsystemBase {
         }
 
         public void setEncoderPosition(double position) {
-            System.out.println("setting position to " + position);
             mMotor.setSelectedSensorPosition(position);
         }
 
@@ -176,18 +179,28 @@ public class Climber extends SubsystemBase {
                 Utils.roughlyEqual(getPosition(), position, Constants.Climber.Rotator.kPositionTolerance)
                 && Utils.roughlyEqual(getVelocity(), velocity, Constants.Climber.Rotator.kSpeedTolerance);
         }
+
+        public void setNeutralModeBrake() {
+            mMotor.setNeutralMode(NeutralMode.Brake);
+        }
+
+        public void setNeutralModeCoast() {
+            mMotor.setNeutralMode(NeutralMode.Coast);
+        }
     }
     private static Climber instance;
 
     private final Rotator mRotator = new Rotator();
     private final Hand mHandA = new Hand(Constants.Climber.Hand.kClawAID, Constants.Climber.Hand.kLockAID);
     private final Hand mHandB = new Hand(Constants.Climber.Hand.kClawBID, Constants.Climber.Hand.kLockBID);
-    private final Servo mElevatorRelease = new Servo(Constants.Climber.kElevatorID);
+    private final Servo mLeftElevatorRelease = new Servo(Constants.Climber.kLeftElevatorID);
+    private final Servo mRightElevatorRelease = new Servo(Constants.Climber.kRightElevatorID);
 
     private State mState = State.kStarting;
 
     private Climber() {
-        mElevatorRelease.set(Constants.Climber.kElevatorReleaseDefaultPosition);
+        mLeftElevatorRelease.set(Constants.Climber.kLeftElevatorReleaseDefaultPosition);
+        mRightElevatorRelease.set(Constants.Climber.kRightElevatorReleaseDefaultPosition);
     }
 
     public static Climber getInstance() {
@@ -203,8 +216,7 @@ public class Climber extends SubsystemBase {
         addChild("Hand A", mHandA);
         addChild("Hand B", mHandB);
         addChild("Rotation Motor", mRotator);
-        builder.addDoubleProperty("Elevator Release Position", this::getElevatorReleasePosition, null);
-        builder.addDoubleProperty("Elevator Release Speed", () -> mElevatorRelease.getSpeed(), null);
+        builder.addDoubleArrayProperty("Elevator Release Position", this::getElevatorReleasePositions, null);
     }
 
     public Rotator getRotator() {
@@ -215,12 +227,13 @@ public class Climber extends SubsystemBase {
         return new Hand[] { mHandA, mHandB };
     }
 
-    public void setElevatorReleasePosition(double position) {
-        mElevatorRelease.set(position);
+    public void setElevatorReleasePositions(double leftPosition, double rightPosition) {
+        mLeftElevatorRelease.set(leftPosition);
+        mRightElevatorRelease.set(rightPosition);
     }
 
-    public double getElevatorReleasePosition() {
-        return mElevatorRelease.getPosition();
+    public double[] getElevatorReleasePositions() {
+        return new double[] {mLeftElevatorRelease.getPosition(), mRightElevatorRelease.getPosition()};
     }
 
     public boolean getInclusiveEngaged() {

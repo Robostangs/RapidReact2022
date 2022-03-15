@@ -6,8 +6,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveToMidBar extends CommandBase {
-    private final Climber mClimber = Climber.getInstance();
-    private final Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private static final Climber mClimber = Climber.getInstance();
+    private static final Drivetrain mDrivetrain = Drivetrain.getInstance();
     private final double mDriveSpeed;
 
     public DriveToMidBar(double driveSpeed) {
@@ -22,7 +22,7 @@ public class DriveToMidBar extends CommandBase {
 
     @Override
     public void initialize() {
-        mDrivetrain.drivePower(mDriveSpeed, mDriveSpeed);
+        mDrivetrain.drivePower(mDriveSpeed, -mDriveSpeed); //XXX TODO FIXME: Why is right not reversed???
     }
 
     @Override

@@ -7,7 +7,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class Climb1Bar extends SequentialCommandGroup {
-    private final Climber mClimber = Climber.getInstance();
+    private static final Climber mClimber = Climber.getInstance();
 
     public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition) {
         addRequirements(mClimber);
@@ -18,10 +18,10 @@ public class Climb1Bar extends SequentialCommandGroup {
             new ParallelDeadlineGroup( // Grab upper bar while holding position
                 new CloseHand(grabHandHolder),
                 new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)),
-            new Rotate(Constants.Climber.Rotator.kToCGSpeed) // Rotate to CG
-                .withInterrupt(() -> mClimber.getRotator().getPosition() >= CGPosition),
-            new ParallelCommandGroup( // Let go of lower bar
-                new Rotate(Constants.Climber.Rotator.kCGHoldSpeed), // while holding CG
-                new OpenHand(rotationHandHolder)));
+            // new Rotate(Constants.Climber.Rotator.kToCGSpeed) // Rotate to CG
+            //     .withInterrupt(() -> mClimber.getRotator().getPosition() <= CGPosition),
+            new ParallelDeadlineGroup( // Let go of lower bar
+                new OpenHand(rotationHandHolder),
+                new Rotate(Constants.Climber.Rotator.kCGHoldSpeed))); // while holding CG
     }
 }

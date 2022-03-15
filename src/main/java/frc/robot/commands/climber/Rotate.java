@@ -5,8 +5,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class Rotate extends CommandBase {
-    private final Climber.Rotator mRotator = Climber.getInstance().getRotator();
-    private final double mSpeed;
+    protected static final Climber.Rotator mRotator = Climber.getInstance().getRotator();
+    protected double mSpeed;
 
     public Rotate(double speed) {
         addRequirements(mRotator);

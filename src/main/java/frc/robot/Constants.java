@@ -29,10 +29,8 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 0.2;
-            public static final double kClawDefaultOpenSpeed = -0.2;
-            public static final double kMaxLockExtension = 0; 
-            public static final double kMinLockExtension = 0;
+            public static final double kClawDefaultMoveSpeed = 0.6;
+            public static final double kClawDefaultOpenSpeed = -0.6;
 
             public static final int kClawAID = 10;
             public static final int kClawBID = 9;
@@ -41,7 +39,6 @@ public final class Constants {
 
             public static final int kClawForwardSoftLimit = 70;
             public static final void configClawMotor(CANSparkMax clawMotor) {
-                // TODO: Check if this should be forward or reverse
                 clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
                 clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
@@ -56,42 +53,50 @@ public final class Constants {
 
             public static final double kGrabHandDebounceTime = 0.05;
         }
-        
+
         public static class Rotator {
-            public static final double kEncoderCountsPerDegree = 1170; // TODO: Get this value
+            public static final double kEncoderCountsPerDegree = 1170;
 
             public static final double kHorizontalAngle = -75;
-            public static final double kStartingAngle = -20;
-            
-            public static final double kPositionTolerance = 1000;
-            public static final double kSpeedTolerance = 10;
+            public static final double kStartingAngle = 60; //
 
-            public static final double kClimbRotationSpeed = 0.5;
-            public static final double kClimbHoldSpeed = 0.2;
-            public static final double kToCGSpeed = -0.5;
-            public static final double kCGHoldSpeed = -0.2;
+            public static final double kPositionTolerance = 0.5;
+            public static final double kSpeedTolerance = 1;
+
+            public static final double kClimbRotationSpeed = 0.7; //
+            public static final double kClimbHoldSpeed = 0.1; //
+            public static final double kToCGSpeed = -0.5; //
+            public static final double kCGHoldSpeed = -0.25; //
+
+            public static final double kDumbPositionTolerance = 5;
+            public static final double kDumbRotatorSpeed = 1;
         }
 
         public static final int kRotationMotorID = 27;
-        public static final int kElevatorID = 5;
+        public static final int kLeftElevatorID = 1;
+        public static final int kRightElevatorID = 0;
 
         public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
         static {
             kRotationConfig.slot0 = new SlotConfiguration();
-            kRotationConfig.slot0.kP = 0;
+            kRotationConfig.slot0.kP = 0.1;
             kRotationConfig.slot0.kI = 0;
             kRotationConfig.slot0.kD = 0;
             kRotationConfig.peakOutputForward = kPeakRotationOutput;
             kRotationConfig.peakOutputReverse = -kPeakRotationOutput;
         }
 
-        public static final double kElevatorReleaseDefaultPosition = 0;
-        public static final double kElevatorReleasePosition = 1;
+        public static final double kLeftElevatorReleaseDefaultPosition = 0.11;
+        public static final double kRightElevatorReleaseDefaultPosition = 0.41;
+        public static final double kLeftElevatorReleasePosition = 0.42;
+        public static final double kRightElevatorReleasePosition = 0.1;
+        public static final double kElevatorReleaseWaitTime = 3;
+
         public static final double kClawMoveConstant = 500;
 
-        public static final double kFirstCGPosition = 100;
-        public static final double kSecondCGPosition = 300;
+        public static final double kFirstCGPosition = 70; //
+        public static final double kSecondCGPosition = 300; //
 
         public static final double kDefaultDriveSpeed = 0.1;
         public static final double kWaitBeforePrep = 0.1;

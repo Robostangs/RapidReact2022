@@ -51,10 +51,13 @@ public class OpenHand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        if(interrupted && mHand.getCallibrationStatus() == Climber.HandCallibrationStatus.kCalibrating) {
+        if(mHand.isFullyOpen()) {
+            mHand.zeroClawEncoder();
+            mHand.setCallibrationStatus(HandCallibrationStatus.kCalibrated);
+        } else if (mHand.getCallibrationStatus() == Climber.HandCallibrationStatus.kCalibrating) {
             mHand.setCallibrationStatus(HandCallibrationStatus.kNotCalibrated);
             System.out.println("Hand calibration interrupted!");
-        }   
+        }
         mHand.setClawSpeed(0);
     }
 }

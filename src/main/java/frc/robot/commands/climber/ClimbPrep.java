@@ -1,5 +1,6 @@
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -9,7 +10,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ClimbPrep extends ParallelCommandGroup {
-    private final Climber mClimber = Climber.getInstance();
+    private static final Climber mClimber = Climber.getInstance();
 
     private final class PrepHand extends SequentialCommandGroup {
         private final Climber.Hand mHand;
@@ -18,26 +19,27 @@ public class ClimbPrep extends ParallelCommandGroup {
             mHand = hand;
             addCommands(
                 new PrintCommand("Running PrepHand"),
-                new OpenHand(mHand),
-                new InstantCommand(mHand::zeroClawEncoder),
+                new ConditionalCommand(
+                    new OpenHand(mHand),
+                    new InstantCommand(),
+                    () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
                 new CloseHand(mHand),
                 new SetHandLockPosition(mHand, Constants.Climber.Hand.kClawLockLockedPositon),
                 new OpenHand(mHand),
                 new PrintCommand("Finished PrepHand"));
-        }   
+        }
     }
 
     public ClimbPrep() {
         addRequirements(mClimber);
         final Climber.Hand[] hands = mClimber.getHands();
         addCommands(
-            // new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
-            new Rotate(-Constants.Climber.Rotator.kClimbHoldSpeed)
-                .withInterrupt(() -> mClimber.getRotator().getPosition() <= Constants.Climber.Rotator.kHorizontalAngle),
+            new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
             new SequentialCommandGroup(
                 new WaitCommand(Constants.Climber.kWaitBeforePrep),
-                new PrepHand(hands[0]),
-                new PrepHand(hands[1])));
+                new ParallelCommandGroup(
+                    new PrepHand(hands[0]),
+                    new PrepHand(hands[1]))));
     }
 
     @Override
