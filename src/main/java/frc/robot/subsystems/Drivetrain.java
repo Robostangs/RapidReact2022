@@ -160,6 +160,15 @@ public class Drivetrain extends SubsystemBase {
         drivePower(0, 0);
     }
 
+    public Pose2d getPose() {
+        return mDrivetrainOdometry.getPoseMeters();
+    }
+
+    public void setDriveVelos(double leftVelo, double rightVelo) {
+        mLeftTop.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
+        mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
+    }
+
     private void updateOdometry() {
         mDrivetrainOdometry.update(
             getGyroRotation2d(),

@@ -113,7 +113,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 1; // TODO: Set intake speed
+        public static final double kIntakeSpeed =0.5; // TODO: Set intake speed
         public static final int kIntakeMotorID = 8;
         public static final int kSensorID = 2;
     }
@@ -127,7 +127,33 @@ public final class Constants {
 
         public static final int kGyro = 7;
         public static final int kFalconEncoderMax = 2048;
-        public static final double kWheelDiameter = 3;
+        public static final double kWheelDiameter = 0.15;
+        public static final double kGearRatio = 7.828877;
+
+        public static final double kEncoderCountsPerMeter = (kFalconEncoderMax * kGearRatio) / (kWheelDiameter * Math.PI);
+        public static final double kB = 2;
+        public static final double kZeta = 0.7;
+
+        //TODO: SET MAX VELOCITY AND ACCELERATIONNNNNNNNNNNNN
+        public static final double maxVelocity = 1;
+        public static final double maxAcceleration = 3;
+
+        //TODO: GET DRIVETRAIN PIDDDDDD
+        public static final TalonFXConfiguration kLeftMotorsConfig = new TalonFXConfiguration();
+        static {
+            kLeftMotorsConfig.slot0 = new SlotConfiguration();
+            kLeftMotorsConfig.slot0.kP = 0;
+            kLeftMotorsConfig.slot0.kI = 0;
+            kLeftMotorsConfig.slot0.kD = 0;
+        }
+        
+        public static final TalonFXConfiguration kRightMotorsConfig = new TalonFXConfiguration();
+        static {
+            kRightMotorsConfig.slot0 = new SlotConfiguration();
+            kRightMotorsConfig.slot0.kP = 0;
+            kRightMotorsConfig.slot0.kI = 0;
+            kRightMotorsConfig.slot0.kD = 0;
+        }
 
         // Odometry
         public static final double kTrackWidth = 0.88817;

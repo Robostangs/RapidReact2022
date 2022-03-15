@@ -14,6 +14,10 @@ import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Activate;
 import frc.robot.commands.intake.Deactivate;
 import frc.robot.commands.shooter.SetVariableShooterState;
+import frc.robot.commands.intake.Active;
+import frc.robot.commands.shooter.AutoShoot;
+import frc.robot.commands.shooter.SetElevatorPower;
+import frc.robot.commands.shooter.SetShooterPower;
 import frc.robot.commands.turret.DefaultLimelight;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -56,8 +60,7 @@ public class RobotContainer {
         mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
 
         new JoystickButton(driver, XboxController.Button.kA.value)
-            .whenPressed(new Activate())
-            .whenInactive(new Deactivate());
+            .whenPressed(new Active(0.5));
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))
