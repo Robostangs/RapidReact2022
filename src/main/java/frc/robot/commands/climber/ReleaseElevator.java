@@ -9,6 +9,7 @@ public class ReleaseElevator extends WaitCommand {
 
     public ReleaseElevator() {
         super(Constants.Climber.kElevatorReleaseWaitTime);
+        setName("Release Elevator");
     }
 
     @Override

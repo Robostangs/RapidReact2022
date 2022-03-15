@@ -17,6 +17,7 @@ public class ClimbPrep extends ParallelCommandGroup {
 
         private PrepHand(Climber.Hand hand) {
             mHand = hand;
+            setName("Prep Hand");
             addCommands(
                 new PrintCommand("Running PrepHand"),
                 new ConditionalCommand(
@@ -33,6 +34,7 @@ public class ClimbPrep extends ParallelCommandGroup {
     public ClimbPrep() {
         addRequirements(mClimber);
         final Climber.Hand[] hands = mClimber.getHands();
+        setName("Climb Prep");
         addCommands(
             new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
             new SequentialCommandGroup(

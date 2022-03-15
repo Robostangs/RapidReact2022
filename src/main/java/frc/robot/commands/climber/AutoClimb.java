@@ -21,6 +21,7 @@ public class AutoClimb extends SequentialCommandGroup {
     }
 
     public AutoClimb() {
+        setName("Auto Climb");
         addCommands(
             new ReleaseElevator(),
                         new WaitUntilCommand(Robot::getProceed),
