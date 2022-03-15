@@ -3,10 +3,12 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Climber;
 
 public class AutoClimb extends SequentialCommandGroup {
@@ -23,6 +25,7 @@ public class AutoClimb extends SequentialCommandGroup {
     public AutoClimb() {
         setName("Auto Climb");
         addCommands(
+            new ScheduleCommand(new Protect()),
             new ReleaseElevator(),
                         new WaitUntilCommand(Robot::getProceed),
             new RotateToPosition(Constants.Climber.Rotator.kStartingAngle),
