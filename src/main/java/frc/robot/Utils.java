@@ -60,5 +60,13 @@ public final class Utils {
     public static double getEncoderDrivetrain(double distance) {
         // distance in meters
         return (distance / 0.15*Math.PI) * 7.82887701 / 2048;  
-   }
+    }
+
+    public static boolean roughlyEqual(double a, double b, double epsilon) {
+        return Math.abs(a - b) < epsilon;
+    }
+
+    public static boolean roughlyEqual(double a, double b) {
+        return roughlyEqual(a, b, 0.001);
+    }
 }
