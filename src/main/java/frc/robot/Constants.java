@@ -139,6 +139,10 @@ public final class Constants {
         public static final double kRotationMotorMax = 74000;
         public static final double kRotationMotorSoftLimitOffset = 2000;
         public static final double kRotationMotorSpeed = -0.2;
+        public static final double kTicksPerDegree = 314;
+        public static final double kMinTurretDegrees = -110;
+        public static final double kMaxTurretDegrees = 125.7;
+
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
 
@@ -147,17 +151,17 @@ public final class Constants {
 
         public static final double kTurningFeedForward = -0.03;
 
-        public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
+        public static final TalonFXConfiguration kMotorConfig = new TalonFXConfiguration();
         static {
-            kRotationConfig.slot0 = new SlotConfiguration();
-            kRotationConfig.slot0.kP = 0.1;
-            kRotationConfig.slot0.kI = 0.001;
-            kRotationConfig.slot0.kD = 0;
-            kRotationConfig.slot0.kF = -0.03;
-            kRotationConfig.slot0.integralZone = 1000;
-            kRotationConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
-            kRotationConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
-            kRotationConfig.neutralDeadband = 0;
+            kMotorConfig.slot0 = new SlotConfiguration();
+            kMotorConfig.slot0.kP = 0.1;
+            kMotorConfig.slot0.kI = 0.001;
+            kMotorConfig.slot0.kD = 0;
+            kMotorConfig.slot0.kF = -0.03;
+            kMotorConfig.slot0.integralZone = 1000;
+            kMotorConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
+            kMotorConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
+            kMotorConfig.neutralDeadband = 0;
         }
     }
 

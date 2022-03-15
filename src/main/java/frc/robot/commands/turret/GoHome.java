@@ -19,7 +19,7 @@ public class GoHome extends CommandBase {
         mTimer.reset();
         mTurret.setSoftLimitEnable(false);
         mTimer.start();
-        mTurret.setClearPosition(true);
+        mTurret.configClearPosition(true);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GoHome extends CommandBase {
             System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
 
             mTurret.setSpeed(0);
-            mTurret.setMaxSpeed(0.2);
+            mTurret.configMaxSpeed(0.2);
             cancel();
         }
     }
@@ -45,9 +45,9 @@ public class GoHome extends CommandBase {
     public void end(boolean interrupted) {
         if (!interrupted) {
             mTurret.setSoftLimitEnable(true);
-            mTurret.setMaxSpeed(1);
+            mTurret.configMaxSpeed(1);
             mTurret.setHomed(true);
         }
-        mTurret.setClearPosition(false);
+        mTurret.configClearPosition(false);
     }
 }

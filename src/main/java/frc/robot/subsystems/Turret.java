@@ -16,11 +16,9 @@ public class Turret extends SubsystemBase {
 
     private static Turret instance;
 
-    private final WPI_TalonFX mRotationMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
+    private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
     // private final DigitalInput m_homeSensorOn, m_homeSensorOff;
     private boolean mIsHomed;
-    private double mFilter;
-    private frc.robot.subsystems.Drivetrain mDrivetrain = frc.robot.subsystems.Drivetrain.getInstance();
 
     public static Turret getInstance() {
         if (instance == null) {
@@ -30,96 +28,101 @@ public class Turret extends SubsystemBase {
     }
 
     private Turret() {
-        mRotationMotor.configFactoryDefault();
-        mRotationMotor.configAllSettings(Constants.Turret.kRotationConfig);
+        mMotor.configFactoryDefault();
+        mMotor.configAllSettings(Constants.Turret.kMotorConfig);
 
-        mRotationMotor.setNeutralMode(NeutralMode.Brake);
+        mMotor.setNeutralMode(NeutralMode.Brake);
 
-        mFilter = 0;
         mIsHomed = false;
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addDoubleProperty("Turret", this::getTurrentAngle, null);
+        builder.addDoubleProperty("Position", this::getRawPosition, null);
+        builder.addDoubleProperty("Angle", this::getAngle, null);
     }
 
-    public void setClearPosition(boolean value) {
-        mRotationMotor.configClearPositionOnLimitR(value, 100);
+    private double positionRawToAngular(double raw) {
+        return raw / Constants.Turret.kTicksPerDegree;
     }
 
-    public void setSpeed(double speed) {
-        mRotationMotor.set(
-            ControlMode.PercentOutput,
-            speed,
-            DemandType.ArbitraryFeedForward,
-            mDrivetrain.getGyroRate() * Constants.Turret.kTurningFeedForward);
+    private double positionAngularToRaw(double angle) {
+        return angle * Constants.Turret.kTicksPerDegree;
     }
 
-    public void setPosition(double position) {
-        mRotationMotor.set(
+    private double speedRawToAnguar(double raw) {
+        return raw * 10 / Constants.Turret.kTicksPerDegree;
+    }
+
+    private double speedAngularToRaw(double angular) {
+        return angular * Constants.Turret.kTicksPerDegree / 10;
+    }
+
+    private double getRawPosition() {
+        return mMotor.getSelectedSensorPosition(0);
+    }
+
+    public double getAngle() {
+        return positionRawToAngular(getRawPosition());
+    }
+
+    private double getRawVelocity() {
+        return mMotor.getSelectedSensorVelocity();
+    }
+
+    public double getAngularVelocity() {
+        return speedRawToAnguar(getRawVelocity());
+    }
+
+    private void setRawSetpoint(double position, double feedforward) {
+        mMotor.set(
             ControlMode.Position,
             position,
             DemandType.ArbitraryFeedForward,
-            mDrivetrain.getGyroRate() * Constants.Turret.kTurningFeedForward);
+            feedforward);
     }
 
-    public double getTurrentPosition() {
-        return mRotationMotor.getSelectedSensorPosition();
+    public void setAngleSetpoint(double angle, double feedforward) {
+        setRawSetpoint(positionAngularToRaw(angle), feedforward);
     }
 
-    public double getTurrentAngle() {
-        return (mRotationMotor.getSelectedSensorPosition() - Constants.Turret.kBackPosition)
-            / ((Constants.Turret.kLeftNinety - Constants.Turret.kBackPosition) / 90);
+    public void setAngleSetpoint(double angle) {
+        setAngleSetpoint(angle, 0);
     }
 
-    public double getTurretVelocity() {
-        return mRotationMotor.getSelectedSensorVelocity();
+    private void setRawSpeedSetpoint(double speed, double feedforward) {
+        mMotor.set(
+            ControlMode.PercentOutput,
+            speed,
+            DemandType.ArbitraryFeedForward,
+            feedforward);
     }
 
-    public void setMaxSpeed(double speed) {
-        mRotationMotor.configPeakOutputForward(speed);
-        mRotationMotor.configPeakOutputReverse(-speed);
+    public void setAngularVelocitySetpoint(double angularVelocity, double feedforward) {
+        setRawSpeedSetpoint(speedAngularToRaw(angularVelocity), feedforward);
     }
 
-    public void setAngle(double angle) {
-        setPosition(
-            Utils.saturate(
-                ((angle * (Constants.Turret.kLeftNinety - Constants.Turret.kBackPosition) / 90) + Constants.Turret.kBackPosition),
-                Constants.Turret.kRotationMotorSoftLimitOffset,
-                (Constants.Turret.kRotationMotorMax - Constants.Turret.kRotationMotorSoftLimitOffset)));
-    }
-
-    public void limelightSetAngle(double angle) {
-        double currentAngle = (mRotationMotor.getSelectedSensorPosition() - Constants.Turret.kBackPosition)
-            / ((Constants.Turret.kLeftNinety - Constants.Turret.kBackPosition) / 90);
-        SmartDashboard.putNumber("angle", currentAngle);
-        double target = angle + currentAngle;
-        SmartDashboard.putNumber("tarhet", target);
-        setFilteredAngle(target);
-    }
-
-    public void setFilteredAngle(double target) {
-        mFilter = mFilter + Constants.Turret.kFilterConstant * (target - mFilter);
-        setAngle(mFilter);
-    }
-
-    public void rotateMotorVelocity(double speed) {
-        mRotationMotor.set(ControlMode.PercentOutput, speed);
-    }
-
-    public double getVelocity() {
-        return mRotationMotor.getSelectedSensorVelocity();
+    public void setAngularVelocitySetpoint(double angularVelocity) {
+        setAngularVelocitySetpoint(angularVelocity, 0);
     }
 
     public boolean getReverseLimit() {
-        return mRotationMotor.isRevLimitSwitchClosed() == 1;
+        return mMotor.isRevLimitSwitchClosed() == 1;
+    }
+
+    public void configMaxSpeed(double speed) {
+        mMotor.configPeakOutputForward(speed);
+        mMotor.configPeakOutputReverse(-speed);
+    }
+
+    public void configClearPosition(boolean value) {
+        mMotor.configClearPositionOnLimitR(value, 100);
     }
 
     public void setSoftLimitEnable(boolean enable) {
-        mRotationMotor.configForwardSoftLimitEnable(enable);
-        mRotationMotor.configReverseSoftLimitEnable(enable);
+        mMotor.configForwardSoftLimitEnable(enable);
+        mMotor.configReverseSoftLimitEnable(enable);
     }
 
     public void setHomed(boolean value) {
@@ -128,7 +131,7 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (mRotationMotor.hasResetOccurred()) {
+        if (mMotor.hasResetOccurred()) {
             mIsHomed = false;
         }
         if (!mIsHomed) {
