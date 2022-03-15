@@ -135,7 +135,7 @@ public class Turret extends SubsystemBase {
             mIsHomed = false;
         }
         if (!mIsHomed) {
-            new GoHome().schedule();
+            new GoHome().withTimeout(3).schedule();
         }
     }
 }

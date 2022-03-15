@@ -137,7 +137,7 @@ public final class Constants {
         public static final int kRotationMotorID = 6;
 
         public static final double kRotationMotorMax = 74000;
-        public static final double kRotationMotorSoftLimitOffset = 2000;
+        public static final double kRotationMotorSoftLimitOffset = 4000;
         public static final double kRotationMotorSpeed = -0.2;
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
@@ -147,11 +147,12 @@ public final class Constants {
         public static final double kLeftNinety = 63428;
 
         public static final double kFilterConstant = 0.5;
-        public static final double kDrivingOffset = 0;
 
         public static final double kTurningFeedForward = -0.03;
 
         public static final TalonFXConfiguration kMotorConfig = new TalonFXConfiguration();
+
+        public static final double kProtectedValue = -90;
         static {
             kMotorConfig.slot0 = new SlotConfiguration();
             kMotorConfig.slot0.kP = 0.1;

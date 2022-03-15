@@ -7,7 +7,6 @@ import frc.robot.subsystems.Turret;
 
 public class GoHome extends CommandBase {
     private final Turret mTurret = Turret.getInstance();
-    private final Timer mTimer = new Timer();
 
     public GoHome() {
         addRequirements(mTurret);
@@ -16,24 +15,14 @@ public class GoHome extends CommandBase {
 
     @Override
     public void initialize() {
-        mTimer.reset();
         mTurret.setSoftLimitEnable(false);
-        mTimer.start();
         mTurret.configClearPosition(true);
     }
 
     @Override
     public void execute() {
-        if (mTimer.get() <= 3) {
-            System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-            mTurret.setSpeed(Constants.Turret.kRotationMotorSpeed);
-        } else {
-            System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
-
-            mTurret.setSpeed(0);
-            mTurret.configMaxSpeed(0.2);
-            cancel();
-        }
+        System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+        mTurret.setAngularVelocitySetpoint(Constants.Turret.kRotationMotorSpeed, Constants.Turret.kTurningFeedForward);
     }
 
     @Override
@@ -47,6 +36,9 @@ public class GoHome extends CommandBase {
             mTurret.setSoftLimitEnable(true);
             mTurret.configMaxSpeed(1);
             mTurret.setHomed(true);
+        } else if(interrupted) {
+            mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
+            mTurret.configMaxSpeed(0.2);
         }
         mTurret.configClearPosition(false);
     }
