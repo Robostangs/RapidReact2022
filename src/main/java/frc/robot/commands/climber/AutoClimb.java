@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.turret.Protect;
-import frc.robot.commands.drivetrain.DriveDistance;
+// import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Turret;
@@ -20,7 +20,7 @@ public class AutoClimb extends SequentialCommandGroup {
         setName("Auto Climb");
 
         addCommands(
-            new DriveDistance(500),
+            // new DriveDistance(500),
             new Protect(),
             new SpinClimber(Constants.Climber.kMoveClimberSpeed),
             new WaitCommand(2));
