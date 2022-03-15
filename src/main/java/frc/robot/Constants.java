@@ -29,15 +29,15 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 0.6;
-            public static final double kClawDefaultOpenSpeed = -0.6;
+            public static final double kClawDefaultMoveSpeed = 1;
+            public static final double kClawDefaultOpenSpeed = -1;
 
             public static final int kClawAID = 10;
             public static final int kClawBID = 9;
             public static final int kLockAID = 2;
             public static final int kLockBID = 3;
 
-            public static final int kClawForwardSoftLimit = 70;
+            public static final int kClawForwardSoftLimit = 69;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
@@ -48,7 +48,7 @@ public final class Constants {
 
             public static final double kClawLockUnlockedPositon = 0.8;
             public static final double kClawLockLockedPositon = 1;
-            public static final double kHandLockWaitTime = 0.5;
+            public static final double kHandLockWaitTime = 0.3;
             public static final void configClawLock(Servo lock) {}
 
             public static final double kGrabHandDebounceTime = 0.05;
@@ -95,7 +95,7 @@ public final class Constants {
 
         public static final double kClawMoveConstant = 500;
 
-        public static final double kFirstCGPosition = 70; //
+        public static final double kFirstCGPosition = 120; //
         public static final double kSecondCGPosition = 300; //
 
         public static final double kDefaultDriveSpeed = 0.1;
