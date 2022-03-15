@@ -102,7 +102,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 1; // TODO: Set intake speed
+        public static final double kIntakeSpeed =0.5; // TODO: Set intake speed
         public static final int kIntakeMotorID = 8;
         public static final int kSensorID = 2;
     }
@@ -124,8 +124,8 @@ public final class Constants {
         public static final double kZeta = 0.7;
 
         //TODO: SET MAX VELOCITY AND ACCELERATIONNNNNNNNNNNNN
-        public static final double maxVelocity = 2;
-        public static final double maxAcceleration = 20;
+        public static final double maxVelocity = 1;
+        public static final double maxAcceleration = 3;
 
         //TODO: GET DRIVETRAIN PIDDDDDD
         public static final TalonFXConfiguration kLeftMotorsConfig = new TalonFXConfiguration();

@@ -92,7 +92,6 @@ public class Drivetrain extends SubsystemBase {
         builder.addDoubleProperty("Right Position", this::getRightPosition, null);
         builder.addDoubleProperty("Left Velocity", this::getLeftVelocity, null);
         builder.addDoubleProperty("Right Velocity", this::getRightVelocity, null);
-        builder.addStringProperty("Pose", () -> getPose() + "", null);
     }
 
     public Rotation2d getGyroRotation2d() {
@@ -178,8 +177,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setDriveVelos(double leftVelo, double rightVelo) {
-        mLeftTop.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kEncoderCountsPerMeter / 10));
-        mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kEncoderCountsPerMeter / 10));
+        mLeftTop.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
+        mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
     }
 
     private void updateOdometry() {

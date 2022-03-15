@@ -4,6 +4,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Utils;
 
 public class Limelight extends SubsystemBase {
 
@@ -63,5 +65,9 @@ public class Limelight extends SubsystemBase {
 
     public static void blinkLEDs() {
         LimelightTable.getEntry("ledMode").setNumber(2);
+    }
+
+    public static double getDistance() {
+        return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
 }

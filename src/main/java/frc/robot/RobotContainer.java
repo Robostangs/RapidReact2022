@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.feeder.DefaultFeeder;
-import frc.robot.commands.intake.Activate;
-import frc.robot.commands.intake.Deactivate;
+import frc.robot.commands.intake.Active;
 import frc.robot.commands.shooter.AutoShoot;
 import frc.robot.commands.shooter.SetElevatorPower;
 import frc.robot.commands.shooter.SetShooterPower;
@@ -57,8 +56,7 @@ public class RobotContainer {
         // mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
 
         new JoystickButton(driver, XboxController.Button.kA.value)
-            .whenPressed(new Activate())
-            .whenInactive(new Deactivate());
+            .whenPressed(new Active(0.5));
 
         new JoystickButton(manip, XboxController.Button.kB.value)
             .whenPressed(new AutoShoot(4800, 2500, 0))
