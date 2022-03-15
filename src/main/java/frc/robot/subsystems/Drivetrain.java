@@ -4,252 +4,166 @@ import com.kauailabs.navx.frc.AHRS;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-    
 
-    public static Drivetrain Instance;
-    public DifferentialDriveOdometry m_dtOdometry;
-    private TalonFX m_leftTop, m_leftBottom, m_rightTop, m_rightBottom; 
-    private AHRS m_gyro;
-    
-    //Stabilization STUFFFF
-    private double angleConstant, actualEncoderValueLeft, lastEncoderValueLeft,actualEncoderValueRight, lastEncoderValueRight;
-    // private SlotConfiguration m_allMotorPID;
-    private PIDController m_leftPIDController;
-    private PIDController m_rightPIDController;
-    private SimpleMotorFeedforward m_leftFeedForward;
-    private SimpleMotorFeedforward m_rightFeedForward;   
+    private static Drivetrain Instance;
+
+    private final DifferentialDriveOdometry mDrivetrainOdometry
+        = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(0, 0, new Rotation2d(0, 0)));
+    private final WPI_TalonFX mLeftTop = new WPI_TalonFX(Constants.Drivetrain.kLeftTopID);
+    private final WPI_TalonFX mLeftBottom = new WPI_TalonFX(Constants.Drivetrain.kLeftBackID);
+    private final WPI_TalonFX mRightTop = new WPI_TalonFX(Constants.Drivetrain.kRightTopID);
+    private final WPI_TalonFX mRightBottom = new WPI_TalonFX(Constants.Drivetrain.kRightBackID);
+    private final AHRS mGyro = new AHRS(SPI.Port.kMXP);
+
+    // // Stabilization STUFFFF
+    // private double angleConstant, actualEncoderValueLeft, lastEncoderValueLeft, actualEncoderValueRight,
+    //         lastEncoderValueRight;
+    // // private SlotConfiguration m_allMotorPID;
+    // private PIDController m_leftPIDController;
+    // private PIDController m_rightPIDController;
+    // private SimpleMotorFeedforward m_leftFeedForward;
+    // private SimpleMotorFeedforward m_rightFeedForward;
+
     public static Drivetrain getInstance() {
-        if(Instance == null) {
+        if (Instance == null) {
             Instance = new Drivetrain();
         }
         return Instance;
     }
 
-    public Drivetrain() {
-        m_leftTop = new TalonFX(Constants.Drivetrain.LT);
-        m_leftBottom = new TalonFX(Constants.Drivetrain.LB);
+    private Drivetrain() {
+        mLeftTop.setNeutralMode(NeutralMode.Brake);
+        mRightTop.setNeutralMode(NeutralMode.Brake);
+        mLeftBottom.setNeutralMode(NeutralMode.Brake);
+        mRightBottom.setNeutralMode(NeutralMode.Brake);
 
-        m_rightTop = new TalonFX(Constants.Drivetrain.RT);
-        m_rightBottom = new TalonFX(Constants.Drivetrain.RB);
+        // m_leftPIDController = new PIDController(Constants.Drivetrain.kLeftP,
+        // Constants.Drivetrain.kLeftI, Constants.Drivetrain.kLeftD);
+        // m_rightPIDController = new PIDController(Constants.Drivetrain.kRightP,
+        // Constants.Drivetrain.kRightI, Constants.Drivetrain.kRightD);
 
-        //m_dtOdometry = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(1.5, 0, new Rotation2d()));
+        // m_leftFeedForward = new SimpleMotorFeedforward(Constants.Drivetrain.kLeftS,
+        // Constants.Drivetrain.kLeftV, Constants.Drivetrain.kLeftA);
+        // m_rightFeedForward = new SimpleMotorFeedforward(Constants.Drivetrain.kRightS,
+        // Constants.Drivetrain.kRightV, Constants.Drivetrain.kRightD);
 
-        // m_leftTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
-		// 		30);
-        //         m_leftTop.configNeutralDeadband(0.001, 30);
-        //         m_rightTop.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
-		// 		30);
-        //         m_rightTop.configNeutralDeadband(0.001, 30);
-		// /* Set Motion Magic gains in slot0 - see documentation */
-		// m_leftTop.selectProfileSlot(0, 0);
-        // m_rightTop.selectProfileSlot(0, 0);
+        mLeftBottom.follow(mLeftTop);
+        mRightBottom.follow(mRightTop);
 
-        // SmartDashboard.putNumber("kLeftP", 0.1);
-        // SmartDashboard.putNumber("kLeftI", 0);
+        mLeftTop.setNeutralMode(NeutralMode.Brake);
+        mRightTop.setNeutralMode(NeutralMode.Brake);
 
-        // SmartDashboard.putNumber("kLeftD", 0);
-
-        // SmartDashboard.putNumber("kRightP", 0.1);
-        // SmartDashboard.putNumber("kRightI", 0);
-        // SmartDashboard.putNumber("kRightD", 0);
-
-        //Stabilization STUFFFF
-        // SmartDashboard.putNumber("CAngle", 0);
-        // angleConstant = 0;
-
-		// m_leftTop.config_kF(0, Constants.Drivetrain.kLeftF, 30);
-		// m_leftTop.config_kP(0, SmartDashboard.getNumber("kLeftP", 0.1), 30);
-		// m_leftTop.config_kI(0, SmartDashboard.getNumber("kLeftI", 0), 30);
-		// m_leftTop.config_kD(0, SmartDashboard.getNumber("kLeftD", 0), 30);
-
-		// /* Set acceleration and vcruise velocity - see documentation */
-		// m_leftTop.configMotionCruiseVelocity(20000, 30);
-		// m_leftTop.configMotionAcceleration(1500, 30);        
-
-        // /* Set Motion Magic gains in slot0 - see documentation */
-		// m_rightTop.selectProfileSlot(0, 0);
-		// m_rightTop.config_kF(0, Constants.Drivetrain.kRightF, 30);
-		// m_rightTop.config_kP(0, SmartDashboard.getNumber("kRightP", 0.1), 30);
-		// m_rightTop.config_kI(0, SmartDashboard.getNumber("kRightI", 0), 30);
-		// m_rightTop.config_kD(0, SmartDashboard.getNumber("kRightD", 0), 30);
-
-		// /* Set acceleration and vcruise velocity - see documentation */
-		// m_rightTop.configMotionCruiseVelocity(20000, 30);
-		// m_rightTop.configMotionAcceleration(1500, 30);    
-
-        m_leftPIDController = new PIDController(Constants.Drivetrain.kLeftP, Constants.Drivetrain.kLeftI, Constants.Drivetrain.kLeftD);
-        m_rightPIDController = new PIDController(Constants.Drivetrain.kRightP, Constants.Drivetrain.kRightI, Constants.Drivetrain.kRightD);
-
-        m_leftFeedForward = new SimpleMotorFeedforward(Constants.Drivetrain.kLeftS, Constants.Drivetrain.kLeftV, Constants.Drivetrain.kLeftA);
-        m_rightFeedForward = new SimpleMotorFeedforward(Constants.Drivetrain.kRightS, Constants.Drivetrain.kRightV, Constants.Drivetrain.kRightD);
-
-        m_leftBottom.follow(m_leftTop);
-        m_rightBottom.follow(m_rightTop);
-
-        m_leftTop.setNeutralMode(NeutralMode.Brake);
-        m_rightTop.setNeutralMode(NeutralMode.Brake);
-
-        m_gyro = new AHRS(SPI.Port.kMXP);
+        resetEncoder();
     }
 
-    // @Override
-    // public void periodic() {
-    //     m_dtOdometry.update(getGyroRotation2d(), getDriveDistanceLeft(), getDriveDistanceRight());
-    // }
+    @Override
+    public void periodic() {
+        updateOdometry();
+    }
 
-    // public void setPoint(double leftSetpoint, double rightSetpoint) {
-    //     m_leftPIDController.setSetpoint(leftSetpoint);
-    //     m_rightPIDController.setSetpoint(rightSetpoint);
-    // }
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Left Position", this::getLeftPosition, null);
+        builder.addDoubleProperty("Right Position", this::getRightPosition, null);
+        builder.addDoubleProperty("Left Velocity", this::getLeftVelocity, null);
+        builder.addDoubleProperty("Right Velocity", this::getRightVelocity, null);
+    }
 
-    // public Rotation2d getGyroRotation2d() {
-    //     return m_gyro.getRotation2d();
-    // }
+    public Rotation2d getGyroRotation2d() {
+        if (mGyro != null && mGyro.getRotation2d() != null) {
+            return mGyro.getRotation2d();
+        } else {
+            return new Rotation2d();
+        }
+    }
 
     public double getGyroRate() {
-        return m_gyro.getRate();
+        return mGyro.getRate();
     }
 
     public double getGyroVelocityX() {
-        return m_gyro.getVelocityX();
+        return mGyro.getVelocityX();
     }
 
     public double getGyroVelocityY() {
-        return m_gyro.getVelocityY();
-    }
-
-    public void driveDistance(double distance) {
-        lastEncoderValueLeft = 0;
-        actualEncoderValueLeft = 0;
-        lastEncoderValueRight = 0;
-        actualEncoderValueRight = 0;
-
-        m_leftTop.set(ControlMode.PercentOutput, m_leftPIDController.calculate(getDriveDistanceLeft(),distance+ m_leftFeedForward.calculate(getLeftVelocity())));
-        m_rightTop.set(ControlMode.PercentOutput, m_rightPIDController.calculate(getDriveDistanceRight(), distance +  m_rightFeedForward.calculate(getRightVelocity())));
-    }
-
-    public double getDriveDistanceLeft() {
-        if(lastEncoderValueLeft > getLeftPosition()) {
-            actualEncoderValueLeft += (getLeftPosition() + 2048) - lastEncoderValueLeft;
-            lastEncoderValueLeft = getLeftPosition();
-            return actualEncoderValueLeft; 
-        } else {
-            actualEncoderValueLeft += getLeftPosition() + lastEncoderValueLeft;
-            lastEncoderValueLeft = getLeftPosition();
-            return actualEncoderValueLeft; 
-        }   
-    }
-
-    public double getDriveDistanceRight() {
-        if(lastEncoderValueRight > getRightPosition()) {
-            actualEncoderValueRight += (getRightPosition() + 2048) - lastEncoderValueRight;
-            lastEncoderValueRight = getRightPosition();
-            return actualEncoderValueRight; 
-        } else {
-            actualEncoderValueRight += getRightPosition() + lastEncoderValueRight;
-            lastEncoderValueRight = getRightPosition();
-            return actualEncoderValueRight; 
-        }   
+        return mGyro.getVelocityY();
     }
 
     public void drivePower(double leftPwr, double rightPwr) {
-        m_leftTop.set(ControlMode.PercentOutput, leftPwr);
-        m_rightTop.set(ControlMode.PercentOutput, rightPwr);
+        mLeftTop.set(ControlMode.PercentOutput, leftPwr);
+        mRightTop.set(ControlMode.PercentOutput, rightPwr);
     }
 
     public double getLeftPosition() {
-        return m_leftTop.getSelectedSensorPosition();
+        return mLeftTop.getSelectedSensorPosition();
     }
 
     public double getRightPosition() {
-        return m_rightTop.getSelectedSensorPosition();
+        return mRightTop.getSelectedSensorPosition();
     }
-    
+
     public double getLeftVelocity() {
-        return m_leftTop.getSelectedSensorVelocity();
+        return mLeftTop.getSelectedSensorVelocity();
     }
 
     public double getRightVelocity() {
-        return m_rightTop.getSelectedSensorVelocity();
+        return mRightTop.getSelectedSensorVelocity();
     }
 
     public double getLeftCurrent() {
-        return m_leftTop.getSupplyCurrent();
+        return mLeftTop.getSupplyCurrent();
     }
 
     public double getRightCurrent() {
-        return m_rightTop.getSupplyCurrent();
+        return mRightTop.getSupplyCurrent();
     }
 
     public double getLeftVoltage() {
-        return m_leftTop.getBusVoltage();
+        return mLeftTop.getBusVoltage();
     }
 
     public double getRightVoltage() {
-        return m_rightTop.getBusVoltage();
+        return mRightTop.getBusVoltage();
     }
 
     public double getLeftTemp() {
-        return m_leftTop.getTemperature();
+        return mLeftTop.getTemperature();
     }
 
     public double getRightTemp() {
-        return m_rightTop.getTemperature();
+        return mRightTop.getTemperature();
     }
 
     public void resetEncoder() {
-        m_leftTop.setSelectedSensorPosition(0);
-        m_rightTop.setSelectedSensorPosition(0);
+        mLeftTop.setSelectedSensorPosition(0);
+        mRightTop.setSelectedSensorPosition(0);
     }
 
     public double getAngle() {
-        return m_gyro.getAngle();
+        return mGyro.getAngle();
     }
 
     public void brake() {
         drivePower(0, 0);
-    }       
+    }
 
-    //Stabilization Stuffff
-    // public double getConstant() {
-    //     return angleConstant;
-    // }
-
-    public void updateValues() {
-	// 	m_leftTop.config_kP(0, SmartDashboard.getNumber("kLeftP", 0.1), 30);
-	// 	m_leftTop.config_kI(0, SmartDashboard.getNumber("kLeftI", 0), 30);
-	// 	m_leftTop.config_kD(0, SmartDashboard.getNumber("kLeftD", 0), 30);
-
-    //     m_rightTop.config_kP(0, SmartDashboard.getNumber("kRightP", 0.1), 30);
-	// 	m_rightTop.config_kI(0, SmartDashboard.getNumber("kRightI", 0), 30);
-	// 	m_rightTop.config_kD(0, SmartDashboard.getNumber("kRightD", 0), 30);
-
-        
-    //     //Stabilization STUFFFFF
-    //     //angleConstant =  SmartDashboard.getNumber("CAngle", 0);
-
-    //     SmartDashboard.putNumber("right velo", m_rightTop.getSelectedSensorVelocity() * 600/2048);
-    //     SmartDashboard.putNumber("left velo", m_leftTop.getSelectedSensorVelocity() * 600/2048);
-    //     SmartDashboard.putNumber("Angle", m_gyro.getAngle());
-
-        SmartDashboard.putData(m_leftPIDController);
-        SmartDashboard.putData(m_rightPIDController);
+    private void updateOdometry() {
+        mDrivetrainOdometry.update(
+            getGyroRotation2d(),
+            mLeftTop.getSelectedSensorPosition() * ((0.15 * Math.PI) * 0.11 / 2048),
+            -mRightTop.getSelectedSensorPosition() * ((0.15 * 0.11 * Math.PI) / 2048));
     }
 }

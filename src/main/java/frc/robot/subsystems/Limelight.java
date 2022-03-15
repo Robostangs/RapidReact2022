@@ -2,35 +2,39 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Limelight {
-    public static Limelight instance;
+public class Limelight extends SubsystemBase {
 
-    public static NetworkTable nt;
+    @SuppressWarnings("unused")
+    private static final Limelight instance = new Limelight();
+    private static final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-    public static double tx = 0;
-    public static double ty = 0;
-    public static double tv = 0;
-    public static double ta = 0;
+    private static double tx = 0;
+    private static double ty = 0;
+    private static double tv = 0;
+    private static double ta = 0;
 
-    public Limelight getInstance() {
-        if(instance == null) {
-            instance = new Limelight();
-        }
-        return instance;
+    private Limelight() {
+        LimelightTable.getEntry("pipeline").setNumber(0);
     }
 
-    public Limelight(){
-        nt = NetworkTableInstance.getDefault().getTable("limelight");
-        nt.getEntry("pipeline").setNumber(0);
+    @Override
+    public void periodic() {
+        tx = LimelightTable.getEntry("tx").getDouble(0);
+        ty = LimelightTable.getEntry("ty").getDouble(0);
+        tv = LimelightTable.getEntry("tv").getDouble(0);
+        ta = LimelightTable.getEntry("ta").getDouble(0);
     }
 
-    public static void refresh() {
-        nt = NetworkTableInstance.getDefault().getTable("limelight");
-        tx = nt.getEntry("tx").getDouble(0);
-        ty = nt.getEntry("ty").getDouble(0);
-        tv = nt.getEntry("tv").getDouble(0);
-        ta = nt.getEntry("ta").getDouble(0);
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("tx", () -> tx, null);
+        builder.addDoubleProperty("ty", () -> ty, null);
+        builder.addDoubleProperty("tv", () -> tv, null);
+        builder.addDoubleProperty("ta", () -> ta, null);
     }
 
     public static double getTx() {
@@ -49,15 +53,15 @@ public class Limelight {
         return ta;
     }
 
-    public static void ledOn() {
-        nt.getEntry("ledMode").setNumber(0);
+    public static void enableLEDs() {
+        LimelightTable.getEntry("ledMode").setNumber(0);
     }
 
-    public static void ledOff() {
-        nt.getEntry("ledMode").setNumber(1);
+    public static void disableLEDs() {
+        LimelightTable.getEntry("ledMode").setNumber(1);
     }
 
-    public static void ledBlink() {
-        nt.getEntry("ledMode").setNumber(2);
+    public static void blinkLEDs() {
+        LimelightTable.getEntry("ledMode").setNumber(2);
     }
 }
