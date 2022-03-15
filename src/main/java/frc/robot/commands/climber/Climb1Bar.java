@@ -24,4 +24,20 @@ public class Climb1Bar extends SequentialCommandGroup {
                 new OpenHand(rotationHandHolder),
                 new Rotate(Constants.Climber.Rotator.kCGHoldSpeed))); // while holding CG
     }
+
+    public Climb1Bar(Climber.Hand rotationHand, Climber.Hand grabHand, double CGPosition) {
+        addRequirements(mClimber);
+        setName("Climb 1 Bar");
+        addCommands(
+            new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
+                .until(() -> grabHand.getEngaged()), // Rotate to position
+            new ParallelDeadlineGroup( // Grab upper bar while holding position
+                new CloseHand(grabHand),
+                new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)),
+            // new Rotate(Constants.Climber.Rotator.kToCGSpeed) // Rotate to CG
+            //     .withInterrupt(() -> mClimber.getRotator().getPosition() <= CGPosition),
+            new ParallelDeadlineGroup( // Let go of lower bar
+                new OpenHand(rotationHand),
+                new Rotate(Constants.Climber.Rotator.kCGHoldSpeed))); // while holding CG
+    }
 }

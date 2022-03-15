@@ -12,22 +12,14 @@ import frc.robot.subsystems.Climber;
 public class AutoClimb extends SequentialCommandGroup {
     private static final Climber mClimber = Climber.getInstance();
     private static final Climber.Rotator mRotator = mClimber.getRotator();
-    private final HandHolder mRotationHandHolder = new HandHolder();
-    private final HandHolder mGrabHandHolder = new HandHolder();
-
-    private void switchHands() {
-        Climber.Hand tempHand = mRotationHandHolder.hand;
-        mRotationHandHolder.hand = mGrabHandHolder.hand;
-        mGrabHandHolder.hand = tempHand;
+    private static final Climber.Hand mHandA;
+    private static final Climber.Hand mHandB;
+    static {
+        final Climber.Hand[] hands = mClimber.getHands();
+        mHandA = hands[0];
+        mHandB = hands[1];
     }
 
-    private void initHands() {
-        var hands = mClimber.getHands();
-        mRotationHandHolder.hand = hands[0];
-        mGrabHandHolder.hand = hands[1];
-    }
-
-    
     public AutoClimb() {
         addCommands(
             new ReleaseElevator(),
@@ -36,28 +28,26 @@ public class AutoClimb extends SequentialCommandGroup {
                         new WaitUntilCommand(Robot::getProceed),
             new ProxyScheduleCommand(new DriveToMidBar()),
                         new WaitUntilCommand(Robot::getProceed),
-            new InstantCommand(this::initHands),
-            new CloseHand(mRotationHandHolder),
+            new CloseHand(mHandA),
                         new WaitUntilCommand(Robot::getProceed),
-            new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon),
+            new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon),
                         new WaitUntilCommand(Robot::getProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition),
+            new Climb1Bar(mHandA, mHandB, Constants.Climber.kFirstCGPosition),
                         new WaitUntilCommand(Robot::getProceed),
             new InstantCommand(() -> mRotator.setNeutralModeCoast()),
                         new WaitUntilCommand(Robot::getProceed),
-            new CloseHand(mRotationHandHolder),
-            new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockLockedPositon),
-            new OpenHand(mRotationHandHolder),
-            new SetHandLockPosition(mGrabHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon),
-                        new WaitUntilCommand(Robot::getProceed),
+            new CloseHand(mHandA),
+            new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon),
+            new OpenHand(mHandA),
+            new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon),
+            new WaitUntilCommand(Robot::getProceed),
             new InstantCommand(() -> mRotator.setNeutralModeBrake()),
-            new InstantCommand(this::switchHands),
-                        new WaitUntilCommand(Robot::getProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition),
+            new WaitUntilCommand(Robot::getProceed),
+            new Climb1Bar(mHandB, mHandA, Constants.Climber.kSecondCGPosition),
             // new WaitUntilCommand(Robot::getProceed),
             // new OpenHand(mRotationHandHolder),
                         new WaitUntilCommand(Robot::getProceed),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
-            .withTimeout(1));
+                .withTimeout(1));
     }
 }
