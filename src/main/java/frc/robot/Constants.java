@@ -22,7 +22,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 public final class Constants {
 
     public static class Climber {
-        public static final int kRotationMotorID = 0;
+        public static final int kRotationMotorID = 16;
         public static final int kLeftClawID = 1;
         public static final int kRightClawID = 2;
         public static final int kLeftClawLockID = 3;
@@ -50,7 +50,7 @@ public final class Constants {
     public static final class Shooter {
         public static final int kLeftShooterID = 13;
         public static final int kRightShooterID = 15;
-        public static final int kAngleShooterID = 9;
+        public static final int kAngleShooterID = 7;
         public static final TalonFXConfiguration kBottomShooterConfig = new TalonFXConfiguration();
         static {
             kBottomShooterConfig.slot0 = new SlotConfiguration();
