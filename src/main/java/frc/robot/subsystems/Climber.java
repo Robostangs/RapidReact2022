@@ -113,13 +113,6 @@ public class Climber extends SubsystemBase {
         }
     }
 
-    public enum State {
-        kStarting,
-        kPriming,
-        kPrimed,
-        kClimbing
-    }
-
     public class Rotator extends SubsystemBase {
         private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
         private double currentPosition = getPosition();
@@ -188,6 +181,25 @@ public class Climber extends SubsystemBase {
             mMotor.setNeutralMode(NeutralMode.Coast);
         }
     }
+
+    public enum State {
+        kWaiting(0),
+        kPriming(1),
+        kPrimed(2),
+        kClimbing(3),
+        kClimbed(4);
+
+        public final int value;
+
+        private State(int value) {
+            this.value = value;
+        }
+
+        private State nextState() {
+            return values()[this.value + 1];
+        }
+    }
+
     private static Climber instance;
 
     private final Rotator mRotator = new Rotator();
@@ -196,7 +208,7 @@ public class Climber extends SubsystemBase {
     private final Servo mLeftElevatorRelease = new Servo(Constants.Climber.kLeftElevatorID);
     private final Servo mRightElevatorRelease = new Servo(Constants.Climber.kRightElevatorID);
 
-    private State mState = State.kStarting;
+    private State mState = State.kWaiting;
 
     private Climber() {
         mLeftElevatorRelease.set(Constants.Climber.kLeftElevatorReleaseDefaultPosition);
@@ -258,6 +270,10 @@ public class Climber extends SubsystemBase {
         } else {
             return null;
         }
+    }
+
+    public void advanceState() {
+        mState = mState.nextState();
     }
 
     public void setState(State state) {

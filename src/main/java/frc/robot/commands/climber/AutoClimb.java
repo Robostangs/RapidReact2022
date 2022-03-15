@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Climber;
 
@@ -27,32 +28,49 @@ public class AutoClimb extends SequentialCommandGroup {
         addCommands(
             new ScheduleCommand(new Protect()),
             new ReleaseElevator(),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new RotateToPosition(Constants.Climber.Rotator.kStartingAngle),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new ProxyScheduleCommand(new DriveToMidBar()),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new CloseHand(mHandA),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new Climb1Bar(mHandA, mHandB, Constants.Climber.kFirstCGPosition),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
                 .withTimeout(0.5),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
                     new CloseHand(mHandA),
                     new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon),
                     new OpenHand(mHandA)),
                 new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new Climb1Bar(mHandB, mHandA, Constants.Climber.kSecondCGPosition),
-            // new WaitUntilCommand(Robot::getProceed),
+            // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),
-                        new WaitUntilCommand(Robot::getProceed),
+                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
                 .withTimeout(1));
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        if(mClimber.getState() == Climber.State.kPrimed) {
+            mClimber.advanceState();
+        } else {
+            cancel();
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if(!interrupted) {
+            mClimber.advanceState();
+        }
     }
 }

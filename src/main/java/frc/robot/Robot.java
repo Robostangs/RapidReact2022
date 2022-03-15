@@ -103,35 +103,27 @@ public class Robot extends TimedRobot {
             // SmartDashboard.putNumber("Rotate Pos", 0);
             // new JoystickButton(mDriver, XboxController.Button.kB.value)
             //     .whenPressed(new InstantCommand(() -> new RotateToPosition(SmartDashboard.getNumber("Rotate Pos", 0)).schedule()));
-        new JoystickButton(mDriver, XboxController.Button.kA.value)
-            .whenPressed(new ReleaseElevator());
-        new JoystickButton(mDriver, XboxController.Button.kB.value)
-            .whenPressed(new ClimbPrep());
-        new JoystickButton(mDriver, XboxController.Button.kY.value)
-            .whenPressed(new AutoClimb());
-        new JoystickButton(mDriver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> proceed = true));
+        // new JoystickButton(mDriver, XboxController.Button.kA.value)
+        //     .whenPressed(new ReleaseElevator());
+        // new JoystickButton(mDriver, XboxController.Button.kB.value)
+        //     .whenPressed(new ClimbPrep());
+        // new JoystickButton(mDriver, XboxController.Button.kY.value)
+        //     .whenPressed(new AutoClimb());
     }
 
-    public static boolean proceed = false;
-    public static boolean getProceed() {
-        return proceed;
-    }
-
-    private final Climber.Hand mHandA;
-    private final Climber.Hand mHandB;
-    {
-        final Climber.Hand[] mHands = Climber.getInstance().getHands();
-        mHandA = mHands[0];
-        mHandB = mHands[1];
-    }
-    private final XboxController mDriver = new XboxController(0);
-    private final Climber mClimber = Climber.getInstance();
-    private final Climber.Rotator mRotator = mClimber.getRotator();
+    // private final Climber.Hand mHandA;
+    // private final Climber.Hand mHandB;
+    // {
+    //     final Climber.Hand[] mHands = Climber.getInstance().getHands();
+    //     mHandA = mHands[0];
+    //     mHandB = mHands[1];
+    // }
+    // private final XboxController mDriver = new XboxController(0);
+    // private final Climber mClimber = Climber.getInstance();
+    // private final Climber.Rotator mRotator = mClimber.getRotator();
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() { 
-        proceed = false;
+    public void teleopPeriodic() {
         // m_Feeder.update();
         // m_Shooter.test();
             // if(mDriver.getLeftTriggerAxis() >= 0.01) {

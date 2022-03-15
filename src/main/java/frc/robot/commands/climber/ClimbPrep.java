@@ -47,14 +47,20 @@ public class ClimbPrep extends ParallelCommandGroup {
     @Override
     public void initialize() {
         super.initialize();
-        mClimber.setState(Climber.State.kPriming);
+        if(mClimber.getState() == Climber.State.kWaiting) {
+            mClimber.advanceState();
+        } else {
+            cancel();
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        if(!interrupted) {
-            mClimber.setState(Climber.State.kPrimed);
+        if(interrupted) {
+            mClimber.setState(Climber.State.kWaiting);
+        } else {
+            mClimber.advanceState();
         }
     }
 }
