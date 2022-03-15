@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -92,6 +93,10 @@ public class Shooter extends SubsystemBase {
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 255);
 
         mHood.setNeutralMode(NeutralMode.Brake);
+
+        SmartDashboard.putNumber("LeftVelo", 0.0);
+        SmartDashboard.putNumber("RightVelo", 0.0);
+        SmartDashboard.putNumber("HoodAngle", 0.0);
     }
 
     @Override
@@ -109,6 +114,18 @@ public class Shooter extends SubsystemBase {
         if (!isHomed) {
             new Home().schedule();
         }
+
+        SmartDashboard.putNumber(
+            "Distance Limelight",
+            Limelight.getDistance());
+        setState(
+            new State(
+                (SmartDashboard.getNumber("TopVelo", 0)), 
+                (SmartDashboard.getNumber("BottomVelo", 0)), 
+                (SmartDashboard.getNumber("HoodAngle", 0)) 
+            )
+        );
+        SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ", " + SmartDashboard.getNumber("HoodAngle", 0) + ");");
     }
 
     public void setBottomShooterPower(double power) {
@@ -177,18 +194,4 @@ public class Shooter extends SubsystemBase {
     public void resetHoodEncoder() {
         mHood.setSelectedSensorPosition(0);
     }
-
-    // @Override
-    // public void periodic() {
-    //     SmartDashboard.putNumber(
-    //         "Distance Limelight",
-    //         Utils.dist(Limelight.getTy()));
-    //     mBottomShooter.set(
-    //         ControlMode.Velocity,
-    //         (SmartDashboard.getNumber("LeftVelo", 0.0) / (600.0/2048.0)));
-    //     mTopShooter.set(
-    //         ControlMode.Velocity,
-    //         (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
-    //     // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
-    // }
 }

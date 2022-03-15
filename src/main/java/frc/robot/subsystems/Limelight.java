@@ -39,6 +39,10 @@ public class Limelight extends SubsystemBase {
         builder.addDoubleProperty("ta", () -> ta, null);
     }
 
+    public static double getDistance() {
+        return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
+    }
+
     public static double getTx() {
         return tx;
     }
@@ -65,9 +69,5 @@ public class Limelight extends SubsystemBase {
 
     public static void blinkLEDs() {
         LimelightTable.getEntry("ledMode").setNumber(2);
-    }
-
-    public static double getDistance() {
-        return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
 }
