@@ -8,7 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 import frc.robot.commands.drivetrain.FollowPath;
 import frc.robot.commands.intake.Active;
-import frc.robot.commands.shooter.AutoShoot;
+import frc.robot.commands.shooter.SetDistanceShooterState;
 import frc.robot.subsystems.Limelight;
 
 public class FiveBallAuto extends SequentialCommandGroup {
@@ -17,21 +17,20 @@ public class FiveBallAuto extends SequentialCommandGroup {
         this.setName("Five Ball Auto - Not Rude");
         try {        
             new ParallelCommandGroup(
-                new FollowPath("src/main/deploy/output/5BallPt1.wpilib.json"), 
+                new FollowPath("output/5BallPt1.wpilib.json"), 
                 new Active(Constants.IntakeConstants.kIntakeSpeed)
             );
-            //TODO: MAKE SURE THIS IS FIXED
-            new AutoShoot(Limelight.getDistance());
+            new SetDistanceShooterState(() -> Limelight.getDistance());
             new ParallelCommandGroup(
-                new FollowPath("src/main/deploy/output/5BallPt2.wpilib.json"), 
+                new FollowPath("output/5BallPt2.wpilib.json"), 
                 new Active(Constants.IntakeConstants.kIntakeSpeed)
             );
             new ParallelCommandGroup(
-                new FollowPath("src/main/deploy/output/5BallPt3.wpilib.json"), 
+                new FollowPath("output/5BallPt3.wpilib.json"), 
                 new Active(Constants.IntakeConstants.kIntakeSpeed)
             );
-            new FollowPath("src/main/deploy/output/5BallPt4.wpilib.json");
-            new AutoShoot(Limelight.getDistance()); 
+            new FollowPath("output/5BallPt4.wpilib.json");
+            new SetDistanceShooterState(() -> Limelight.getDistance());
         } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -39,3 +38,4 @@ public class FiveBallAuto extends SequentialCommandGroup {
     }
 
 }
+    

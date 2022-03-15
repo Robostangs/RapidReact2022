@@ -71,7 +71,4 @@ public class Limelight extends SubsystemBase {
         LimelightTable.getEntry("ledMode").setNumber(2);
     }
 
-    public static double getDistance() {
-        return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
-    }
 }
