@@ -5,7 +5,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ReleaseElevator extends WaitCommand {
-    private static final Climber mClimber = Climber.getInstance();
+    private final Climber mClimber = Climber.getInstance();
 
     public ReleaseElevator() {
         super(Constants.Climber.kElevatorReleaseWaitTime);

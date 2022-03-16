@@ -6,8 +6,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveToMidBar extends CommandBase {
-    private static final Climber mClimber = Climber.getInstance();
-    private static final Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private final Climber mClimber = Climber.getInstance();
+    private final Drivetrain mDrivetrain = Drivetrain.getInstance();
     private final double mDriveSpeed;
 
     public DriveToMidBar(double driveSpeed) {

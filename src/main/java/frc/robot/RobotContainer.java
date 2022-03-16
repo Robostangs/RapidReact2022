@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.climber.AutoClimb;
+import frc.robot.commands.climber.ClimbPrep;
+import frc.robot.commands.climber.ReleaseElevator;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Activate;
@@ -16,6 +19,7 @@ import frc.robot.commands.shooter.AutoShoot;
 import frc.robot.commands.shooter.SetElevatorPower;
 import frc.robot.commands.shooter.SetShooterPower;
 import frc.robot.commands.turret.DefaultLimelight;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Turret;
@@ -29,11 +33,11 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-    private Drivetrain mDrivetrain = Drivetrain.getInstance();
-    private XboxController driver = new XboxController(0);
-    private final XboxController manip = new XboxController(1);
-    private Turret mTurret = Turret.getInstance();
-    private Feeder mFeeder = Feeder.getInstance();
+    private final Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private final Turret mTurret = Turret.getInstance();
+    private final Feeder mFeeder = Feeder.getInstance();
+    private static final XboxController mDriver = new XboxController(0);
+    private static final XboxController mManip = new XboxController(1);
 
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -51,18 +55,23 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
-            new ArcadeDrive(() -> {return -driver.getLeftX();},
-                            () -> {return -(driver.getRightTriggerAxis() - driver.getLeftTriggerAxis());}));
+            new ArcadeDrive(() -> {return -mDriver.getLeftX();},
+                            () -> {return -(mDriver.getRightTriggerAxis() - mDriver.getLeftTriggerAxis());}));
         mFeeder.setDefaultCommand(new DefaultFeeder());
-        mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
+        mTurret.setDefaultCommand(new DefaultLimelight(mManip::getLeftY, mManip::getXButton));
 
-        new JoystickButton(driver, XboxController.Button.kA.value)
+        new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whenPressed(new Activate())
             .whenInactive(new Deactivate());
 
-        new JoystickButton(manip, XboxController.Button.kB.value)
+        new JoystickButton(mManip, XboxController.Button.kB.value)
             .whenPressed(new AutoShoot(4800, 2500, 0))
             .whenInactive(() -> {new SetShooterPower(0, 0); new SetElevatorPower(0);});
+
+        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
+            .whenPressed(new ClimbPrep());
+        new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
+            .whenPressed(new AutoClimb());
     }
 
     /**
@@ -74,5 +83,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return null;
+    }
+    
+    public static boolean getClimbProceed() {
+        return mManip.getXButton();
     }
 }

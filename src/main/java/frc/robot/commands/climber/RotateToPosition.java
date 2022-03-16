@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
 public class RotateToPosition extends CommandBase {
-    private static final Climber.Rotator mRotator = Climber.getInstance().getRotator();
+    private final Climber.Rotator mRotator = Climber.getInstance().getRotator();
     private final double mPosition;
 
     public RotateToPosition(double position) {
