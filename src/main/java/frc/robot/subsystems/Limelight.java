@@ -11,7 +11,7 @@ public class Limelight extends SubsystemBase {
 
     @SuppressWarnings("unused")
     private static final Limelight instance = new Limelight();
-    private static final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     private static double tx = 0;
     private static double ty = 0;
@@ -19,6 +19,9 @@ public class Limelight extends SubsystemBase {
     private static double ta = 0;
 
     private Limelight() {
+        if(LimelightTable == null) {
+            System.out.println("LLtable is Null"); 
+        }
         LimelightTable.getEntry("pipeline").setNumber(0);
     }
 
@@ -60,15 +63,15 @@ public class Limelight extends SubsystemBase {
     }
 
     public static void enableLEDs() {
-        LimelightTable.getEntry("ledMode").setNumber(0);
+        instance.LimelightTable.getEntry("ledMode").setNumber(0);
     }
 
     public static void disableLEDs() {
-        LimelightTable.getEntry("ledMode").setNumber(1);
+        instance.LimelightTable.getEntry("ledMode").setNumber(1);
     }
 
     public static void blinkLEDs() {
-        LimelightTable.getEntry("ledMode").setNumber(2);
+        instance.LimelightTable.getEntry("ledMode").setNumber(2);
     }
 
 }

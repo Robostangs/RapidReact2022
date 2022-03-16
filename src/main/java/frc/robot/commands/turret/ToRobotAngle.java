@@ -9,17 +9,13 @@ public class ToRobotAngle extends CommandBase{
     protected double mAngle, mFeedforward;
 
     public ToRobotAngle(double angle, double feedforward) {
+        this.setName("To Robot Angle");
+        this.addRequirements(mTurret);
         mAngle = angle;
         mFeedforward = feedforward;
     }
 
-    public ToRobotAngle(){};
-
-    @Override
-    public void initialize() {
-        this.setName("To Robot Angle");
-        this.addRequirements(mTurret);
-    }
+    protected ToRobotAngle(){};
 
     @Override
     public void execute() {

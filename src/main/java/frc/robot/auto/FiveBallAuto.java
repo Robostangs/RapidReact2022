@@ -18,16 +18,16 @@ public class FiveBallAuto extends SequentialCommandGroup {
         try {        
             new ParallelCommandGroup(
                 new FollowPath("output/5BallPt1.wpilib.json"), 
-                new Active(Constants.IntakeConstants.kIntakeSpeed)
+                new Active(Constants.IntakeConstants.kDefaultSpeed)
             );
             new SetDistanceShooterState(() -> Limelight.getDistance());
             new ParallelCommandGroup(
                 new FollowPath("output/5BallPt2.wpilib.json"), 
-                new Active(Constants.IntakeConstants.kIntakeSpeed)
+                new Active(Constants.IntakeConstants.kDefaultSpeed)
             );
             new ParallelCommandGroup(
                 new FollowPath("output/5BallPt3.wpilib.json"), 
-                new Active(Constants.IntakeConstants.kIntakeSpeed)
+                new Active(Constants.IntakeConstants.kDefaultSpeed)
             );
             new FollowPath("output/5BallPt4.wpilib.json");
             new SetDistanceShooterState(() -> Limelight.getDistance());

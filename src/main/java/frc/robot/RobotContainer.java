@@ -9,12 +9,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.shooter.SetVariableShooterState;
 import frc.robot.commands.intake.Active;
 import frc.robot.commands.turret.DefaultLimelight;
+import frc.robot.commands.turret.DefaultTurret;
+import frc.robot.commands.turret.GoHome;
+import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Turret;
@@ -52,10 +56,17 @@ public class RobotContainer {
         mDrivetrain.setDefaultCommand(
             new ArcadeDrive(() -> Utils.deadzone(driver.getLeftX()), () -> Utils.deadzone(driver.getLeftTriggerAxis() > 0.01 ? -driver.getLeftTriggerAxis() : driver.getRightTriggerAxis())));
         mFeeder.setDefaultCommand(new DefaultFeeder());
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new Active());
         // mTurret.setDefaultCommand(new DefaultLimelight(manip::getLeftY, manip::getXButton));
 
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new Active(0.5));
+
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whenPressed(new Protect());
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whileHeld(new PrimeShooting());
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

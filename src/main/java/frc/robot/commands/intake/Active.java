@@ -1,6 +1,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class Active extends CommandBase{
@@ -12,6 +13,10 @@ public class Active extends CommandBase{
         addRequirements(mIntake);
         setName("Auto Activate");
         m_speed = speed;
+    }
+
+    public Active() {
+        this(Constants.IntakeConstants.kDefaultSpeed);
     }
 
     @Override

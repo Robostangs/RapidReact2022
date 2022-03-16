@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.turret.GoHome;
@@ -17,6 +18,8 @@ public class Turret extends SubsystemBase {
     private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
     // private final DigitalInput m_homeSensorOn, m_homeSensorOff;
     private boolean mIsHomed;
+    private static Command mGoHomeCommand = new GoHome().withTimeout(3);
+    private double setpoint;
 
     public static Turret getInstance() {
         if (instance == null) {
@@ -39,14 +42,26 @@ public class Turret extends SubsystemBase {
         super.initSendable(builder);
         builder.addDoubleProperty("Position", this::getRawPosition, null);
         builder.addDoubleProperty("Angle", this::getAngle, null);
+        builder.addBooleanProperty("Is Homed", () -> mIsHomed, null);
+        builder.addDoubleProperty("Setpoint", () -> setpoint, null);
+    }
+
+    @Override
+    public void periodic() {
+        if (mMotor.hasResetOccurred()) {
+            mIsHomed = false;
+        }
+        if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
+            mGoHomeCommand.schedule();
+        }
     }
 
     private double positionRawToAngular(double raw) {
-        return raw / Constants.Turret.kTicksPerDegree;
+        return (raw / Constants.Turret.kTicksPerDegree) + Constants.Turret.kMinTurretDegrees;
     }
 
     private double positionAngularToRaw(double angle) {
-        return angle * Constants.Turret.kTicksPerDegree;
+        return (angle - Constants.Turret.kMinTurretDegrees) * Constants.Turret.kTicksPerDegree;
     }
 
     private double speedRawToAnguar(double raw) {
@@ -79,6 +94,7 @@ public class Turret extends SubsystemBase {
             position,
             DemandType.ArbitraryFeedForward,
             feedforward);
+        setpoint = position;
     }
 
     public void setAngleSetpoint(double angle, double feedforward) {
@@ -105,6 +121,10 @@ public class Turret extends SubsystemBase {
         setAngularVelocitySetpoint(angularVelocity, 0);
     }
 
+    public void setPercentSpeed(double speed) {
+        mMotor.set(ControlMode.PercentOutput, speed);
+    }
+
     public boolean getReverseLimit() {
         return mMotor.isRevLimitSwitchClosed() == 1;
     }
@@ -125,15 +145,5 @@ public class Turret extends SubsystemBase {
 
     public void setHomed(boolean value) {
         mIsHomed = value;
-    }
-
-    @Override
-    public void periodic() {
-        if (mMotor.hasResetOccurred()) {
-            mIsHomed = false;
-        }
-        if (!mIsHomed) {
-            new GoHome().withTimeout(3).schedule();
-        }
     }
 }

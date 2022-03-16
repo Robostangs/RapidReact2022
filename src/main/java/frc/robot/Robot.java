@@ -29,9 +29,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.println("INITIALIZED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.println("FINISHED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println("INTERUPTED: " + c.getName());});
     }
 
     /**

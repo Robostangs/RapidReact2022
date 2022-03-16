@@ -45,6 +45,11 @@ public class ShooterMappings {
             return kDistances.get(index);
         } else {
             index = -index - 1;
+            if(index < 1) {
+                return kDistances.get(0);
+            } else if(index >= kDistances.size()) {
+                return kDistances.get(kDistances.size() - 1);
+            }
             double below = kDistances.get(index - 1);
             double above = kDistances.get(index);
             return (distance - below) < (above - distance) ? below : above;

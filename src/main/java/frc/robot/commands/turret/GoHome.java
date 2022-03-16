@@ -17,12 +17,13 @@ public class GoHome extends CommandBase {
     public void initialize() {
         mTurret.setSoftLimitEnable(false);
         mTurret.configClearPosition(true);
+        mTurret.configMaxSpeed(Math.abs(Constants.Turret.kRotationMotorSpeed));
     }
 
     @Override
     public void execute() {
-        System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-        mTurret.setAngularVelocitySetpoint(Constants.Turret.kRotationMotorSpeed, Constants.Turret.kTurningFeedForward);
+        // System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+        mTurret.setPercentSpeed(Constants.Turret.kRotationMotorSpeed);
     }
 
     @Override
@@ -37,6 +38,7 @@ public class GoHome extends CommandBase {
             mTurret.configMaxSpeed(1);
             mTurret.setHomed(true);
         } else if(interrupted) {
+            System.out.println("Turret homing interrupted!");
             mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
             mTurret.configMaxSpeed(0.2);
         }

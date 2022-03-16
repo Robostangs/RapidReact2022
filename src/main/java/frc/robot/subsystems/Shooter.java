@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -63,6 +64,7 @@ public class Shooter extends SubsystemBase {
     private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
     private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
     private boolean isHomed;
+    private static Command mHomeCommand = new Home();
 
     public static Shooter getInstance() {
         if (instance == null) {
@@ -103,6 +105,7 @@ public class Shooter extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addStringProperty("Shooter State", () -> getState().toString(), null);
+        builder.addBooleanProperty("Hood homed", () -> isHomed, null);
     }
 
     @Override
@@ -111,21 +114,21 @@ public class Shooter extends SubsystemBase {
         if (mHood.hasResetOccurred()) {
             isHomed = false;
         }
-        if (!isHomed) {
-            new Home().schedule();
+        if (!isHomed && !mHomeCommand.isScheduled()) {
+            mHomeCommand.schedule();
         }
 
-        SmartDashboard.putNumber(
-            "Distance Limelight",
-            Limelight.getDistance());
-        setState(
-            new State(
-                (SmartDashboard.getNumber("TopVelo", 0)), 
-                (SmartDashboard.getNumber("BottomVelo", 0)), 
-                (SmartDashboard.getNumber("HoodAngle", 0)) 
-            )
-        );
-        SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ", " + SmartDashboard.getNumber("HoodAngle", 0) + ");");
+        // SmartDashboard.putNumber(
+        //     "Distance Limelight",
+        //     Limelight.getDistance());
+        // setState(
+        //     new State(
+        //         (SmartDashboard.getNumber("TopVelo", 0)), 
+        //         (SmartDashboard.getNumber("BottomVelo", 0)), 
+        //         (SmartDashboard.getNumber("HoodAngle", 0)) 
+        //     )
+        // );
+        // SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ", " + SmartDashboard.getNumber("HoodAngle", 0) + ");");
     }
 
     public void setBottomShooterPower(double power) {
@@ -145,7 +148,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setHoodPositionPID(double position) {
-        mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+        if(position == 0) {
+            setHoodPower(0);
+        } else {
+            mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+        }
     }
 
     public void setHoodPower(double power) {
@@ -160,6 +167,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setState(State state) {
+        // System.out.println("Setting state to " + state.toString());
         setTopShooterVelocity(state.topSpeed);
         setBottomShooterPower(state.bottomSpeed);
         setHoodPositionPID(state.angle);

@@ -113,7 +113,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed =0.5; // TODO: Set intake speed
+        public static final double kDefaultSpeed =0.5; // TODO: Set intake speed
         public static final int kIntakeMotorID = 8;
         public static final int kSensorID = 2;
     }

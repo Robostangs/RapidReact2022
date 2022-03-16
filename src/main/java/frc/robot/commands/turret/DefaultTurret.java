@@ -7,8 +7,20 @@ public class DefaultTurret extends SequentialCommandGroup{
 
     public DefaultTurret() {
         this.setName("default Turret");
-        this.addCommands(new Search().withInterrupt(() -> {return Limelight.getTv() == 1;}));
-        this.addCommands(new FollowLimelight());
+        this.addCommands(
+            new Search().withInterrupt(() -> Limelight.getTv() == 1),
+            new FollowLimelight().withInterrupt(() -> Limelight.getTv() == 0));
     }
 
+    @Override
+    public void initialize() {
+        Limelight.enableLEDs();
+        super.initialize();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        Limelight.disableLEDs();
+        super.end(interrupted);
+    }
 }
