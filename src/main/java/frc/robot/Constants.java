@@ -29,15 +29,16 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 1;
-            public static final double kClawDefaultOpenSpeed = -1;
+            public static final double kClawDefaultMoveSpeed = 0.6;
+            public static final double kClawDefaultOpenSpeed = -0.6;
 
             public static final int kClawAID = 10;
             public static final int kClawBID = 9;
             public static final int kLockAID = 2;
             public static final int kLockBID = 3;
 
-            public static final int kClawForwardSoftLimit = 69;
+            //TODO: SAKET CHANGED BECAUSE DAN TOLD HIM TO, was 70
+            public static final int kClawForwardSoftLimit = 65;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
@@ -48,10 +49,10 @@ public final class Constants {
 
             public static final double kClawLockUnlockedPositon = 0.8;
             public static final double kClawLockLockedPositon = 1;
-            public static final double kHandLockWaitTime = 0.3;
+            public static final double kHandLockWaitTime = 0.5;
             public static final void configClawLock(Servo lock) {}
 
-            public static final double kGrabHandDebounceTime = 0.05;
+            public static final double kLimitDebounceTime = 0.06;
         }
 
         public static class Rotator {
@@ -63,10 +64,10 @@ public final class Constants {
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
 
-            public static final double kClimbRotationSpeed = 0.7; //
-            public static final double kClimbHoldSpeed = 0.1; //
+            public static final double kClimbRotationSpeed = 0.6; //
+            public static final double kClimbHoldSpeed = 0.2; //
             public static final double kToCGSpeed = -0.5; //
-            public static final double kCGHoldSpeed = -0.25; //
+            public static final double kCGHoldSpeed = -0.2; //
 
             public static final double kDumbPositionTolerance = 5;
             public static final double kDumbRotatorSpeed = 1;
@@ -95,7 +96,7 @@ public final class Constants {
 
         public static final double kClawMoveConstant = 500;
 
-        public static final double kFirstCGPosition = 120; //
+        public static final double kFirstCGPosition = 70; //
         public static final double kSecondCGPosition = 300; //
 
         public static final double kDefaultDriveSpeed = 0.1;

@@ -17,11 +17,10 @@ public class ClimbPrep extends ParallelCommandGroup {
 
         private PrepHand(Climber.Hand hand) {
             mHand = hand;
-            setName("Prep Hand");
             addCommands(
                 new PrintCommand("Running PrepHand"),
                 new ConditionalCommand(
-                    new OpenHand(mHand),
+                    new CallibrateHand(mHand),
                     new InstantCommand(),
                     () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
                 new CloseHand(mHand),
@@ -34,7 +33,6 @@ public class ClimbPrep extends ParallelCommandGroup {
     public ClimbPrep() {
         addRequirements(mClimber);
         final Climber.Hand[] hands = mClimber.getHands();
-        setName("Climb Prep");
         addCommands(
             new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
             new SequentialCommandGroup(
@@ -47,20 +45,14 @@ public class ClimbPrep extends ParallelCommandGroup {
     @Override
     public void initialize() {
         super.initialize();
-        if(mClimber.getState() == Climber.State.kWaiting) {
-            mClimber.advanceState();
-        } else {
-            cancel();
-        }
+        mClimber.setState(Climber.State.kPriming);
     }
 
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        if(interrupted) {
-            mClimber.setState(Climber.State.kWaiting);
-        } else {
-            mClimber.advanceState();
+        if(!interrupted) {
+            mClimber.setState(Climber.State.kPrimed);
         }
     }
 }

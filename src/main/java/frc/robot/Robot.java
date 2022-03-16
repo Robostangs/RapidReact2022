@@ -39,9 +39,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.println("INITIALIZED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.println("FINISHED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println    ("INTERUPTED: " + c.getName());});
         int[] IDList = new int[] {0, 1, 2, 3};
     }
 
@@ -103,27 +103,35 @@ public class Robot extends TimedRobot {
             // SmartDashboard.putNumber("Rotate Pos", 0);
             // new JoystickButton(mDriver, XboxController.Button.kB.value)
             //     .whenPressed(new InstantCommand(() -> new RotateToPosition(SmartDashboard.getNumber("Rotate Pos", 0)).schedule()));
-        // new JoystickButton(mDriver, XboxController.Button.kA.value)
-        //     .whenPressed(new ReleaseElevator());
-        // new JoystickButton(mDriver, XboxController.Button.kB.value)
-        //     .whenPressed(new ClimbPrep());
-        // new JoystickButton(mDriver, XboxController.Button.kY.value)
-        //     .whenPressed(new AutoClimb());
+        new JoystickButton(mDriver, XboxController.Button.kA.value)
+            .whenPressed(new ReleaseElevator());
+        new JoystickButton(mDriver, XboxController.Button.kB.value)
+            .whenPressed(new ClimbPrep());
+        new JoystickButton(mDriver, XboxController.Button.kY.value)
+            .whenPressed(new AutoClimb());
+        // new JoystickButton(mDriver, XboxController.Button.kX.value)
+        //     .whenPressed(new InstantCommand(() -> proceed = true));
     }
 
-    // private final Climber.Hand mHandA;
-    // private final Climber.Hand mHandB;
-    // {
-    //     final Climber.Hand[] mHands = Climber.getInstance().getHands();
-    //     mHandA = mHands[0];
-    //     mHandB = mHands[1];
-    // }
-    // private final XboxController mDriver = new XboxController(0);
-    // private final Climber mClimber = Climber.getInstance();
-    // private final Climber.Rotator mRotator = mClimber.getRotator();
+    public static boolean proceed = false;
+    public static boolean getProceed() {
+        return mDriver.getXButton();
+    }
+
+    private final Climber.Hand mHandA;
+    private final Climber.Hand mHandB;
+    {
+        final Climber.Hand[] mHands = Climber.getInstance().getHands();
+        mHandA = mHands[0];
+        mHandB = mHands[1];
+    }
+    private static final XboxController mDriver = new XboxController(0);
+    private final Climber mClimber = Climber.getInstance();
+    private final Climber.Rotator mRotator = mClimber.getRotator();
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
+    public void teleopPeriodic() { 
+        proceed = false;
         // m_Feeder.update();
         // m_Shooter.test();
             // if(mDriver.getLeftTriggerAxis() >= 0.01) {
