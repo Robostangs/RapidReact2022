@@ -6,17 +6,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.climber.AutoClimb;
-import frc.robot.commands.climber.ClimbPrep;
-import frc.robot.commands.climber.DumbRotateToPosition;
-import frc.robot.commands.climber.ReleaseElevator;
-import frc.robot.commands.climber.RotateToPosition;
-import frc.robot.subsystems.Climber;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,7 +17,7 @@ import frc.robot.subsystems.Climber;
  */
 public class Robot extends TimedRobot {
 
-    // private final RobotContainer mRobotContainer = new RobotContainer();
+    private final RobotContainer mRobotContainer = new RobotContainer();
     private Command mAutonomousCommand;
     @SuppressWarnings("unused")
     private final PowerDistribution mPowerDistributionPanel = new PowerDistribution();
@@ -39,10 +30,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.print("INITIALIZED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.print("FINISHED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.print("INTERUPTED: " + c.getName());});
-        int[] IDList = new int[] {0, 1, 2, 3};
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.println("INITIALIZED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.println("FINISHED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println    ("INTERUPTED: " + c.getName());});
     }
 
     /**
@@ -64,7 +54,6 @@ public class Robot extends TimedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
-        // Limelight.ledOff();
     }
 
     @Override
@@ -94,69 +83,11 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
-            // new JoystickButton(mDriver, XboxController.Button.kX.value)
-            //     .whenPressed(new ClimbPrep());
-            // new JoystickButton(mDriver, XboxController.Button.kY.value)
-            //     .whenPressed(new InstantCommand(() -> mRotator.setEncoderPosition(0)));
-            // new JoystickButton(mDriver, XboxController.Button.kA.value)
-            //     .whenPressed(new InstantCommand(() -> new DumbRotateToPosition(SmartDashboard.getNumber("Rotate Pos", 0)).schedule()));
-            // SmartDashboard.putNumber("Rotate Pos", 0);
-            // new JoystickButton(mDriver, XboxController.Button.kB.value)
-            //     .whenPressed(new InstantCommand(() -> new RotateToPosition(SmartDashboard.getNumber("Rotate Pos", 0)).schedule()));
-        new JoystickButton(mDriver, XboxController.Button.kA.value)
-            .whenPressed(new ReleaseElevator());
-        new JoystickButton(mDriver, XboxController.Button.kB.value)
-            .whenPressed(new ClimbPrep());
-        new JoystickButton(mDriver, XboxController.Button.kY.value)
-            .whenPressed(new AutoClimb());
-        new JoystickButton(mDriver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> proceed = true));
     }
 
-    public static boolean proceed = false;
-    public static boolean getProceed() {
-        return proceed;
-    }
-
-    private final Climber.Hand mHandA;
-    private final Climber.Hand mHandB;
-    {
-        final Climber.Hand[] mHands = Climber.getInstance().getHands();
-        mHandA = mHands[0];
-        mHandB = mHands[1];
-    }
-    private final XboxController mDriver = new XboxController(0);
-    private final Climber mClimber = Climber.getInstance();
-    private final Climber.Rotator mRotator = mClimber.getRotator();
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() { 
-        proceed = false;
-        // m_Feeder.update();
-        // m_Shooter.test();
-            // if(mDriver.getLeftTriggerAxis() >= 0.01) {
-            //     mClimber.getRotator().setPower(mDriver.getLeftTriggerAxis());
-            // } else {
-            //     mClimber.getRotator().setPower(-mDriver.getRightTriggerAxis());
-            // }
-            // mHandA.setClawSpeed(mDriver.getLeftY());
-            // mHandB.setClawSpeed(mDriver.getRightY());
-
-            // if (mDriver.getAButton()) {
-            //     mHandA.setLockReference(1);
-            // }
-            // if (mDriver.getXButton()) {
-            //     mHandA.setLockReference(0.8);
-            // }
-            // if (mDriver.getBButton()) {
-            //     mHandB.setLockReference(1);
-            // }
-            // if (mDriver.getYButton()) {
-            //     mHandB.setLockReference(0.8);
-            // }
-        // m_Shooter.setRightShooterPower(driver.getRightX());
-    }
-
+    public void teleopPeriodic() {}
 
     @Override
     public void testInit() {

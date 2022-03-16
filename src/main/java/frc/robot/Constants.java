@@ -37,7 +37,8 @@ public final class Constants {
             public static final int kLockAID = 2;
             public static final int kLockBID = 3;
 
-            public static final int kClawForwardSoftLimit = 70;
+            //TODO: SAKET CHANGED BECAUSE DAN TOLD HIM TO, was 70
+            public static final int kClawForwardSoftLimit = 65;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
@@ -51,7 +52,7 @@ public final class Constants {
             public static final double kHandLockWaitTime = 0.5;
             public static final void configClawLock(Servo lock) {}
 
-            public static final double kGrabHandDebounceTime = 0.05;
+            public static final double kLimitDebounceTime = 0.06;
         }
 
         public static class Rotator {
@@ -63,10 +64,10 @@ public final class Constants {
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
 
-            public static final double kClimbRotationSpeed = 0.7; //
-            public static final double kClimbHoldSpeed = 0.1; //
+            public static final double kClimbRotationSpeed = 0.6; //
+            public static final double kClimbHoldSpeed = 0.2; //
             public static final double kToCGSpeed = -0.5; //
-            public static final double kCGHoldSpeed = -0.25; //
+            public static final double kCGHoldSpeed = -0.2; //
 
             public static final double kDumbPositionTolerance = 5;
             public static final double kDumbRotatorSpeed = 1;

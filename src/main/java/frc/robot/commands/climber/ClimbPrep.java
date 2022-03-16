@@ -10,7 +10,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ClimbPrep extends ParallelCommandGroup {
-    private static final Climber mClimber = Climber.getInstance();
+    private final Climber mClimber = Climber.getInstance();
 
     private final class PrepHand extends SequentialCommandGroup {
         private final Climber.Hand mHand;
@@ -20,7 +20,7 @@ public class ClimbPrep extends ParallelCommandGroup {
             addCommands(
                 new PrintCommand("Running PrepHand"),
                 new ConditionalCommand(
-                    new OpenHand(mHand),
+                    new CallibrateHand(mHand),
                     new InstantCommand(),
                     () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
                 new CloseHand(mHand),

@@ -25,6 +25,11 @@ public class Rotate extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        if (!interrupted) {
+            System.out.println("Rotate finished");
+        } else {
+            System.out.println("Rotate interrupted");
+        }
         mRotator.setPower(0);
     }
 }
