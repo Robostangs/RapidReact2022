@@ -221,7 +221,7 @@ public final class Constants {
         public static final int kRotationMotorID = 6;
 
         public static final double kRotationMotorMax = 74000;
-        public static final double kRotationMotorSoftLimitOffset = 4000;
+        public static final double kRotationMotorSoftLimitOffset = 7000;
         public static final double kRotationMotorSpeed = -0.2;
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;

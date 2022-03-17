@@ -1,8 +1,9 @@
-package frc.robot.commands.Turret;
+package frc.robot.commands.turret;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -10,13 +11,13 @@ import frc.robot.Utils;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Limelight;
 
-public class defaultLimelight extends CommandBase {
+public class DefaultLimelight extends CommandBase {
 
     private Turret m_Turret;
     private double lastTx;
-    private final Debouncer mTopFeederDebouncer = new Debouncer(Constants.Turret.kDoubleDebouncerTime);
+    // private final Debouncer mTopFeederDebouncer = new Debouncer(Constants.Turret.kDoubleDebouncerTime, DebounceType.kFalling);
 
-    public defaultLimelight() {
+    public DefaultLimelight() {
         m_Turret = Turret.getInstance();
         this.addRequirements(m_Turret);
         this.setName("Full Auto");
@@ -25,7 +26,7 @@ public class defaultLimelight extends CommandBase {
     
     @Override
     public void execute() {
-            if (mTopFeederDebouncer.calculate(Feeder.getInstance().getShooterSensorLight())) {
+            // if (mTopFeederDebouncer.calculate(Feeder.getInstance().getShooterSensorLight())) {
                 Limelight.enableLEDs();
                 if (Limelight.getTv() == 1) {
                     // double Vx = dt.getGyroVelocityX() * Math.sin(180 -
@@ -44,16 +45,17 @@ public class defaultLimelight extends CommandBase {
                         } else if ((m_Turret.getTurrentPosition() <= Constants.Turret.kRotationMotorSoftLimitOffset) && (Math.signum(m_position) < 0)) {
                             lastTx = -lastTx;
                         }
+                        
                         SmartDashboard.putNumber("m_position", m_position);
                         SmartDashboard.putNumber("m_tx", lastTx);
                 }
 
             }
-        }
+        // }
 
         @Override
         public void end(boolean interrupted) {
-            new protect();
+            new Protect();
             super.end(interrupted);
         }
     }

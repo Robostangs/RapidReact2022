@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
 import frc.robot.Constants.Drivetrain;
-import frc.robot.commands.Turret.GoHome;
+import frc.robot.commands.turret.GoHome;
 
 public class Turret extends SubsystemBase {
     private final TalonFX rotationMotor;
