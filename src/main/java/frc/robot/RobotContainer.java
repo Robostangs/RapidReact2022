@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.ClimbPrep;
+import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.elevator.RunElevator;
@@ -83,9 +84,9 @@ public class RobotContainer {
   
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return null;
+        return new SimpleAuto();
     }
-    
+
     public static boolean getClimbProceed() {
         return mManip.getXButton();
     }

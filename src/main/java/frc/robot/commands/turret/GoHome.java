@@ -14,6 +14,7 @@ public class GoHome extends CommandBase {
 
     @Override
     public void initialize() {
+        setName("Turret Homing");
         mTurret.setSoftLimitEnable(false);
         mTurret.configClearPosition(true);
         mTurret.configMaxSpeed(Math.abs(Constants.Turret.kRotationMotorSpeed));

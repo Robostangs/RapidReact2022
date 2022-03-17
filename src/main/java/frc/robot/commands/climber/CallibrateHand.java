@@ -7,6 +7,7 @@ public class CallibrateHand extends OpenHand {
     
     public CallibrateHand(HandHolder handContainer, double speed) {
         super(handContainer, speed);
+        setName("Hand Callibration");
     }
 
     public CallibrateHand(HandHolder hand) {

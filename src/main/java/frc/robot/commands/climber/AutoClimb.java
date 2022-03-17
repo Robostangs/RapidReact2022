@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Climber;
 
 public class AutoClimb extends SequentialCommandGroup {
@@ -30,7 +31,9 @@ public class AutoClimb extends SequentialCommandGroup {
     }
 
     public AutoClimb(Supplier<Double> wiggleSupplier) {
+        setName("Auto Climb");
         addCommands(
+            new Protect().withTimeout(1),
             new ReleaseElevator(),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new RotateToPosition(Constants.Climber.Rotator.kStartingAngle),
