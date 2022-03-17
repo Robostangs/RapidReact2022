@@ -9,7 +9,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class PrimeShooting extends ParallelCommandGroup {
-    private final defaultLimelight mDefaultTurret = new defaultLimelight(null, null);
+    private final defaultLimelight mDefaultTurret = new defaultLimelight();
 
     public PrimeShooting() {
         setName("Prime Shooting");

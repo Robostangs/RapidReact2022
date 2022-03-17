@@ -12,18 +12,12 @@ import frc.robot.subsystems.Limelight;
 public class defaultLimelight extends CommandBase {
 
     private Turret m_Turret;
-    private Drivetrain dt;
-    private Supplier<Double> m_manip;
-    private Supplier<Boolean> m_manipButton;
     private double lastTx;
 
-    public defaultLimelight(Supplier<Double> manip, Supplier<Boolean> manipButton) {
+    public defaultLimelight() {
         m_Turret = Turret.getInstance();
-        dt = Drivetrain.getInstance();
         this.addRequirements(m_Turret);
         this.setName("Full Auto");
-        m_manip = manip;
-        m_manipButton = manipButton;
         lastTx = 1;
     }
 
@@ -45,7 +39,6 @@ public class defaultLimelight extends CommandBase {
                     // // theta + Limelight.getTx()
                     m_Turret.limelightSetAngle(Limelight.getTx());
                 } else {
-                    if (m_manipButton.get()) {
                         double m_position = 200 * Math.signum(lastTx);
                         m_Turret.setAngle(m_position);
                         if ((m_Turret.getTurrentPosition() >= Constants.Turret.rotationMotorMax - Constants.Turret.kRotationMotorSoftLimitOffset)
@@ -56,12 +49,15 @@ public class defaultLimelight extends CommandBase {
                         }
                         SmartDashboard.putNumber("m_position", m_position);
                         SmartDashboard.putNumber("m_tx", lastTx);
-                    }
                 }
 
-            } else {
-                new protect();
             }
             --counter;
         }
-}
+
+        @Override
+        public void end(boolean interrupted) {
+            new protect();
+            super.end(interrupted);
+        }
+    }
