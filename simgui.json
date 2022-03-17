@@ -1,23 +1,129 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[0]": {
+        "header": {
+          "open": true
+        },
+        "name": "Belt"
+      },
+      "Talon FX[10]": {
+        "header": {
+          "open": false
+        }
+      },
+      "Talon FX[11]": {
+        "header": {
+          "open": false
+        }
+      },
+      "Talon FX[13]": {
+        "name": "Mo"
+      },
+      "Talon FX[14]": {
+        "header": {
+          "open": false
+        }
+      },
+      "Talon FX[15]": {
+        "name": "Lester"
+      },
+      "Talon FX[1]": {
+        "header": {
+          "open": true
+        },
+        "name": "DT L 1"
+      },
+      "Talon FX[20]": {
+        "name": "DT L 2"
+      },
+      "Talon FX[2]": {
+        "header": {
+          "open": true
+        },
+        "name": "DT R 1"
+      },
+      "Talon FX[3]": {
+        "name": "DT R 2"
+      },
+      "Talon FX[4]": {
+        "header": {
+          "open": true
+        },
+        "name": "Belt"
+      },
+      "Talon FX[5]": {
+        "name": "Feeder"
+      },
+      "Talon FX[6]": {
+        "name": "Turret"
+      },
+      "Talon FX[7]": {
+        "header": {
+          "open": true
+        },
+        "name": "DT R 1"
+      },
+      "Talon FX[8]": {
+        "name": "DT R 2"
+      },
+      "Talon FX[9]": {
+        "name": "Hood"
+      }
+    },
+    "RoboRIO": {
+      "3.3V Rail": {
+        "open": true
+      },
+      "5V Rail": {
+        "open": true
+      },
+      "6V Rail": {
+        "open": true
+      },
+      "RoboRIO Input": {
+        "open": true
+      },
+      "window": {
+        "visible": true
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Climber": "Subsystem",
+      "/LiveWindow/Climber/Hand A": "Subsystem",
       "/LiveWindow/Climber/Hand B": "Subsystem",
+      "/LiveWindow/Climber/Rotation Motor": "Subsystem",
       "/LiveWindow/Drivetrain": "Subsystem",
       "/LiveWindow/Elevator": "Subsystem",
       "/LiveWindow/Feeder": "Subsystem",
+      "/LiveWindow/Feeder/Intake Dark": "Digital Input",
+      "/LiveWindow/Feeder/Intake Light": "Digital Input",
+      "/LiveWindow/Feeder/Shooter Dark": "Digital Input",
+      "/LiveWindow/Feeder/Shooter Light": "Digital Input",
       "/LiveWindow/Hand": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
-      "/LiveWindow/Rotator": "Subsystem",
+      "/LiveWindow/Limelight": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Turret": "Subsystem",
+      "/LiveWindow/Ungrouped/Belt": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
-      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[5]": "Digital Input",
+      "/LiveWindow/Ungrouped/Drivetrain": "Subsystem",
+      "/LiveWindow/Ungrouped/Feeder": "Subsystem",
+      "/LiveWindow/Ungrouped/Hood": "Subsystem",
+      "/LiveWindow/Ungrouped/Intake": "Subsystem",
+      "/LiveWindow/Ungrouped/Josh": "Subsystem",
+      "/LiveWindow/Ungrouped/Lester": "Subsystem",
+      "/LiveWindow/Ungrouped/Limelight": "Subsystem",
+      "/LiveWindow/Ungrouped/Mo": "Subsystem",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [13]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [15]": "Motor Controller",
@@ -31,24 +137,52 @@
       "/LiveWindow/Ungrouped/Talon FX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [8]": "Motor Controller",
-      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro"
+      "/LiveWindow/Ungrouped/Turret": "Subsystem",
+      "/LiveWindow/Ungrouped/class frc2::SubsystemBase": "Subsystem",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Reset Drivetrain Gyro": "Command",
+      "/SmartDashboard/Reset Drivetrain Odometry": "Command",
+      "/SmartDashboard/sensor": "Digital Input"
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "Turret": {
+        "open": true
+      },
+      "Ungrouped": {
+        "DigitalInput[0]": {
+          "open": true
+        },
+        "DigitalInput[1]": {
+          "open": true
+        },
+        "DigitalInput[2]": {
+          "open": true
+        },
+        "DigitalInput[3]": {
+          "open": true
+        },
+        "class frc2::SubsystemBase": {
+          "open": true
+        }
+      },
+      "open": true
     },
-    "windows": {
-      "/LiveWindow/Drivetrain": {
-        "window": {
-          "visible": true
+    "SmartDashboard": {
+      "Turret": {
+        "Sim": {
+          "open": true
         }
       },
-      "/LiveWindow/Ungrouped/PIDController[1]": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/LiveWindow/Ungrouped/PIDController[2]": {
-        "window": {
-          "visible": true
-        }
+      "open": true,
+      "sensor": {
+        "open": true
       }
+    },
+    "limelight": {
+      "open": true
     }
   }
 }

@@ -17,6 +17,7 @@ public class ShooterMappings {
     // angle =              {10,    0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      10,     10};
     static {
         kShooterStates = new HashMap<Double, Shooter.State>();
+        addEntry(-10, 0, 0, 0);
         addEntry(0, 500, 500, 10);
         addEntry(56, 2000, 2000, 0);
         addEntry(61, 2100, 2000, 0);

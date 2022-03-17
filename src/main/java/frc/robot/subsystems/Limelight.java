@@ -9,7 +9,6 @@ import frc.robot.Utils;
 
 public class Limelight extends SubsystemBase {
 
-    @SuppressWarnings("unused")
     private static final Limelight instance = new Limelight();
     private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -54,8 +53,8 @@ public class Limelight extends SubsystemBase {
         return ty;
     }
 
-    public static double getTv() {
-        return tv;
+    public static int getTv() {
+        return (int) Math.round(tv);
     }
 
     public static double getTa() {

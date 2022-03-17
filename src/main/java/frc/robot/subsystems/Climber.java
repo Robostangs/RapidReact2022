@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
         private HandCallibrationStatus mCallibrationStatus = HandCallibrationStatus.kNotCalibrated;
 
         private Hand(int clawID, int lockID) {
-            System.out.println("Spark Max " + clawID + " init");
+            // System.out.println("Spark Max " + clawID + " init");
             mClaw = new CANSparkMax(clawID, MotorType.kBrushless);
             mClawEncoder = mClaw.getEncoder();
             mClawPIDController = mClaw.getPIDController();
@@ -204,6 +204,11 @@ public class Climber extends SubsystemBase {
     private Climber() {
         mLeftElevatorRelease.set(Constants.Climber.kLeftElevatorReleaseDefaultPosition);
         mRightElevatorRelease.set(Constants.Climber.kRightElevatorReleaseDefaultPosition);
+        addChild("Hand A", mHandA);
+        addChild("Hand B", mHandB);
+        addChild("Rotation Motor", mRotator);
+        addChild("Left Elevator Release", mLeftElevatorRelease);
+        addChild("Right Elevator Release", mRightElevatorRelease);
     }
 
     public static Climber getInstance() {
@@ -212,16 +217,7 @@ public class Climber extends SubsystemBase {
         }
         return instance;
     }
-
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        addChild("Hand A", mHandA);
-        addChild("Hand B", mHandB);
-        addChild("Rotation Motor", mRotator);
-        builder.addDoubleArrayProperty("Elevator Release Position", this::getElevatorReleasePositions, null);
-    }
-
+    
     public Rotator getRotator() {
         return mRotator;
     }

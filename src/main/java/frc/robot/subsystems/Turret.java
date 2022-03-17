@@ -9,6 +9,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
 import frc.robot.commands.turret.GoHome;
 
 public class Turret extends SubsystemBase {
@@ -89,6 +90,11 @@ public class Turret extends SubsystemBase {
     }
 
     private void setRawSetpoint(double position, double feedforward) {
+        position = Utils.saturate(
+            position,
+            Constants.Turret.kRotationMotorSoftLimitOffset,
+            (Constants.Turret.kMaxTurretDegrees - Constants.Turret.kMinTurretDegrees)
+               * Constants.Turret.kTicksPerDegree - Constants.Turret.kRotationMotorSoftLimitOffset);
         mMotor.set(
             ControlMode.Position,
             position,

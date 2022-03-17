@@ -21,4 +21,9 @@ public class SetShooterState extends CommandBase {
     public boolean isFinished() {
         return mShooter.getState().equals(mState);
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        mShooter.setState(new Shooter.State(0));
+    }
 }

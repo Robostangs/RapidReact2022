@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.ClimbPrep;
@@ -63,9 +64,9 @@ public class RobotContainer {
             .whenPressed(new AutoClimb());
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whenPressed(new Protect());
-        new JoystickButton(mManip, XboxController.Button.kY.value)
+        new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting());
-        new JoystickButton(mManip, XboxController.Button.kX.value)
+        new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
