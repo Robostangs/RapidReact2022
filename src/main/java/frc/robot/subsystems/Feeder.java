@@ -38,16 +38,11 @@ public class Feeder extends SubsystemBase {
         /* Set acceleration and vcruise velocity - see documentation */
         mBeltMotor.configMotionCruiseVelocity(20000, 30);
         mBeltMotor.configMotionAcceleration(1500, 30);
-    }
-    
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Feeder Speed", this::beltVelocity, null);
-        builder.addBooleanProperty("Intake Dark Value", this::getIntakeSensorDark, null);
-        builder.addBooleanProperty("Intake Light Value", this::getIntakeSensorLight, null);
-        builder.addBooleanProperty("Shooter Dark Value", this::getShooterSensorDark, null);
-        builder.addBooleanProperty("Shooter Light Value", this::getShooterSensorLight, null);
+
+        addChild("Intake Dark", mIntakeSensorDark);
+        addChild("Intake Light", mIntakeSensorLight);
+        addChild("Shooter Dark", mShooterSensorDark);
+        addChild("Shooter Light", mShooterSensorLight);
     }
 
     public boolean getIntakeSensorDark() {

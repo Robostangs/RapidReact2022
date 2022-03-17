@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -26,6 +28,7 @@ public class Drivetrain extends SubsystemBase {
     private final WPI_TalonFX mRightTop = new WPI_TalonFX(Constants.Drivetrain.kRightTopID);
     private final WPI_TalonFX mRightBottom = new WPI_TalonFX(Constants.Drivetrain.kRightBackID);
     private final AHRS mGyro = new AHRS(SPI.Port.kMXP);
+    private final Field2d mField = new Field2d();
 
     // // Stabilization STUFFFF
     // private double angleConstant, actualEncoderValueLeft, lastEncoderValueLeft, actualEncoderValueRight,
@@ -72,11 +75,13 @@ public class Drivetrain extends SubsystemBase {
         mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
 
         resetEncoder();
+
+        SmartDashboard.putData("Field", mField);
     }
 
     @Override
     public void periodic() {
-        updateOdometry();
+        mField.setRobotPose(updateOdometry());
     }
 
     @Override
@@ -175,8 +180,8 @@ public class Drivetrain extends SubsystemBase {
         mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
     }
 
-    private void updateOdometry() {
-        mDrivetrainOdometry.update(
+    private Pose2d updateOdometry() {
+        return mDrivetrainOdometry.update(
             getGyroRotation2d(),
             mLeftTop.getSelectedSensorPosition() * ((0.15 * Math.PI) * 0.11 / 2048),
             -mRightTop.getSelectedSensorPosition() * ((0.15 * 0.11 * Math.PI) / 2048));
