@@ -79,6 +79,7 @@ public final class Constants {
 
         public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
+        public static final Double kWiggleConstant = 0.1;
         static {
             kRotationConfig.slot0 = new SlotConfiguration();
             kRotationConfig.slot0.kP = 0.1;

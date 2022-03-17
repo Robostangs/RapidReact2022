@@ -148,6 +148,12 @@
   },
   "NetworkTables": {
     "LiveWindow": {
+      "Limelight": {
+        "open": true
+      },
+      "Shooter": {
+        "open": true
+      },
       "Ungrouped": {
         "DigitalInput[0]": {
           "open": true

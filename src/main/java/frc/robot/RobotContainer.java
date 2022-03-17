@@ -61,7 +61,7 @@ public class RobotContainer {
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
             .whenPressed(new ClimbPrep());
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(new AutoClimb());
+            .whenPressed(new AutoClimb(mManip::getLeftY));
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whenPressed(new Protect());
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)

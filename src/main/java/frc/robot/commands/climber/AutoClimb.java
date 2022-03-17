@@ -1,5 +1,7 @@
 package frc.robot.commands.climber;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
@@ -27,7 +29,7 @@ public class AutoClimb extends SequentialCommandGroup {
         mGrabHandHolder.hand = hands[1];
     }
 
-    public AutoClimb() {
+    public AutoClimb(Supplier<Double> wiggleSupplier) {
         addCommands(
             new ReleaseElevator(),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
@@ -40,7 +42,8 @@ public class AutoClimb extends SequentialCommandGroup {
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition).andThen(new PrintCommand("Climb1 done")),
+            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition, wiggleSupplier)
+                .andThen(new PrintCommand("Climb1 done")),
             new InstantCommand(() -> mRotator.setNeutralModeCoast()),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new CloseHand(mRotationHandHolder),
@@ -51,7 +54,8 @@ public class AutoClimb extends SequentialCommandGroup {
             new InstantCommand(() -> mRotator.setNeutralModeBrake()),
             new InstantCommand(this::switchHands),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition).andThen(new PrintCommand("Climb2 done")),
+            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition, wiggleSupplier)
+                .andThen(new PrintCommand("Climb2 done")),
             // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
