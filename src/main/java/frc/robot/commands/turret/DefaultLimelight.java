@@ -2,6 +2,7 @@ package frc.robot.commands.Turret;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -13,6 +14,7 @@ public class defaultLimelight extends CommandBase {
 
     private Turret m_Turret;
     private double lastTx;
+    private final Debouncer mTopFeederDebouncer = new Debouncer(Constants.Turret.kDoubleDebouncerTime);
 
     public defaultLimelight() {
         m_Turret = Turret.getInstance();
@@ -20,15 +22,10 @@ public class defaultLimelight extends CommandBase {
         this.setName("Full Auto");
         lastTx = 1;
     }
-
-    int counter = 50;
-
+    
     @Override
     public void execute() {
-            if (Feeder.getInstance().getShooterSensorLight()) {
-                counter = 50;
-            }
-            if (Feeder.getInstance().getShooterSensorLight() || counter > 0) {
+            if (mTopFeederDebouncer.calculate(Feeder.getInstance().getShooterSensorLight())) {
                 Limelight.enableLEDs();
                 if (Limelight.getTv() == 1) {
                     // double Vx = dt.getGyroVelocityX() * Math.sin(180 -
@@ -52,7 +49,6 @@ public class defaultLimelight extends CommandBase {
                 }
 
             }
-            --counter;
         }
 
         @Override

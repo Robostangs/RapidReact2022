@@ -226,6 +226,7 @@ public final class Constants {
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+        public static final double kDoubleDebouncerTime = 0.02;
 
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
