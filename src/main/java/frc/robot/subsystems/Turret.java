@@ -22,6 +22,8 @@ public class Turret extends SubsystemBase {
     private static Command mGoHomeCommand = new GoHome().withTimeout(3);
     private double setpoint;
 
+    private double feedforward;
+
     public static Turret getInstance() {
         if (instance == null) {
             instance = new Turret();
@@ -45,6 +47,7 @@ public class Turret extends SubsystemBase {
         builder.addDoubleProperty("Angle", this::getAngle, null);
         builder.addBooleanProperty("Is Homed", () -> mIsHomed, null);
         builder.addDoubleProperty("Setpoint", () -> setpoint, null);
+        builder.addDoubleProperty("Feedforward", () -> feedforward, null);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class Turret extends SubsystemBase {
             mIsHomed = false;
         }
         if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
-            mGoHomeCommand.schedule();
+            mGoHomeCommand.schedule(false);
         }
     }
 
@@ -101,6 +104,7 @@ public class Turret extends SubsystemBase {
             DemandType.ArbitraryFeedForward,
             feedforward);
         setpoint = position;
+        this.feedforward = feedforward;
     }
 
     public void setAngleSetpoint(double angle, double feedforward) {
