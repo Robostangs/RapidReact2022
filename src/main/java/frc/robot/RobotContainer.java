@@ -6,26 +6,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.ClimbPrep;
-import frc.robot.commands.climber.ReleaseElevator;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
-import frc.robot.commands.shooter.SetVariableShooterState;
 import frc.robot.commands.intake.Active;
-import frc.robot.commands.turret.DefaultLimelight;
-import frc.robot.subsystems.Climber;
-import frc.robot.commands.turret.DefaultTurret;
-import frc.robot.commands.turret.GoHome;
 import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
