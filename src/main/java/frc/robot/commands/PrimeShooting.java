@@ -2,13 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Utils;
+import frc.robot.commands.Turret.defaultLimelight;
 import frc.robot.commands.shooter.SetDistanceShooterState;
-import frc.robot.commands.turret.DefaultTurret;
+import frc.robot.commands.Turret.defaultLimelight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class PrimeShooting extends ParallelCommandGroup {
-    private final DefaultTurret mDefaultTurret = new DefaultTurret();
+    private final defaultLimelight mDefaultTurret = new defaultLimelight(null, null);
 
     public PrimeShooting() {
         setName("Prime Shooting");

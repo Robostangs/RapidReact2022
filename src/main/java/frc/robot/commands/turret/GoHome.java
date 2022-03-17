@@ -1,46 +1,56 @@
-package frc.robot.commands.turret;
+package frc.robot.commands.Turret;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
-public class GoHome extends CommandBase {
-    private final Turret mTurret = Turret.getInstance();
+public class GoHome extends CommandBase{
+    private Turret m_Turret = Turret.getInstance();
+    private Timer m_timer;
 
     public GoHome() {
-        addRequirements(mTurret);
-        setName("Home Turret");
+        this.addRequirements(m_Turret);
+        this.setName("Take Me Home, Country Road");
+        m_timer = new Timer();
     }
 
     @Override
     public void initialize() {
-        mTurret.setSoftLimitEnable(false);
-        mTurret.configClearPosition(true);
-        mTurret.configMaxSpeed(Math.abs(Constants.Turret.kRotationMotorSpeed));
+        m_timer.reset();
+        m_Turret.setSoftLimitEnable(false);
+        m_timer.start();
+        m_Turret.setClearPosition(true);
     }
 
     @Override
     public void execute() {
-        // System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-        mTurret.setPercentSpeed(Constants.Turret.kRotationMotorSpeed);
+        if(m_timer.get() <= 3) {
+            System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+            m_Turret.setSpeed(Constants.Turret.rotationMotorSpeed);
+        } else {
+            System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
+
+            m_Turret.setSpeed(0);
+            m_Turret.setMaxSpeed(0.2);
+            this.cancel();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return mTurret.getReverseLimit();
+        return m_Turret.getReverseLimit();
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (!interrupted) {
-            mTurret.setSoftLimitEnable(true);
-            mTurret.configMaxSpeed(1);
-            mTurret.setHomed(true);
-        } else if(interrupted) {
-            System.out.println("Turret homing interrupted!");
-            mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
-            mTurret.configMaxSpeed(0.2);
+        if(!interrupted) {
+            m_Turret.setSoftLimitEnable(true);
+            m_Turret.setMaxSpeed(1);
+            m_Turret.setHomed(true);
+        
         }
-        mTurret.configClearPosition(false);
+        m_Turret.setClearPosition(false);
+
     }
 }

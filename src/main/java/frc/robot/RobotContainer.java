@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.commands.PrimeShooting;
+import frc.robot.commands.Turret.protect;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
-import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 
@@ -62,7 +62,7 @@ public class RobotContainer {
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
             .whenPressed(new AutoClimb());
         new JoystickButton(mManip, XboxController.Button.kB.value)
-            .whenPressed(new Protect());
+            .whenPressed(new protect());
         new JoystickButton(mManip, XboxController.Button.kY.value)
             .whileHeld(new PrimeShooting());
         new JoystickButton(mManip, XboxController.Button.kX.value)

@@ -1,149 +1,133 @@
 package frc.robot.subsystems;
 
+import java.security.cert.TrustAnchor;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.turret.GoHome;
+import frc.robot.Utils;
+import frc.robot.Constants.Drivetrain;
+import frc.robot.commands.Turret.GoHome;
 
 public class Turret extends SubsystemBase {
-
-    private static Turret instance;
-
-    private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
-    // private final DigitalInput m_homeSensorOn, m_homeSensorOff;
-    private boolean mIsHomed;
-    private static Command mGoHomeCommand = new GoHome().withTimeout(3);
-    private double setpoint;
+    private final TalonFX rotationMotor;
+    public static Turret instance;
+    public static DigitalInput m_homeSensorOn, m_homeSensorOff;
+    private boolean isHomed;
+    private double filter;
+    private frc.robot.subsystems.Drivetrain mDrivetrain;
+    //private TalonFXSensorCollection m_sensorCollection;
 
     public static Turret getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new Turret();
         }
         return instance;
     }
 
-    private Turret() {
-        mMotor.configFactoryDefault();
-        mMotor.configAllSettings(Constants.Turret.kMotorConfig);
+    public Turret() {
+        rotationMotor = new TalonFX(Constants.Turret.kRotationMotorID);
+        rotationMotor.configFactoryDefault();
+        rotationMotor.configAllSettings(Constants.Turret.kMotorConfig);        
 
-        mMotor.setNeutralMode(NeutralMode.Brake);
+        filter = 0;
+        isHomed = false;
+        SmartDashboard.putNumber("Turret", 0);
+        SmartDashboard.putNumber("Yaw Feed", 0);
 
-        mIsHomed = false;
+        mDrivetrain = frc.robot.subsystems.Drivetrain.getInstance();
+        
     }
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Position", this::getRawPosition, null);
-        builder.addDoubleProperty("Angle", this::getAngle, null);
-        builder.addBooleanProperty("Is Homed", () -> mIsHomed, null);
-        builder.addDoubleProperty("Setpoint", () -> setpoint, null);
+    public void setClearPosition(boolean value) {
+        rotationMotor.configClearPositionOnLimitR(value, 100);
+    }
+    
+    public void setSpeed(double speed) {
+        rotationMotor.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, mDrivetrain.getGyroRate() * Constants.Turret.kTurningFeedForward);
+    }
+
+    public void setPosition(double position) {
+        rotationMotor.set(ControlMode.Position, position, DemandType.ArbitraryFeedForward, mDrivetrain.getGyroRate() * Constants.Turret.kTurningFeedForward);
+    }
+
+    public double getTurrentPosition() {
+        return rotationMotor.getSelectedSensorPosition();
+    }
+
+    public double getTurrentAngle() {
+        return (rotationMotor.getSelectedSensorPosition() - Constants.Turret.backPosition) / ((Constants.Turret.leftNinety - Constants.Turret.backPosition)/90);
+    }
+
+    public double getTurretVelocity() {
+        return rotationMotor.getSelectedSensorVelocity();
+    }
+
+    public void setMaxSpeed(double speed) {
+        rotationMotor.configPeakOutputForward(speed);
+        rotationMotor.configPeakOutputReverse(-speed);
+    }
+
+    public void setAngle(double angle) {
+        setPosition(Utils.saturate(
+            ((angle * (Constants.Turret.leftNinety - Constants.Turret.backPosition)/90) +  Constants.Turret.backPosition),
+            Constants.Turret.rotationMotorSoftLimitOffset,
+            (Constants.Turret.rotationMotorMax - Constants.Turret.rotationMotorSoftLimitOffset)
+        ));
+    }
+
+    public void limelightSetAngle(double angle) {
+        double currentAngle = (rotationMotor.getSelectedSensorPosition() - Constants.Turret.backPosition) / ((Constants.Turret.leftNinety - Constants.Turret.backPosition)/90);
+        SmartDashboard.putNumber("angle", currentAngle);
+        double target = angle + currentAngle;
+        SmartDashboard.putNumber("tarhet", target);
+        setFilteredAngle(target);
+    }
+
+    public void setFilteredAngle(double target) {
+        filter = filter + Constants.Turret.kFilterConstant * (target - filter);
+        setAngle(filter);
+    }
+
+    public void rotateMotorVelocity(double speed) {
+        rotationMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+    public double getVelocity() {
+        return rotationMotor.getSelectedSensorVelocity();
+    }
+
+    public boolean getReverseLimit() {
+        return rotationMotor.isRevLimitSwitchClosed() == 1;
+    }
+
+    public void setSoftLimitEnable(boolean enable) {
+        rotationMotor.configForwardSoftLimitEnable(enable);
+        rotationMotor.configReverseSoftLimitEnable(enable);
+    }
+
+    public void setHomed(boolean value) {
+        isHomed = value;
     }
 
     @Override
     public void periodic() {
-        if (mMotor.hasResetOccurred()) {
-            mIsHomed = false;
+        if(rotationMotor.hasResetOccurred()) {
+            isHomed = false;
         }
-        if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
-            mGoHomeCommand.schedule();
+        if(!isHomed){
+            new GoHome().schedule(); 
         }
-    }
-
-    private double positionRawToAngular(double raw) {
-        return (raw / Constants.Turret.kTicksPerDegree) + Constants.Turret.kMinTurretDegrees;
-    }
-
-    private double positionAngularToRaw(double angle) {
-        return (angle - Constants.Turret.kMinTurretDegrees) * Constants.Turret.kTicksPerDegree;
-    }
-
-    private double speedRawToAnguar(double raw) {
-        return raw * 10 / Constants.Turret.kTicksPerDegree;
-    }
-
-    private double speedAngularToRaw(double angular) {
-        return angular * Constants.Turret.kTicksPerDegree / 10;
-    }
-
-    private double getRawPosition() {
-        return mMotor.getSelectedSensorPosition(0);
-    }
-
-    public double getAngle() {
-        return positionRawToAngular(getRawPosition());
-    }
-
-    private double getRawVelocity() {
-        return mMotor.getSelectedSensorVelocity();
-    }
-
-    public double getAngularVelocity() {
-        return speedRawToAnguar(getRawVelocity());
-    }
-
-    private void setRawSetpoint(double position, double feedforward) {
-        mMotor.set(
-            ControlMode.Position,
-            position,
-            DemandType.ArbitraryFeedForward,
-            feedforward);
-        setpoint = position;
-    }
-
-    public void setAngleSetpoint(double angle, double feedforward) {
-        setRawSetpoint(positionAngularToRaw(angle), feedforward);
-    }
-
-    public void setAngleSetpoint(double angle) {
-        setAngleSetpoint(angle, 0);
-    }
-
-    private void setRawSpeedSetpoint(double speed, double feedforward) {
-        mMotor.set(
-            ControlMode.PercentOutput,
-            speed,
-            DemandType.ArbitraryFeedForward,
-            feedforward);
-    }
-
-    public void setAngularVelocitySetpoint(double angularVelocity, double feedforward) {
-        setRawSpeedSetpoint(speedAngularToRaw(angularVelocity), feedforward);
-    }
-
-    public void setAngularVelocitySetpoint(double angularVelocity) {
-        setAngularVelocitySetpoint(angularVelocity, 0);
-    }
-
-    public void setPercentSpeed(double speed) {
-        mMotor.set(ControlMode.PercentOutput, speed);
-    }
-
-    public boolean getReverseLimit() {
-        return mMotor.isRevLimitSwitchClosed() == 1;
-    }
-
-    public void configMaxSpeed(double speed) {
-        mMotor.configPeakOutputForward(speed);
-        mMotor.configPeakOutputReverse(-speed);
-    }
-
-    public void configClearPosition(boolean value) {
-        mMotor.configClearPositionOnLimitR(value, 100);
-    }
-
-    public void setSoftLimitEnable(boolean enable) {
-        mMotor.configForwardSoftLimitEnable(enable);
-        mMotor.configReverseSoftLimitEnable(enable);
-    }
-
-    public void setHomed(boolean value) {
-        mIsHomed = value;
     }
 }

@@ -248,6 +248,14 @@ public final class Constants {
             kMotorConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
             kMotorConfig.neutralDeadband = 0;
         }
+
+        //XXX 
+        public static final double rotationMotorMax = 74000;
+        public static final double rotationMotorSoftLimitOffset = 2000;
+        public static final double rotationMotorSpeed = -0.2;
+        public static final double backPosition = 34595;
+        public static final double leftNinety = 63428;
+
     }
 
     public static class Limelight {

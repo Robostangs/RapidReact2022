@@ -1,10 +1,22 @@
-package frc.robot.commands.turret;
+package frc.robot.commands.Turret;
 
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Turret;
 
-public class Protect extends ToRobotAngle {
+public class protect extends InstantCommand{
+    
+    private Turret m_Turret;
 
-    public Protect() {
-        super(Constants.Turret.kProtectedValue, 0);
+    public protect() {
+        m_Turret = Turret.getInstance();
     }
+
+    @Override
+    public void execute() {
+        m_Turret.setFilteredAngle(-90);
+        Limelight.disableLEDs();
+    }
+
 }
