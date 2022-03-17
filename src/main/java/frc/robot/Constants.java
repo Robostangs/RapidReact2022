@@ -242,7 +242,7 @@ public final class Constants {
             kMotorConfig.slot0.kP = 0.1;
             kMotorConfig.slot0.kI = 0.001;
             kMotorConfig.slot0.kD = 0;
-            kMotorConfig.slot0.kF = -0.03;
+            // kMotorConfig.slot0.kF = -0.03;
             kMotorConfig.slot0.integralZone = 1000;
             kMotorConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
             kMotorConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;

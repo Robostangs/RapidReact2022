@@ -39,6 +39,7 @@ public class Limelight extends SubsystemBase {
         builder.addDoubleProperty("ty", () -> ty, null);
         builder.addDoubleProperty("tv", () -> tv, null);
         builder.addDoubleProperty("ta", () -> ta, null);
+        builder.addDoubleProperty("distance", Limelight::getDistance, null);
     }
 
     public static double getDistance() {

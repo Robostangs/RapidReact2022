@@ -148,9 +148,6 @@
   },
   "NetworkTables": {
     "LiveWindow": {
-      "Turret": {
-        "open": true
-      },
       "Ungrouped": {
         "DigitalInput[0]": {
           "open": true

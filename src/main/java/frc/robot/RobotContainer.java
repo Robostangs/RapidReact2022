@@ -65,7 +65,8 @@ public class RobotContainer {
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whenPressed(new Protect());
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
-            .whileHeld(new PrimeShooting());
+            .whileHeld(new PrimeShooting())
+            .whenReleased(new Protect());
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
 
