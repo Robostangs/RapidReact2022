@@ -31,19 +31,19 @@ public class DefaultLimelight extends CommandBase {
             if (Limelight.getTv() == 1) {
                 // double Vx = dt.getGyroVelocityX() * Math.sin(180 -
                 // m_Turret.getTurrentAngle());
-                // lastTx = Limelight.getTx();
+                lastTx = Limelight.getTx();
                 // double theta = Math.atan2((Constants.Turret.drivingOffset * Vx),
                 // (Utils.dist(Limelight.getTy())));
                 // // theta + Limelight.getTx()
-                mTurret.limelightSetAngle(Limelight.getTx());
+                mTurret.setAngleSetpoint(Limelight.getTx(), Constants.Turret.kTurningFeedForward);
             } else {
                 if (mManipButton.get()) {
                     double m_position = 200 * Math.signum(lastTx);
-                    mTurret.setAngle(m_position);
-                    if ((mTurret.getTurrentPosition() >= Constants.Turret.kRotationMotorMax - 4000.0)
+                    mTurret.setAngleSetpoint(m_position, Constants.Turret.kTurningFeedForward);
+                    if ((mTurret.getAngle() >= Constants.Turret.kRotationMotorMax - 4000.0)
                             && (Math.signum(m_position) > 0)) {
                         lastTx = -lastTx;
-                    } else if ((mTurret.getTurrentPosition() <= 4000.0) && (Math.signum(m_position) < 0)) {
+                    } else if ((mTurret.getAngle() <= 4000.0) && (Math.signum(m_position) < 0)) {
                         lastTx = -lastTx;
                     }
                     SmartDashboard.putNumber("m_position", m_position);
@@ -52,7 +52,7 @@ public class DefaultLimelight extends CommandBase {
             }
 
         } else {
-            mTurret.setAngle(-90);
+            new Protect();
             Limelight.disableLEDs();
         }
         --counter;

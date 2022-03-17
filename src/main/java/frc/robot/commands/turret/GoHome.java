@@ -7,7 +7,6 @@ import frc.robot.subsystems.Turret;
 
 public class GoHome extends CommandBase {
     private final Turret mTurret = Turret.getInstance();
-    private final Timer mTimer = new Timer();
 
     public GoHome() {
         addRequirements(mTurret);
@@ -16,24 +15,15 @@ public class GoHome extends CommandBase {
 
     @Override
     public void initialize() {
-        mTimer.reset();
         mTurret.setSoftLimitEnable(false);
-        mTimer.start();
-        mTurret.setClearPosition(true);
+        mTurret.configClearPosition(true);
+        mTurret.configMaxSpeed(Math.abs(Constants.Turret.kRotationMotorSpeed));
     }
 
     @Override
     public void execute() {
-        if (mTimer.get() <= 3) {
-            System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
-            mTurret.setSpeed(Constants.Turret.kRotationMotorSpeed);
-        } else {
-            System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));
-
-            mTurret.setSpeed(0);
-            mTurret.setMaxSpeed(0.2);
-            cancel();
-        }
+        // System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+        mTurret.setPercentSpeed(Constants.Turret.kRotationMotorSpeed);
     }
 
     @Override
@@ -45,9 +35,13 @@ public class GoHome extends CommandBase {
     public void end(boolean interrupted) {
         if (!interrupted) {
             mTurret.setSoftLimitEnable(true);
-            mTurret.setMaxSpeed(1);
+            mTurret.configMaxSpeed(1);
             mTurret.setHomed(true);
+        } else if(interrupted) {
+            System.out.println("Turret homing interrupted!");
+            mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
+            mTurret.configMaxSpeed(0.2);
         }
-        mTurret.setClearPosition(false);
+        mTurret.configClearPosition(false);
     }
 }

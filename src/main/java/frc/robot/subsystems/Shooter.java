@@ -3,32 +3,68 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
 import frc.robot.commands.shooter.Home;
 
 public class Shooter extends SubsystemBase {
 
+    public static class State {
+        public double topSpeed;
+        public double bottomSpeed;
+        public double angle;
+
+        public State(double topSpeed, double bottomSpeed, double angle) {
+            this.topSpeed = topSpeed;
+            this.bottomSpeed = bottomSpeed;
+            this.angle = angle;
+        }
+
+        public State(double topSpeed, double bottomSpeed) {
+            this(topSpeed, bottomSpeed, 0);
+        }
+
+        public State(double topSpeed) {
+            this(topSpeed, topSpeed * Constants.Shooter.kDefaultBottomSpeedMultiplier, 0);
+        }
+
+        public String toString() {
+            return "ShooterState(topSpeed=" + topSpeed + ", bottomSpeed=" + bottomSpeed + ", angle=" + angle + ")";
+        }
+
+        public boolean equals(Object o) {
+            if (o instanceof State) {
+                State other = (State) o;
+                return topSpeed == other.topSpeed && bottomSpeed == other.bottomSpeed && angle == other.angle;
+            }
+            return false;
+        }
+
+        public boolean roughlyEquals(Object o) {
+            if (o instanceof State) {
+                State other = (State) o;
+                return
+                    Utils.roughlyEqual(topSpeed, other.topSpeed, Constants.Shooter.kTopSpeedTolerance)
+                 && Utils.roughlyEqual(bottomSpeed, other.bottomSpeed, Constants.Shooter.kBottomSpeedTolerance)
+                 && Utils.roughlyEqual(angle, other.angle, Constants.Shooter.kAngleTolerance);
+            }
+            return false;
+        }
+    }
+
     private static Shooter instance;
     private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
     private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
-    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.elevatorMotorID);
     private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
-    private final ColorSensorV3 mColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
     private boolean isHomed;
-
-    enum cargoColor {
-        blue,
-        red,
-        none
-    }
-    // private DigitalInput m_shooterInput; -- Get the Sensor from Feeder, that has
-    // the shooter sensor
+    private static Command mHomeCommand = new Home();
 
     public static Shooter getInstance() {
         if (instance == null) {
@@ -46,74 +82,99 @@ public class Shooter extends SubsystemBase {
         mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
         mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 255);
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 255);
+        //21?
+        mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 255);
+
         mHood.setNeutralMode(NeutralMode.Brake);
+
+        SmartDashboard.putNumber("LeftVelo", 0.0);
+        SmartDashboard.putNumber("RightVelo", 0.0);
+        SmartDashboard.putNumber("HoodAngle", 0.0);
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addDoubleProperty("Bottom Shooter Velocity", this::getTopVelocity, null);
-        builder.addDoubleProperty("Top Shooter Velocity", this::getBottomVelocity, null);
-        builder.addDoubleProperty("Hood Position", mHood::getSelectedSensorPosition, null);
+        builder.addStringProperty("Shooter State", () -> getState().toString(), null);
+        builder.addBooleanProperty("Hood homed", () -> isHomed, null);
     }
 
-    // @Override
-    // public void periodic() {
-    // super.periodic();
-    // setAlignmentPower(m_alignmentPID.calculate(getAlignmentPosition()));
-    // setAnglePower(m_angleChangerPID.calculate(getAnglePosition()));
-    // setLeftShooterPower(m_leftShooterPID.calculate(getLeftShooterPosition()));
-    // setRightShooterPower(m_rightShooterPID.calculate(getRightShooterPosition()));
-    // }
+    @Override
+    public void periodic() {
+        super.periodic();
+        if (mHood.hasResetOccurred()) {
+            isHomed = false;
+        }
+        if (!isHomed && !mHomeCommand.isScheduled()) {
+            mHomeCommand.schedule();
+        }
+
+        // SmartDashboard.putNumber(
+        //     "Distance Limelight",
+        //     Limelight.getDistance());
+        // setState(
+        //     new State(
+        //         (SmartDashboard.getNumber("TopVelo", 0)), 
+        //         (SmartDashboard.getNumber("BottomVelo", 0)), 
+        //         (SmartDashboard.getNumber("HoodAngle", 0)) 
+        //     )
+        // );
+        // SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ", " + SmartDashboard.getNumber("HoodAngle", 0) + ");");
+    }
 
     public void setBottomShooterPower(double power) {
         mBottomShooter.set(ControlMode.PercentOutput, power);
-    }
-
-    public cargoColor getBallColor() {
-        if (mColorSensor.getRed() > mColorSensor.getBlue()) {
-            return cargoColor.red;
-        } else if (mColorSensor.getRed() < mColorSensor.getBlue()) {
-            return cargoColor.blue;
-        } else {
-            return cargoColor.none;
-        }
-    }
-
-    public boolean getHoodLimitSwitch() {
-        return mHood.isFwdLimitSwitchClosed() == 1;
     }
 
     public void setBottomShooterVelocity(double velocity) {
         mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
     }
 
+    public void setTopShooterPower(double power) {
+        mTopShooter.set(ControlMode.PercentOutput, power);
+    }
+
     public void setTopShooterVelocity(double velocity) {
         mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
     }
 
-    public void setTopShooterPower(double power) {
-        mTopShooter.set(ControlMode.PercentOutput, power);
+    public void setHoodPositionPID(double position) {
+        if(position == 0) {
+            setHoodPower(0);
+        } else {
+            mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+        }
     }
 
     public void setHoodPower(double power) {
         mHood.set(ControlMode.PercentOutput, power);
     }
 
-    public void setHoodPositionPID(double position) {
-        mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+    public State getState() {
+        return new State(
+            mTopShooter.getSelectedSensorVelocity(),
+            mBottomShooter.getSelectedSensorVelocity(),
+            mHood.getSelectedSensorPosition());
     }
 
-    public void setElevatorPower(double power) {
-        mElevator.set(ControlMode.PercentOutput, power);
+    public void setState(State state) {
+        // System.out.println("Setting state to " + state.toString());
+        setTopShooterVelocity(state.topSpeed);
+        setBottomShooterPower(state.bottomSpeed);
+        setHoodPositionPID(state.angle);
     }
 
-    public double getBottomVelocity() {
-        return mBottomShooter.getSelectedSensorVelocity();
-    }
-
-    public double getTopVelocity() {
-        return mTopShooter.getSelectedSensorVelocity();
+    public boolean getHoodLimitSwitch() {
+        return mHood.isFwdLimitSwitchClosed() == 1;
     }
 
     public void setSoftLimitEnable(boolean value) {
@@ -141,26 +202,4 @@ public class Shooter extends SubsystemBase {
     public void resetHoodEncoder() {
         mHood.setSelectedSensorPosition(0);
     }
-
-    @Override
-    public void periodic() {
-        if (mHood.hasResetOccurred()) {
-            isHomed = false;
-        }
-        if (!isHomed) {
-            new Home().schedule();
-        }
-    }
-
-    // @Override
-    // public void periodic() {
-    // SmartDashboard.putNumber("Distance Limelight",
-    // Utils.dist(Limelight.getTy()));
-    // m_leftShooter.set(ControlMode.Velocity, (SmartDashboard.getNumber("LeftVelo",
-    // 0.0) / (600.0/2048.0)));
-    // m_rightShooter.set(ControlMode.Velocity,
-    // (SmartDashboard.getNumber("RightVelo", 0.0) / (600.0/2048.0)));
-    // // setAnglePositionPID(SmartDashboard.getNumber("Hood Position", 0));
-    // setElevatorPower(SmartDashboard.getNumber("Elevator Speed", 0));
-    // }
 }

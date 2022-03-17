@@ -139,6 +139,17 @@ public final class Constants {
 
         public static final double kTicksPerDegree = 10;
         public static final double kHomeSpeed = 0.1;
+        public static final double kDefaultBottomSpeedMultiplier = 1;
+
+        public static final double kTopSpeedTolerance = 50;
+        public static final double kBottomSpeedTolerance = 50;
+        public static final double kAngleTolerance = 0.1;
+    }
+    
+    public static final class Elevator {
+        public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
+        public static final double kDefaultPower = 0.5;
+        static {}
     }
 
     public static final class Feeder {
@@ -158,7 +169,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final double kIntakeSpeed = 1; // TODO: Set intake speed
+        public static final double kDefaultSpeed =0.5; // TODO: Set intake speed
         public static final int kIntakeMotorID = 8;
         public static final int kSensorID = 2;
     }
@@ -172,37 +183,70 @@ public final class Constants {
 
         public static final int kGyro = 7;
         public static final int kFalconEncoderMax = 2048;
-        public static final double kWheelDiameter = 3;
+        public static final double kWheelDiameter = 0.15;
+        public static final double kGearRatio = 7.828877;
+
+        public static final double kEncoderCountsPerMeter = (kFalconEncoderMax * kGearRatio) / (kWheelDiameter * Math.PI);
+        public static final double kB = 2;
+        public static final double kZeta = 0.7;
+
+        //TODO: SET MAX VELOCITY AND ACCELERATIONNNNNNNNNNNNN
+        public static final double maxVelocity = 1;
+        public static final double maxAcceleration = 3;
+
+        //TODO: GET DRIVETRAIN PIDDDDDD
+        public static final TalonFXConfiguration kLeftMotorsConfig = new TalonFXConfiguration();
+        static {
+            kLeftMotorsConfig.slot0 = new SlotConfiguration();
+            kLeftMotorsConfig.slot0.kP = 0;
+            kLeftMotorsConfig.slot0.kI = 0;
+            kLeftMotorsConfig.slot0.kD = 0;
+        }
+        
+        public static final TalonFXConfiguration kRightMotorsConfig = new TalonFXConfiguration();
+        static {
+            kRightMotorsConfig.slot0 = new SlotConfiguration();
+            kRightMotorsConfig.slot0.kP = 0;
+            kRightMotorsConfig.slot0.kI = 0;
+            kRightMotorsConfig.slot0.kD = 0;
+        }
 
         // Odometry
-        public static final double kTrackWidth = 0.88817;
+        public static final double kTrackWidth = 0.471;
+
+        
     }
 
     public static class Turret {
         public static final int kRotationMotorID = 6;
-        
+
         public static final double kRotationMotorMax = 74000;
-        public static final double kRotationMotorSoftLimitOffset = 2000;
+        public static final double kRotationMotorSoftLimitOffset = 4000;
         public static final double kRotationMotorSpeed = -0.2;
+        public static final double kTicksPerDegree = 314;
+        public static final double kMinTurretDegrees = -110;
+        public static final double kMaxTurretDegrees = 125.7;
+
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
 
         public static final double kFilterConstant = 0.5;
-        public static final double kDrivingOffset = 0;
 
         public static final double kTurningFeedForward = -0.03;
 
-        public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
+        public static final TalonFXConfiguration kMotorConfig = new TalonFXConfiguration();
+
+        public static final double kProtectedValue = -90;
         static {
-            kRotationConfig.slot0 = new SlotConfiguration();
-            kRotationConfig.slot0.kP = 0.1;
-            kRotationConfig.slot0.kI = 0.001;
-            kRotationConfig.slot0.kD = 0;
-            kRotationConfig.slot0.kF = -0.03;
-            kRotationConfig.slot0.integralZone = 1000;
-            kRotationConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
-            kRotationConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
-            kRotationConfig.neutralDeadband = 0;
+            kMotorConfig.slot0 = new SlotConfiguration();
+            kMotorConfig.slot0.kP = 0.1;
+            kMotorConfig.slot0.kI = 0.001;
+            kMotorConfig.slot0.kD = 0;
+            kMotorConfig.slot0.kF = -0.03;
+            kMotorConfig.slot0.integralZone = 1000;
+            kMotorConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
+            kMotorConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
+            kMotorConfig.neutralDeadband = 0;
         }
     }
 

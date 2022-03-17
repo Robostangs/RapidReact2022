@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.println("INITIALIZED: " + c.getName());});
         CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.println("FINISHED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println    ("INTERUPTED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println("INTERUPTED: " + c.getName());});
     }
 
     /**
