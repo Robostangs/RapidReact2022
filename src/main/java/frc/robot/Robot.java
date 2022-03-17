@@ -85,8 +85,6 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
-
-        new SetDistanceShooterState(() -> SmartDashboard.getNumber("Simulated Distance", -10));
     }
 
     /** This function is called periodically during operator control. */
