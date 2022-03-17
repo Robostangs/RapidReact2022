@@ -62,7 +62,7 @@ public class Shooter extends SubsystemBase {
     private static Shooter instance;
     private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
     private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
-    private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
+    // private final WPI_TalonFX mHood = new WPI_TalonFX(Constants.Shooter.kAngleShooterID);
     private boolean isHomed;
     private static Command mHomeCommand = new Home();
 
@@ -76,11 +76,11 @@ public class Shooter extends SubsystemBase {
     private Shooter() {
         mBottomShooter.configFactoryDefault();
         mTopShooter.configFactoryDefault();
-        mHood.configFactoryDefault();
+        // mHood.configFactoryDefault();
 
         mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
         mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
-        mHood.configAllSettings(Constants.Shooter.kHoodConfig);
+        // mHood.configAllSettings(Constants.Shooter.kHoodConfig);
 
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255);
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255);
@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase {
         //21?
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 255);
 
-        mHood.setNeutralMode(NeutralMode.Brake);
+        // mHood.setNeutralMode(NeutralMode.Brake);
 
         SmartDashboard.putNumber("LeftVelo", 0.0);
         SmartDashboard.putNumber("RightVelo", 0.0);
@@ -105,18 +105,18 @@ public class Shooter extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addStringProperty("Shooter State", () -> getState().toString(), null);
-        builder.addBooleanProperty("Hood homed", () -> isHomed, null);
+        // builder.addBooleanProperty("Hood homed", () -> isHomed, null);
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        if (mHood.hasResetOccurred()) {
-            isHomed = false;
-        }
-        if (!isHomed && !mHomeCommand.isScheduled()) {
-            mHomeCommand.schedule();
-        }
+        // if (mHood.hasResetOccurred()) {
+        //     isHomed = false;
+        // }
+        // if (!isHomed && !mHomeCommand.isScheduled()) {
+        //     mHomeCommand.schedule();
+        // }
 
         // SmartDashboard.putNumber(
         //     "Distance Limelight",
@@ -136,7 +136,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setBottomShooterVelocity(double velocity) {
-        mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+        if(velocity < 500) {
+            mBottomShooter.set(ControlMode.PercentOutput, 0);
+        } else {
+            mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+        }
     }
 
     public void setTopShooterPower(double power) {
@@ -144,55 +148,62 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setTopShooterVelocity(double velocity) {
-        mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
-    }
-
-    public void setHoodPositionPID(double position) {
-        if(position == 0) {
-            setHoodPower(0);
+        if(velocity < 500) {
+            mTopShooter.set(ControlMode.PercentOutput, 0);
         } else {
-            mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+            mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
         }
     }
 
+    public void setHoodPositionPID(double position) {
+        // if(position == 0) {
+        //     setHoodPower(0);
+        // } else {
+        //     mHood.set(ControlMode.Position, position * (-8192 / 90), DemandType.ArbitraryFeedForward, 0.04);
+        // }
+    }
+
     public void setHoodPower(double power) {
-        mHood.set(ControlMode.PercentOutput, power);
+        // mHood.set(ControlMode.PercentOutput, power);
     }
 
     public State getState() {
         return new State(
             mTopShooter.getSelectedSensorVelocity(),
             mBottomShooter.getSelectedSensorVelocity(),
-            mHood.getSelectedSensorPosition());
+            // mHood.getSelectedSensorPosition());
+            0);
     }
 
     public void setState(State state) {
-        // System.out.println("Setting state to " + state.toString());
+        SmartDashboard.putString("Requested state", state.toString());
         setTopShooterVelocity(state.topSpeed);
         setBottomShooterPower(state.bottomSpeed);
-        setHoodPositionPID(state.angle);
+        // setHoodPositionPID(state.angle);
     }
 
     public boolean getHoodLimitSwitch() {
-        return mHood.isFwdLimitSwitchClosed() == 1;
+        // return mHood.isFwdLimitSwitchClosed() == 1;
+        return false;
     }
 
     public void setSoftLimitEnable(boolean value) {
-        mHood.configForwardSoftLimitEnable(value);
-        mHood.configReverseSoftLimitEnable(value);
+        // mHood.configForwardSoftLimitEnable(value);
+        // mHood.configReverseSoftLimitEnable(value);
     }
 
     public void setClearPosition(boolean value) {
-        mHood.configClearPositionOnLimitF(value, 100);
+        // mHood.configClearPositionOnLimitF(value, 100);
     }
 
     public void setMaxSpeed(double speed) {
-        mHood.configPeakOutputForward(speed);
-        mHood.configPeakOutputReverse(-2 * speed);
+        // mHood.configPeakOutputForward(speed);
+        // mHood.configPeakOutputReverse(-2 * speed);
     }
 
     public boolean getForwardLimit() {
-        return mHood.isFwdLimitSwitchClosed() == 1;
+        // return mHood.isFwdLimitSwitchClosed() == 1;
+        return false;
     }
 
     public void setHomed(boolean value) {
@@ -200,6 +211,6 @@ public class Shooter extends SubsystemBase {
     }
 
     public void resetHoodEncoder() {
-        mHood.setSelectedSensorPosition(0);
+        // mHood.setSelectedSensorPosition(0);
     }
 }
