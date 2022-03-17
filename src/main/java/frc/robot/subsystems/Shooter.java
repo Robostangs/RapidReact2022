@@ -182,11 +182,6 @@ public class Shooter extends SubsystemBase {
         // setHoodPositionPID(state.angle);
     }
 
-    public boolean getHoodLimitSwitch() {
-        // return mHood.isFwdLimitSwitchClosed() == 1;
-        return false;
-    }
-
     public void setSoftLimitEnable(boolean value) {
         // mHood.configForwardSoftLimitEnable(value);
         // mHood.configReverseSoftLimitEnable(value);
@@ -203,7 +198,7 @@ public class Shooter extends SubsystemBase {
 
     public boolean getForwardLimit() {
         // return mHood.isFwdLimitSwitchClosed() == 1;
-        return false;
+        return true;
     }
 
     public void setHomed(boolean value) {
