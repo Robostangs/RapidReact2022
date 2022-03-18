@@ -132,14 +132,14 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setBottomShooterPower(double power) {
-        mBottomShooter.set(ControlMode.PercentOutput, power);
+        mBottomShooter.set(ControlMode.PercentOutput, -power);
     }
 
     public void setBottomShooterVelocity(double velocity) {
         if(velocity < 500) {
             mBottomShooter.set(ControlMode.PercentOutput, 0);
         } else {
-            mBottomShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+            mBottomShooter.set(ControlMode.Velocity, -velocity / (600.0 / 2048.0));
         }
     }
 

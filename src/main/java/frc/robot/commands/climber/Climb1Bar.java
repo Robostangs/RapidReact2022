@@ -11,12 +11,12 @@ import frc.robot.subsystems.Climber;
 public class Climb1Bar extends SequentialCommandGroup {
     private final Climber mClimber = Climber.getInstance();
 
-    public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition, Supplier<Double> wiggleSupplier) {
+    public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition, Supplier<Double> wiggleSupplier, Supplier<Boolean> fwdLimitSwitchInterrupt) {
         addRequirements(mClimber);
         setName("Climb 1 Bar");
         addCommands(
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
-                .until(() -> grabHandHolder.hand.getEngaged()), // Rotate to position
+                .until(() -> (grabHandHolder.hand.getEngaged() || fwdLimitSwitchInterrupt.get())), // Rotate to position
             new ParallelDeadlineGroup( // Grab upper bar while holding position
                 new CloseHand(grabHandHolder),
                 new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)),

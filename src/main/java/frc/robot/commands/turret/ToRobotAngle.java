@@ -15,6 +15,10 @@ public class ToRobotAngle extends CommandBase{
         mFeedforward = feedforward;
     }
 
+    public ToRobotAngle(double angle) {
+        this(angle, 0);
+    }
+
     protected ToRobotAngle(){};
 
     @Override

@@ -36,7 +36,7 @@ public class SimpleAuto extends SequentialCommandGroup {
                     new WaitCommand(1),
                     new RunElevator().withTimeout(0.3),
                     new WaitCommand(1),
-                    new RunElevator().withTimeout(0.3)
+                    new RunElevator().withTimeout(0.3),
                     new WaitCommand(1))),
                 new PrimeShooting());
             // new autoShoot(-0.55, 0.4));

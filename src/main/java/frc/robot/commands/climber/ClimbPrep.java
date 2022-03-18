@@ -20,7 +20,7 @@ public class ClimbPrep extends ParallelCommandGroup {
             addCommands(
                 new PrintCommand("Running PrepHand"),
                 new ConditionalCommand(
-                    new CallibrateHand(mHand),
+                    new CallibrateHand(mHand, Constants.Climber.Hand.kClawCallibrationSpeed),
                     new InstantCommand(),
                     () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
                 new CloseHand(mHand),

@@ -30,7 +30,7 @@ public class AutoClimb extends SequentialCommandGroup {
         mGrabHandHolder.hand = hands[1];
     }
 
-    public AutoClimb(Supplier<Double> wiggleSupplier) {
+    public AutoClimb(Supplier<Double> wiggleSupplier, Supplier<Boolean> fwdLimitSwitchInterrupt) {
         setName("Auto Climb");
         addCommands(
             new Protect().withTimeout(1),
@@ -38,16 +38,15 @@ public class AutoClimb extends SequentialCommandGroup {
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new RotateToPosition(Constants.Climber.Rotator.kStartingAngle),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new ProxyScheduleCommand(new DriveToMidBar()),
+            new ProxyScheduleCommand(new DriveToMidBar().withInterrupt(fwdLimitSwitchInterrupt::get)),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new InstantCommand(this::initHands),
             new CloseHand(mRotationHandHolder),
-                        new WaitUntilCommand(RobotContainer::getClimbProceed),
             new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition, wiggleSupplier)
+            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition, wiggleSupplier, fwdLimitSwitchInterrupt)
                 .andThen(new PrintCommand("Climb1 done")),
-            new InstantCommand(() -> mRotator.setNeutralModeCoast()),
+            // new InstantCommand(() -> mRotator.setNeutralModeCoast()),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new CloseHand(mRotationHandHolder),
             new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockLockedPositon),
@@ -57,7 +56,7 @@ public class AutoClimb extends SequentialCommandGroup {
             new InstantCommand(() -> mRotator.setNeutralModeBrake()),
             new InstantCommand(this::switchHands),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition, wiggleSupplier)
+            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition, wiggleSupplier, fwdLimitSwitchInterrupt)
                 .andThen(new PrintCommand("Climb2 done")),
             // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),

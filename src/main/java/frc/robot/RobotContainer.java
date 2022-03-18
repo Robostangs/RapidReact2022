@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
@@ -17,7 +18,9 @@ import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
+import frc.robot.commands.shooter.SetShooterState;
 import frc.robot.commands.turret.Protect;
+import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 
@@ -56,13 +59,13 @@ public class RobotContainer {
                 () -> Utils.deadzone(mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis())));
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
-        new JoystickButton(mDriver, XboxController.Button.kX.value)
+        new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whileHeld(new Active());
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
             .whenPressed(new ClimbPrep());
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(new AutoClimb(mManip::getLeftY));
+            .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton));
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whenPressed(new Protect());
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
@@ -70,6 +73,10 @@ public class RobotContainer {
             .whenReleased(new Protect());
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
+        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
+            .whileHeld(new ParallelCommandGroup(
+                new ToRobotAngle(0),
+                new SetShooterState(ShooterMappings.getShooterState(0))));
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

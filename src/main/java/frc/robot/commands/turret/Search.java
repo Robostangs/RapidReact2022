@@ -1,6 +1,7 @@
 package frc.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
 public class Search extends CommandBase {
@@ -20,9 +21,9 @@ public class Search extends CommandBase {
     @Override
     public void execute() {
         if(mTurret.getAngle() < -80) {
-            mTurret.setPercentSpeed(1);
+            mTurret.setPercentSpeed(Constants.Turret.kDebounceTime);
         } else if(mTurret.getAngle() > 80) {
-            mTurret.setPercentSpeed(-1);
+            mTurret.setPercentSpeed(-Constants.Turret.kDebounceTime);
         }
         // mTurret.setAngularVelocitySetpoint(lastTx * 0.6, Constants.Turret.kTurningFeedForward);
         // if ((mTurret.getAngle() >= Constants.Turret.kRotationMotorMax - Constants.Turret.kRotationMotorSoftLimitOffset) && (lastTx > 0)) {

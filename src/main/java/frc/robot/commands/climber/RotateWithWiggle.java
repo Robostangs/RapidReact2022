@@ -16,7 +16,7 @@ public class RotateWithWiggle extends Rotate {
 
     @Override
     public void execute() {
-        mSpeed = mBaseSpeed + Constants.Climber.kWiggleConstant * mWiggleSupplier.get();
+        mSpeed = mBaseSpeed + Constants.Climber.Rotator.kWiggleConstant * mWiggleSupplier.get();
         super.execute();
     }
 }

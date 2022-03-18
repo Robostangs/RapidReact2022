@@ -29,8 +29,9 @@ public final class Constants {
     public static class Climber {
         public static class Hand {
             // TODO: Set actual values
-            public static final double kClawDefaultMoveSpeed = 0.6;
-            public static final double kClawDefaultOpenSpeed = -0.6;
+            public static final double kClawDefaultMoveSpeed = 0.7;
+            public static final double kClawDefaultOpenSpeed = -0.7;
+            public static final double kClawCallibrationSpeed = -0.4;
 
             public static final int kClawAID = 10;
             public static final int kClawBID = 9;
@@ -44,7 +45,7 @@ public final class Constants {
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
                 clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
                 clawMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-                clawMotor.setSmartCurrentLimit(30);
+                clawMotor.setSmartCurrentLimit(40);
             }
 
             public static final double kClawLockUnlockedPositon = 0.8;
@@ -71,6 +72,7 @@ public final class Constants {
 
             public static final double kDumbPositionTolerance = 5;
             public static final double kDumbRotatorSpeed = 1;
+            public static final Double kWiggleConstant = 0.2;
         }
 
         public static final int kRotationMotorID = 16;
@@ -79,7 +81,6 @@ public final class Constants {
 
         public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
-        public static final Double kWiggleConstant = 0.1;
         static {
             kRotationConfig.slot0 = new SlotConfiguration();
             kRotationConfig.slot0.kP = 0.1;
@@ -91,8 +92,8 @@ public final class Constants {
 
         public static final double kLeftElevatorReleaseDefaultPosition = 0.11;
         public static final double kRightElevatorReleaseDefaultPosition = 0.41;
-        public static final double kLeftElevatorReleasePosition = 0.42;
-        public static final double kRightElevatorReleasePosition = 0.1;
+        public static final double kLeftElevatorReleasePosition = 0.47;
+        public static final double kRightElevatorReleasePosition = 0.05;
         public static final double kElevatorReleaseWaitTime = 3;
 
         public static final double kClawMoveConstant = 500;
@@ -149,7 +150,7 @@ public final class Constants {
     
     public static final class Elevator {
         public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
-        public static final double kDefaultPower = 0.5;
+        public static final double kDefaultPower = -1;
         static {}
     }
 
@@ -232,6 +233,7 @@ public final class Constants {
         public static final double kLeftNinety = 63428;
 
         public static final double kFilterConstant = 0.5;
+        public static final double kDebounceTime = 0.1;
 
         public static final double kTurningFeedForward = -0.03;
 
@@ -255,6 +257,7 @@ public final class Constants {
         public static final double kLimelightHeight = 24;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
         public static final double kLimelightAngle = 41.3;
+        public static final double kTxTolerance = 10;
     }
 
     public static final double kMaxVoltage = 12;

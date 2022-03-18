@@ -1,10 +1,10 @@
 package frc.robot.commands.elevator;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
-public class RunElevator extends InstantCommand {
+public class RunElevator extends CommandBase {
 
     private final Elevator mElevator = Elevator.getInstance();
     private final double mPower;
