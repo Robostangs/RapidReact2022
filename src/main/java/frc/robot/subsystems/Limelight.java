@@ -74,4 +74,7 @@ public class Limelight extends SubsystemBase {
         instance.LimelightTable.getEntry("ledMode").setNumber(2);
     }
 
+    public static void printValues() {
+        System.out.println("Limelight values: Tx: " + getTx() + "; Ty: " + getTy() + "; Tv: " + getTv() + "; Distance: " + getDistance());
+    }
 }

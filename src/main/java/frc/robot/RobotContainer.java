@@ -23,6 +23,7 @@ import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,8 +56,8 @@ public class RobotContainer {
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
             new ArcadeDrive(
-                () -> Utils.deadzone(mDriver.getLeftX()),
-                () -> Utils.deadzone(mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis())));
+                mDriver::getLeftX,
+                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis()));
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
@@ -66,17 +67,18 @@ public class RobotContainer {
             .whenPressed(new ClimbPrep());
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
             .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton));
-        new JoystickButton(mManip, XboxController.Button.kB.value)
-            .whenPressed(new Protect());
+        // new JoystickButton(mManip, XboxCo7
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect());
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
-            .whileHeld(new ParallelCommandGroup(
-                new ToRobotAngle(0),
-                new SetShooterState(ShooterMappings.getShooterState(0))));
+            .whileHeld(
+                new ParallelCommandGroup(
+                    new ToRobotAngle(0),
+                    new SetShooterState(ShooterMappings.getShooterState(0)))
+                .andThen(new Protect()));
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

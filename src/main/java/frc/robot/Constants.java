@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -60,7 +61,7 @@ public final class Constants {
             public static final double kEncoderCountsPerDegree = 1170;
 
             public static final double kHorizontalAngle = -75;
-            public static final double kStartingAngle = 60; //
+            public static final double kStartingAngle = 63; //
 
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
@@ -167,7 +168,7 @@ public final class Constants {
             kBeltConfig.neutralDeadband = 0.001;
         }
 
-        public static final double kSlowBeltSpeed = -0.8;
+        public static final double kSlowBeltSpeed = -0.3;
     }
 
     public static final class IntakeConstants {
@@ -228,6 +229,7 @@ public final class Constants {
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+        public static final double kRotationMotorSearchSpeed = 0.6;
 
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;

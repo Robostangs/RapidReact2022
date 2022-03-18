@@ -16,7 +16,7 @@ public class Climb1Bar extends SequentialCommandGroup {
         setName("Climb 1 Bar");
         addCommands(
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
-                .until(() -> (grabHandHolder.hand.getEngaged() || fwdLimitSwitchInterrupt.get())), // Rotate to position
+                .withInterrupt(() -> (grabHandHolder.hand.getEngaged() || fwdLimitSwitchInterrupt.get())), // Rotate to position
             new ParallelDeadlineGroup( // Grab upper bar while holding position
                 new CloseHand(grabHandHolder),
                 new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)),

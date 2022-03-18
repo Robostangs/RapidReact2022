@@ -11,9 +11,10 @@ public class PrimeShooting extends ParallelCommandGroup {
     private final DefaultTurret mDefaultTurret = new DefaultTurret();
 
     public PrimeShooting() {
+
         setName("Prime Shooting");
         addCommands(
-            new SetDistanceShooterState(() -> (Math.abs(Limelight.getTx()) <= 5) && (Limelight.getTv() == 1) ? Limelight.getDistance() : -10));
+            new SetDistanceShooterState(() -> ((Limelight.getTv() == 1) ? Limelight.getDistance() : -10)));
         }
 
     public PrimeShooting(Shooter.State constantState) {

@@ -27,18 +27,19 @@ public class SimpleAuto extends SequentialCommandGroup {
         // TODO: MAKE BETTER
         addCommands(
             new InstantCommand(() -> 
-                mDrivetrain.drivePower(0.6, -0.6)),
-            new Active(0.5).withTimeout(1.5),
+                mDrivetrain.drivePower(0.2, -0.2)),
+            new Active(0.5).withTimeout(2.5),
+            new InstantCommand(() -> mDrivetrain.drivePower(-0.2, 0.2)),
+            new WaitCommand(1),
             new InstantCommand(() -> mDrivetrain.drivePower(0, 0)),
-            new WaitCommand(1.5),
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
                     new WaitCommand(1),
                     new RunElevator().withTimeout(0.3),
                     new WaitCommand(1),
                     new RunElevator().withTimeout(0.3),
-                    new WaitCommand(1))),
-                new PrimeShooting());
+                    new WaitCommand(1)),
+                new PrimeShooting()));
             // new autoShoot(-0.55, 0.4));
     }
 }

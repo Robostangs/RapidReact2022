@@ -25,6 +25,7 @@ public class ClimbPrep extends ParallelCommandGroup {
                     () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
                 new CloseHand(mHand),
                 new SetHandLockPosition(mHand, Constants.Climber.Hand.kClawLockLockedPositon),
+                new WaitCommand(0.5),
                 new OpenHand(mHand),
                 new PrintCommand("Finished PrepHand"));
         }

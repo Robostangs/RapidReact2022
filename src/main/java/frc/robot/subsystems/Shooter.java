@@ -139,7 +139,7 @@ public class Shooter extends SubsystemBase {
         if(velocity < 500) {
             mBottomShooter.set(ControlMode.PercentOutput, 0);
         } else {
-            mBottomShooter.set(ControlMode.Velocity, -velocity / (600.0 / 2048.0));
+            mBottomShooter.set(ControlMode.Velocity, (-velocity / (600.0 / 2048.0)));
         }
     }
 
@@ -149,9 +149,9 @@ public class Shooter extends SubsystemBase {
 
     public void setTopShooterVelocity(double velocity) {
         if(velocity < 500) {
-            mTopShooter.set(ControlMode.PercentOutput, 0);
+            setTopShooterPower(0);
         } else {
-            mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
+            mTopShooter.set(ControlMode.Velocity, (velocity / (600.0 / 2048.0)));
         }
     }
 
@@ -169,8 +169,8 @@ public class Shooter extends SubsystemBase {
 
     public State getState() {
         return new State(
-            mTopShooter.getSelectedSensorVelocity(),
-            mBottomShooter.getSelectedSensorVelocity(),
+            mTopShooter.getSelectedSensorVelocity() * (600/2048f),
+            mBottomShooter.getSelectedSensorVelocity() * (600/2048f),
             // mHood.getSelectedSensorPosition());
             0);
     }
@@ -178,7 +178,7 @@ public class Shooter extends SubsystemBase {
     public void setState(State state) {
         SmartDashboard.putString("Requested state", state.toString());
         setTopShooterVelocity(state.topSpeed);
-        setBottomShooterPower(state.bottomSpeed);
+        setBottomShooterVelocity(state.bottomSpeed);
         // setHoodPositionPID(state.angle);
     }
 
