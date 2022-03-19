@@ -255,10 +255,10 @@ public final class Constants {
     }
 
     public static class Limelight {
-        public static final double kTargetHeight = 98.375;
-        public static final double kLimelightHeight = 24;
+        public static final double kTargetHeight = 103;
+        public static final double kLimelightHeight = 25;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 41.3;
+        public static final double kLimelightAngle = 46;
         public static final double kTxTolerance = 10;
     }
 
