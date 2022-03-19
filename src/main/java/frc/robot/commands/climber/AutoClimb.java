@@ -49,7 +49,7 @@ public class AutoClimb extends SequentialCommandGroup {
             new CloseHand(mRotationHandHolder)
                 .andThen(new PrintCommand("Closed first rotation hand")),
             new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon)
-                .andThen(new PrintCommand("Locked first rotation hand")),
+                .andThen(new PrintCommand("UnLocked first rotation hand")),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition, wiggleSupplier, limitSwitchInterrupt)
                 .andThen(new PrintCommand("Climb1 done")),
