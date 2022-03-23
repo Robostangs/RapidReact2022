@@ -5,7 +5,7 @@ import frc.robot.subsystems.Turret;
 
 public class ToRobotAngle extends CommandBase{
 
-    private static final Turret mTurret = Turret.getInstance();
+    protected static final Turret mTurret = Turret.getInstance();
     protected double mAngle, mFeedforward;
 
     public ToRobotAngle(double angle, double feedforward) {
@@ -13,6 +13,10 @@ public class ToRobotAngle extends CommandBase{
         this.addRequirements(mTurret);
         mAngle = angle;
         mFeedforward = feedforward;
+    }
+
+    public ToRobotAngle(double angle) {
+        this(angle, 0);
     }
 
     protected ToRobotAngle(){};
@@ -24,7 +28,6 @@ public class ToRobotAngle extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        mTurret.setAngularVelocitySetpoint(0);
+        mTurret.setPercentSpeed(0);
     }
-
 }

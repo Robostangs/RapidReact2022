@@ -26,7 +26,7 @@ public class Home extends CommandBase {
     @Override
     public void execute() {
         if (mTimer.get() <= 3) {
-            System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
+            // System.out.println("I ran " + Double.toString(Timer.getFPGATimestamp()));
             mShooter.setHoodPower(Constants.Shooter.kHomeSpeed);
         } else {
             System.out.println("I time exceededs " + Double.toString(Timer.getFPGATimestamp()));

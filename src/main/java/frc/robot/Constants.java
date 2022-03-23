@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -6,6 +7,11 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
+import edu.wpi.first.wpilibj.Servo;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -22,29 +28,82 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 public final class Constants {
 
     public static class Climber {
+        public static class Hand {
+            // TODO: Set actual values
+            public static final double kClawDefaultMoveSpeed = 0.7;
+            public static final double kClawDefaultOpenSpeed = -0.7;
+            public static final double kClawCallibrationSpeed = -0.4;
+
+            public static final int kClawAID = 10;
+            public static final int kClawBID = 9;
+            public static final int kLockAID = 2;
+            public static final int kLockBID = 3;
+
+            //TODO: SAKET CHANGED BECAUSE DAN TOLD HIM TO, was 70
+            public static final int kClawForwardSoftLimit = 65;
+            public static final void configClawMotor(CANSparkMax clawMotor) {
+                clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
+                clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
+                clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
+                clawMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+                clawMotor.setSmartCurrentLimit(40);
+            }
+
+            public static final double kClawLockUnlockedPositon = 0.8;
+            public static final double kClawLockLockedPositon = 1;
+            public static final double kHandLockWaitTime = 0.5;
+            public static final void configClawLock(Servo lock) {}
+
+            public static final double kLimitDebounceTime = 0.06;
+        }
+
+        public static class Rotator {
+            public static final double kEncoderCountsPerDegree = 1170;
+
+            public static final double kHorizontalAngle = -75;
+            public static final double kStartingAngle = 63; //
+
+            public static final double kPositionTolerance = 0.5;
+            public static final double kSpeedTolerance = 1;
+
+            public static final double kClimbRotationSpeed = 0.6; //
+            public static final double kClimbHoldSpeed = 0.2; //
+            public static final double kToCGSpeed = -0.5; //
+            public static final double kCGHoldSpeed = -0.2; //
+
+            public static final double kDumbPositionTolerance = 5;
+            public static final double kDumbRotatorSpeed = 1;
+            public static final Double kWiggleConstant = 0.2;
+        }
+
         public static final int kRotationMotorID = 16;
-        public static final int kLeftClawID = 1;
-        public static final int kRightClawID = 2;
-        public static final int kLeftClawLockID = 3;
-        public static final int kRightClawLockID = 4;
-        public static final int kElevatorID = 5;
+        public static final int kLeftElevatorID = 1;
+        public static final int kRightElevatorID = 0;
 
-        public static final int kLeftClawSensorID = 0;
-        public static final int kRightClawSensorID = 0;
+        public static final double kPeakRotationOutput = 0.75;
+        public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
+        static {
+            kRotationConfig.slot0 = new SlotConfiguration();
+            kRotationConfig.slot0.kP = 0.1;
+            kRotationConfig.slot0.kI = 0;
+            kRotationConfig.slot0.kD = 0;
+            kRotationConfig.peakOutputForward = kPeakRotationOutput;
+            kRotationConfig.peakOutputReverse = -kPeakRotationOutput;
+        }
 
-        public static final double kRotationKp = 1;
-        public static final double kRotationKi = 1;
-        public static final double kRotationKd = 1;
+        public static final double kLeftElevatorReleaseDefaultPosition = 0.11;
+        public static final double kRightElevatorReleaseDefaultPosition = 0.41;
+        public static final double kLeftElevatorReleasePosition = 0.47;
+        public static final double kRightElevatorReleasePosition = 0.05;
+        public static final double kElevatorReleaseWaitTime = 3;
 
-        public static final double kRotationStaticGain = 1;
-        public static final double kGravityGain = 1;
-        public static final double kVelocityGain = 1;
-        public static final double kAccelerationGain = 1;
-
-        public static final double kElevatorReleaseConstant = 500;
         public static final double kClawMoveConstant = 500;
 
-        public static final double kMoveClimberSpeed = 0.5;
+        public static final double kFirstCGPosition = 70; //
+        public static final double kSecondCGPosition = 300; //
+
+        public static final double kDefaultDriveSpeed = 0.1;
+        public static final double kWaitBeforePrep = 0.1;
     }
 
     public static final class Shooter {
@@ -92,7 +151,7 @@ public final class Constants {
     
     public static final class Elevator {
         public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
-        public static final double kDefaultPower = 0.5;
+        public static final double kDefaultPower = -1;
         static {}
     }
 
@@ -109,7 +168,7 @@ public final class Constants {
             kBeltConfig.neutralDeadband = 0.001;
         }
 
-        public static final double kSlowBeltSpeed = -0.8;
+        public static final double kSlowBeltSpeed = -0.3;
     }
 
     public static final class IntakeConstants {
@@ -165,16 +224,18 @@ public final class Constants {
         public static final int kRotationMotorID = 6;
 
         public static final double kRotationMotorMax = 74000;
-        public static final double kRotationMotorSoftLimitOffset = 4000;
+        public static final double kRotationMotorSoftLimitOffset = 4000; //TODO: Find real value for this
         public static final double kRotationMotorSpeed = -0.2;
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+        public static final double kRotationMotorSearchSpeed = 0.6;
 
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
 
         public static final double kFilterConstant = 0.5;
+        public static final double kDebounceTime = 0.1;
 
         public static final double kTurningFeedForward = -0.03;
 
@@ -186,7 +247,6 @@ public final class Constants {
             kMotorConfig.slot0.kP = 0.1;
             kMotorConfig.slot0.kI = 0.001;
             kMotorConfig.slot0.kD = 0;
-            kMotorConfig.slot0.kF = -0.03;
             kMotorConfig.slot0.integralZone = 1000;
             kMotorConfig.forwardSoftLimitThreshold = kRotationMotorMax - kRotationMotorSoftLimitOffset;
             kMotorConfig.reverseSoftLimitThreshold = kRotationMotorSoftLimitOffset;
@@ -195,9 +255,12 @@ public final class Constants {
     }
 
     public static class Limelight {
-        public static final double kTargetHeight = 98.375;
-        public static final double kLimelightHeight = 24;
+        public static final double kTargetHeight = 103;
+        public static final double kLimelightHeight = 25;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 41.3;
+        public static final double kLimelightAngle = 46;
+        public static final double kTxTolerance = 10;
     }
+
+    public static final double kMaxVoltage = 12;
 }

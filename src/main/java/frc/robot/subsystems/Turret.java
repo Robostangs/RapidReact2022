@@ -7,8 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils;
 import frc.robot.commands.turret.GoHome;
 
 public class Turret extends SubsystemBase {
@@ -18,8 +20,13 @@ public class Turret extends SubsystemBase {
     private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
     // private final DigitalInput m_homeSensorOn, m_homeSensorOff;
     private boolean mIsHomed;
-    private static Command mGoHomeCommand = new GoHome().withTimeout(3);
+    private static CommandBase mGoHomeCommand = new GoHome().withTimeout(3);
+    static {
+        mGoHomeCommand.setName("Turret Homing");
+    }
     private double setpoint;
+
+    private double feedforward;
 
     public static Turret getInstance() {
         if (instance == null) {
@@ -44,6 +51,7 @@ public class Turret extends SubsystemBase {
         builder.addDoubleProperty("Angle", this::getAngle, null);
         builder.addBooleanProperty("Is Homed", () -> mIsHomed, null);
         builder.addDoubleProperty("Setpoint", () -> setpoint, null);
+        builder.addDoubleProperty("Feedforward", () -> feedforward, null);
     }
 
     @Override
@@ -52,7 +60,7 @@ public class Turret extends SubsystemBase {
             mIsHomed = false;
         }
         if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
-            mGoHomeCommand.schedule();
+            mGoHomeCommand.schedule(false);
         }
     }
 
@@ -89,12 +97,18 @@ public class Turret extends SubsystemBase {
     }
 
     private void setRawSetpoint(double position, double feedforward) {
+        position = Utils.saturate(
+            position,
+            Constants.Turret.kRotationMotorSoftLimitOffset,
+            (Constants.Turret.kMaxTurretDegrees - Constants.Turret.kMinTurretDegrees)
+               * Constants.Turret.kTicksPerDegree - Constants.Turret.kRotationMotorSoftLimitOffset);
         mMotor.set(
             ControlMode.Position,
             position,
             DemandType.ArbitraryFeedForward,
             feedforward);
         setpoint = position;
+        this.feedforward = feedforward;
     }
 
     public void setAngleSetpoint(double angle, double feedforward) {

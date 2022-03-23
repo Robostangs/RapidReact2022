@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.Utils;
 import frc.robot.commands.shooter.SetDistanceShooterState;
+import frc.robot.commands.shooter.SetShooterState;
 import frc.robot.commands.turret.DefaultTurret;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
@@ -11,10 +11,22 @@ public class PrimeShooting extends ParallelCommandGroup {
     private final DefaultTurret mDefaultTurret = new DefaultTurret();
 
     public PrimeShooting() {
+
         setName("Prime Shooting");
         addCommands(
-            new SetDistanceShooterState(() -> Utils.dist(Limelight.getTy()))
-        );
+            new SetDistanceShooterState(() -> ((Limelight.getTv() == 1) ? Limelight.getDistance() : -10)));
+        }
+
+    public PrimeShooting(Shooter.State constantState) {
+        setName("Prime Shooting");
+        addCommands(
+            new SetShooterState(constantState));
+    }
+
+    @Override
+    public void initialize() {
+        mDefaultTurret.schedule();
+        super.initialize();
     }
 
     @Override
@@ -27,8 +39,7 @@ public class PrimeShooting extends ParallelCommandGroup {
 
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
+        mDefaultTurret.cancel();
         super.end(interrupted);
-        Shooter.getInstance().setState(new Shooter.State(0));
     }
 }

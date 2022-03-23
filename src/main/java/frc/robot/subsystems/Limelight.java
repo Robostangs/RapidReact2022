@@ -9,7 +9,6 @@ import frc.robot.Utils;
 
 public class Limelight extends SubsystemBase {
 
-    @SuppressWarnings("unused")
     private static final Limelight instance = new Limelight();
     private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -40,6 +39,7 @@ public class Limelight extends SubsystemBase {
         builder.addDoubleProperty("ty", () -> ty, null);
         builder.addDoubleProperty("tv", () -> tv, null);
         builder.addDoubleProperty("ta", () -> ta, null);
+        builder.addDoubleProperty("distance", Limelight::getDistance, null);
     }
 
     public static double getDistance() {
@@ -54,8 +54,8 @@ public class Limelight extends SubsystemBase {
         return ty;
     }
 
-    public static double getTv() {
-        return tv;
+    public static int getTv() {
+        return (int) Math.round(tv);
     }
 
     public static double getTa() {
@@ -74,4 +74,7 @@ public class Limelight extends SubsystemBase {
         instance.LimelightTable.getEntry("ledMode").setNumber(2);
     }
 
+    public static void printValues() {
+        System.out.println("Limelight values: Tx: " + getTx() + "; Ty: " + getTy() + "; Tv: " + getTv() + "; Distance: " + getDistance());
+    }
 }
