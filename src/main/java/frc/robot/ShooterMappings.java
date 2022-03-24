@@ -17,7 +17,6 @@ public class ShooterMappings {
     // // angle =              {10,    0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      10,     10};
     static {
         kShooterStates = new HashMap<Double, Shooter.State>();
-<<<<<<< HEAD
         addEntry(-10, 0, 0);
         addEntry(0, 800, 800);
         addEntry(56, 2000, 2000);
@@ -34,24 +33,6 @@ public class ShooterMappings {
         addEntry(142, 2750, 3163);
         // addEntry(177, 2761, 3000, 10);
         // addEntry(165, 2700, 2900, 10);
-=======
-        addEntry(-10, 0, 0, 0);
-        addEntry(0, 500, 500, 10);
-        addEntry(56, 2000, 2000, 0);
-        addEntry(61, 2100, 2000, 0);
-        addEntry(68, 2000, 2300, 0);
-        addEntry(80, 2000, 2350, 0);
-        addEntry(84, 2100, 2400, 0);
-        addEntry(87, 2200, 2400, 0);
-        addEntry(92, 2175, 2459, 0);
-        addEntry(104, 2100, 2500, 0);
-        addEntry(108, 2300, 2586, 0);
-        addEntry(116, 2250, 2600, 0);
-        addEntry(128, 2600, 2990, 0);
-        addEntry(142, 2750, 3163, 0);
-        addEntry(177, 2761, 3000, 10);
-        addEntry(165, 2700, 2900, 10);
->>>>>>> parent of 6e900ad (Prefinals 1)
     };
     private static final ArrayList<Double> kDistances = new ArrayList<Double>();
     static {
