@@ -4,22 +4,15 @@ import frc.robot.subsystems.Climber.Hand;
 import frc.robot.subsystems.Climber.HandCallibrationStatus;
 
 public class CallibrateHand extends OpenHand {
-    
-    public CallibrateHand(HandHolder handContainer, double speed) {
-        super(handContainer, speed);
-        setName("Hand Callibration");
-    }
-
-    public CallibrateHand(HandHolder hand) {
-        super(hand);
-    }
 
     public CallibrateHand(Hand hand, double speed) {
         super(hand, speed);
+        setName("Hand Callibration");
     }
 
     public CallibrateHand(Hand hand) {
         super(hand);
+        setName("Hand Callibration");
     }
 
     @Override

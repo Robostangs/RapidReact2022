@@ -16,21 +16,14 @@ import frc.robot.subsystems.Climber;
 public class AutoClimb extends SequentialCommandGroup {
     private final Climber mClimber = Climber.getInstance();
     private final Climber.Rotator mRotator = mClimber.getRotator();
-    private final HandHolder mRotationHandHolder = new HandHolder();
-    private final HandHolder mGrabHandHolder = new HandHolder();
-    private boolean interrupt = false;
-
-    private void switchHands() {
-        Climber.Hand tempHand = mRotationHandHolder.hand;
-        mRotationHandHolder.hand = mGrabHandHolder.hand;
-        mGrabHandHolder.hand = tempHand;
-    }
-
-    private void initHands() {
+    private final Climber.Hand mHandA;
+    private final Climber.Hand mHandB;
+    {
         var hands = mClimber.getHands();
-        mRotationHandHolder.hand = hands[0];
-        mGrabHandHolder.hand = hands[1];
+        mHandA = hands[0];
+        mHandB = hands[1];
     }
+    private boolean interrupt = false;
 
     public AutoClimb(Supplier<Double> wiggleSupplier, Supplier<Boolean> limitSwitchInterrupt) {
         setName("Auto Climb");
@@ -45,30 +38,28 @@ public class AutoClimb extends SequentialCommandGroup {
             new ProxyScheduleCommand(new DriveToMidBar().withInterrupt(limitSwitchInterrupt::get))
                 .andThen(new PrintCommand("Driven to mid bar")),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new InstantCommand(this::initHands),
-            new CloseHand(mRotationHandHolder)
+            new CloseHand(mHandA)
                 .andThen(new PrintCommand("Closed first rotation hand")),
-            new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon)
+            new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon)
                 .andThen(new PrintCommand("UnLocked first rotation hand")),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kFirstCGPosition, wiggleSupplier, limitSwitchInterrupt)
+            new Climb1Bar(mHandA, mHandB, Constants.Climber.kFirstCGPosition, wiggleSupplier, limitSwitchInterrupt)
                 .andThen(new PrintCommand("Climb1 done")),
             // new InstantCommand(() -> mRotator.setNeutralModeCoast()),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new CloseHand(mRotationHandHolder)
+            new CloseHand(mHandA)
                 .andThen(new PrintCommand("Closed rotation hand")),
-            new SetHandLockPosition(mRotationHandHolder, Constants.Climber.Hand.kClawLockLockedPositon)
+            new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon)
                 .andThen(new PrintCommand("Locked rotaton hand")),
-            new OpenHand(mRotationHandHolder)
+            new OpenHand(mHandA)
                 .andThen(new PrintCommand("Opened rotation hand")),
-            new SetHandLockPosition(mGrabHandHolder, Constants.Climber.Hand.kClawLockUnlockedPositon)
+            new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)
                 .andThen(new PrintCommand("Unlocked grab hand")),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
             new InstantCommand(() -> mRotator.setNeutralModeBrake())
                 .andThen(new PrintCommand("Rotator brake")),
-            new InstantCommand(this::switchHands),
                         new WaitUntilCommand(RobotContainer::getClimbProceed),
-            new Climb1Bar(mRotationHandHolder, mGrabHandHolder, Constants.Climber.kSecondCGPosition, wiggleSupplier, limitSwitchInterrupt)
+            new Climb1Bar(mHandA, mHandB, Constants.Climber.kSecondCGPosition, wiggleSupplier, limitSwitchInterrupt)
                 .andThen(new PrintCommand("Climb2 done")),
             // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),

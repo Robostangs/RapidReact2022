@@ -11,19 +11,19 @@ import frc.robot.subsystems.Climber;
 public class Climb1Bar extends SequentialCommandGroup {
     private final Climber mClimber = Climber.getInstance();
 
-    public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition, Supplier<Double> wiggleSupplier, Supplier<Boolean> limitSwitchInterrupt) {
+    public Climb1Bar(Climber.Hand rotationHand, Climber.Hand grabHand, double CGPosition, Supplier<Double> wiggleSupplier, Supplier<Boolean> limitSwitchInterrupt) {
         addRequirements(mClimber);
         setName("Climb 1 Bar");
         addCommands(
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
-                .withInterrupt(() -> (grabHandHolder.hand.getEngaged() || limitSwitchInterrupt.get())), // Rotate to position
+                .withInterrupt(() -> (grabHand.getEngaged() || limitSwitchInterrupt.get())), // Rotate to position
             new ParallelDeadlineGroup( // Grab upper bar while holding position
-                new CloseHand(grabHandHolder),
+                new CloseHand(grabHand),
                 new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)),
             // new Rotate(Constants.Climber.Rotator.kToCGSpeed) // Rotate to CG
             //     .withInterrupt(() -> mClimber.getRotator().getPosition() <= CGPosition),
             new ParallelDeadlineGroup( // Let go of lower bar
-                new OpenHand(rotationHandHolder).andThen(new PrintCommand("Let go done")).withInterrupt(limitSwitchInterrupt::get),
+                new OpenHand(rotationHand).andThen(new PrintCommand("Let go done")).withInterrupt(limitSwitchInterrupt::get),
                 new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, wiggleSupplier))); // while holding CG
     }
 }
