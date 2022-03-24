@@ -27,7 +27,7 @@ public class ArcadeDrive extends CommandBase {
 
     @Override
     public void execute() {
-        WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(
+        WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK (
             Utils.deadzone(mForwardSupplier.get()),
             Utils.deadzone(mTurnSupplier.get()),
             false);

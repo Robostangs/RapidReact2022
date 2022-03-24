@@ -47,10 +47,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Drivetrain() {
-        mLeftTop.setNeutralMode(NeutralMode.Brake);
-        mRightTop.setNeutralMode(NeutralMode.Brake);
-        mLeftBottom.setNeutralMode(NeutralMode.Brake);
-        mRightBottom.setNeutralMode(NeutralMode.Brake);
+        // mLeftTop.setNeutralMode(NeutralMode.Brake);
+        // mRightTop.setNeutralMode(NeutralMode.Brake);
+        // mLeftBottom.setNeutralMode(NeutralMode.Brake);
+        // mRightBottom.setNeutralMode(NeutralMode.Brake);
 
         // m_leftPIDController = new PIDController(Constants.Drivetrain.kLeftP,
         // Constants.Drivetrain.kLeftI, Constants.Drivetrain.kLeftD);
@@ -65,8 +65,8 @@ public class Drivetrain extends SubsystemBase {
         mLeftBottom.follow(mLeftTop);
         mRightBottom.follow(mRightTop);
 
-        mLeftTop.setNeutralMode(NeutralMode.Brake);
-        mRightTop.setNeutralMode(NeutralMode.Brake);
+        mLeftTop.setNeutralMode(NeutralMode.Coast);
+        mRightTop.setNeutralMode(NeutralMode.Coast);
 
         mLeftTop.configFactoryDefault();
         mLeftTop.configAllSettings(Constants.Drivetrain.kLeftMotorsConfig);
@@ -74,6 +74,7 @@ public class Drivetrain extends SubsystemBase {
         mRightTop.configFactoryDefault();
         mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
 
+       
         resetEncoder();
 
         SmartDashboard.putData("Field", mField);
