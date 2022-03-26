@@ -151,6 +151,16 @@ public final class Constants {
         public static final double kTopSpeedTolerance = 50;
         public static final double kBottomSpeedTolerance = 50;
         public static final double kAngleTolerance = 0.1;
+
+        public static double[][] shooterMappings = {{0, 320.0, 5300.0}, 
+                                         {102, 2450.0, 2350.0}, 
+                                         {118, 2700.0, 2400.0}, 
+                                         {130, 3100.0, 2450.0}, 
+                                         {142, 3750.0, 475.0}, 
+                                         {154, 4162.0, 487.0}, 
+                                         {166, 4255.0, 492.0},
+                                         {173, 4600.0, 250.0}
+                                        }; 
     }
     
     public static final class Elevator {
@@ -264,10 +274,10 @@ public final class Constants {
 
     public static class Limelight {
 
-        public static final double kTargetHeight = 103;
-        public static final double kLimelightHeight = 25;
+        public static final double kTargetHeight = 104.5;
+        public static final double kLimelightHeight = 26.5;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 46;
+        public static final double kLimelightAngle = 43.11;
 
         public static final double kTxTolerance = 10;
     }

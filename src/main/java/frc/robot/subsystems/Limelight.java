@@ -45,6 +45,7 @@ public class Limelight extends SubsystemBase {
     public static double getDistance() {
         return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
+    //Actual Distance = difH / (tan(ty+?))
 
     public static double getTx() {
         return tx;

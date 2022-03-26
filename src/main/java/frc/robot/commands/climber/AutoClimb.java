@@ -74,7 +74,7 @@ public class AutoClimb extends SequentialCommandGroup {
             // new OpenHand(mRotationHandHolder),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
             .withTimeout(1),
-            new InstantCommand(() -> mRotator.setNeutralModeCoast()));
+            new InstantCommand(() -> mRotator.setNeutralModeCoast()).withTimeout(1)
                 .withTimeout(1)
                 .andThen(new PrintCommand("Climber rotated to final position")),
             new InstantCommand(() -> mRotator.setNeutralModeCoast())

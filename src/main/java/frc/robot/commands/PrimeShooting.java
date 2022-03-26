@@ -14,7 +14,6 @@ public class PrimeShooting extends ParallelCommandGroup {
         setName("Prime Shooting");
         addCommands(
             new SetDistanceShooterState(() -> ((Limelight.getTv() == 1) ? Limelight.getDistance() : -10)));
-
         }
 
     public PrimeShooting(Shooter.State constantState) {
