@@ -61,7 +61,26 @@ public class AutoClimb extends SequentialCommandGroup {
             // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
+<<<<<<< Updated upstream
             .withTimeout(1),
             new InstantCommand(() -> mRotator.setNeutralModeCoast()));
+=======
+                .withTimeout(1)
+                .andThen(new PrintCommand("Climber rotated to final position")),
+            new InstantCommand(() -> mRotator.setNeutralModeCoast())
+                .andThen(new PrintCommand("Rotator coast")));
+    }
+
+    @Override
+    public void execute() {
+        //mClimber.getRotator().polluteLog();
+        super.execute();
+    }
+
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return super.isFinished();
+>>>>>>> Stashed changes
     }
 }

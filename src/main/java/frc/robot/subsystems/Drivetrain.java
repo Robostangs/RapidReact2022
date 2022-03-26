@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -47,10 +48,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Drivetrain() {
-        mLeftTop.setNeutralMode(NeutralMode.Brake);
-        mRightTop.setNeutralMode(NeutralMode.Brake);
-        mLeftBottom.setNeutralMode(NeutralMode.Brake);
-        mRightBottom.setNeutralMode(NeutralMode.Brake);
+        // mLeftTop.setNeutralMode(NeutralMode.Brake);
+        // mRightTop.setNeutralMode(NeutralMode.Brake);
+        // mLeftBottom.setNeutralMode(NeutralMode.Brake);
+        // mRightBottom.setNeutralMode(NeutralMode.Brake);
 
         // m_leftPIDController = new PIDController(Constants.Drivetrain.kLeftP,
         // Constants.Drivetrain.kLeftI, Constants.Drivetrain.kLeftD);

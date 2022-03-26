@@ -15,6 +15,8 @@ import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.drivetrain.CurvatureDrive;
+import frc.robot.commands.drivetrain.CustomArcade;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
@@ -54,9 +56,16 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
+<<<<<<< Updated upstream
             new ArcadeDrive(
                 () -> Utils.deadzone(mDriver.getLeftX()),
                 () -> Utils.deadzone(mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis())));
+=======
+            new CustomArcade(
+                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
+                mDriver::getLeftX)
+            );
+>>>>>>> Stashed changes
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
