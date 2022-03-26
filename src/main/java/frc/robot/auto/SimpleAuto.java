@@ -32,6 +32,7 @@ public class SimpleAuto extends SequentialCommandGroup {
             new InstantCommand(() -> mDrivetrain.drivePower(-0.2, 0.2)),
             new WaitCommand(1),
             new InstantCommand(() -> mDrivetrain.drivePower(0, 0)),
+
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
                     new WaitCommand(1),
@@ -40,6 +41,7 @@ public class SimpleAuto extends SequentialCommandGroup {
                     new RunElevator().withTimeout(0.3),
                     new WaitCommand(1)),
                 new PrimeShooting()));
+
             // new autoShoot(-0.55, 0.4));
     }
 }

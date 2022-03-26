@@ -1,4 +1,3 @@
-
 package frc.robot.commands.climber;
 
 import java.util.function.Supplier;
@@ -19,6 +18,7 @@ public class AutoClimb extends SequentialCommandGroup {
     private final HandHolder mRotationHandHolder = new HandHolder();
     private final HandHolder mGrabHandHolder = new HandHolder();
     private boolean interrupt = false;
+
 
     private void switchHands() {
         Climber.Hand tempHand = mRotationHandHolder.hand;
@@ -73,6 +73,8 @@ public class AutoClimb extends SequentialCommandGroup {
             // new WaitUntilCommand(RobotContainer::getClimbProceed),
             // new OpenHand(mRotationHandHolder),
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
+            .withTimeout(1),
+            new InstantCommand(() -> mRotator.setNeutralModeCoast()));
                 .withTimeout(1)
                 .andThen(new PrintCommand("Climber rotated to final position")),
             new InstantCommand(() -> mRotator.setNeutralModeCoast())
@@ -80,8 +82,15 @@ public class AutoClimb extends SequentialCommandGroup {
     }
 
     @Override
+    public void execute() {
+        //mClimber.getRotator().polluteLog();
+        super.execute();
+    }
+
+    @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return super.isFinished();
+
     }
 }

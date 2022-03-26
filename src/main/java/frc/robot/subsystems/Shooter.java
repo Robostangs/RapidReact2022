@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
+import frc.robot.commands.shooter.Home;
 
 public class Shooter extends SubsystemBase {
 
@@ -30,12 +31,31 @@ public class Shooter extends SubsystemBase {
 
         public String toString() {
             return "ShooterState(topSpeed=" + topSpeed + ", bottomSpeed=" + bottomSpeed + ")";
+        public double angle;
+
+        public State(double topSpeed, double bottomSpeed, double angle) {
+            this.topSpeed = topSpeed;
+            this.bottomSpeed = bottomSpeed;
+            this.angle = angle;
+        }
+
+        public State(double topSpeed, double bottomSpeed) {
+            this(topSpeed, bottomSpeed, 0);
+        }
+
+        public State(double topSpeed) {
+            this(topSpeed, topSpeed * Constants.Shooter.kDefaultBottomSpeedMultiplier, 0);
+        }
+
+        public String toString() {
+            return "ShooterState(topSpeed=" + topSpeed + ", bottomSpeed=" + bottomSpeed + ", angle=" + angle + ")";
         }
 
         public boolean equals(Object o) {
             if (o instanceof State) {
                 State other = (State) o;
                 return topSpeed == other.topSpeed && bottomSpeed == other.bottomSpeed;
+
             }
             return false;
         }
@@ -65,9 +85,9 @@ public class Shooter extends SubsystemBase {
     private Shooter() {
         mBottomShooter.configFactoryDefault();
         mTopShooter.configFactoryDefault();
-
         mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
         mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
+
 
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255);
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255);
@@ -86,6 +106,31 @@ public class Shooter extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addStringProperty("Shooter State", () -> getState().toString(), null);
+        // builder.addBooleanProperty("Hood homed", () -> isHomed, null);
+    }
+
+    @Override
+    public void periodic() {
+        super.periodic();
+        // if (mHood.hasResetOccurred()) {
+        //     isHomed = false;
+        // }
+        // if (!isHomed && !mHomeCommand.isScheduled()) {
+        //     mHomeCommand.schedule();
+        // }
+
+        // SmartDashboard.putNumber(
+        //     "Distance Limelight",
+        //     Limelight.getDistance());
+        // setState(
+        //     new State(
+        //         (SmartDashboard.getNumber("TopVelo", 0)), 
+        //         (SmartDashboard.getNumber("BottomVelo", 0)), 
+        //         (SmartDashboard.getNumber("HoodAngle", 0)) 
+        //     )
+        // );
+        // SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ", " + SmartDashboard.getNumber("HoodAngle", 0) + ");");
+
     }
 
     public void setBottomShooterPower(double power) {
@@ -122,5 +167,6 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putString("Requested state", state.toString());
         setTopShooterVelocity(state.topSpeed);
         setBottomShooterVelocity(state.bottomSpeed);
+
     }
 }

@@ -16,6 +16,7 @@ import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.drivetrain.CurvatureDrive;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
@@ -56,9 +57,10 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
-            new ArcadeDrive(
-                mDriver::getLeftX,
-                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis()));
+            new CustomArcade(
+                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
+                mDriver::getLeftX)
+            );
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
@@ -100,6 +102,9 @@ public class RobotContainer {
         new JoystickButton(mManip, XboxController.Button.kX.value)
             .whenPressed(new PrintCommand("Manip X Pressed"))
             .whenPressed(new PrintCommand("Manip X Released"));
+
+            
+
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

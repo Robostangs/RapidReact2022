@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 import frc.robot.subsystems.Drivetrain;
 
-public class ArcadeDrive extends CommandBase {
+public class CustomArcade extends CommandBase {
 
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
 
@@ -21,7 +21,7 @@ public class ArcadeDrive extends CommandBase {
 
     // We're inputting a function here so that we can put in the function of get value from joysticks
     // ADD DEADZONE!!!
-    public ArcadeDrive(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
+    public CustomArcade(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
         addRequirements(mDrivetrain);
         setName("Arcade Drive");
         mForwardSupplier = funcTurn;
@@ -31,12 +31,19 @@ public class ArcadeDrive extends CommandBase {
 
     @Override
     public void execute() {
-       
-        WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(
-            limiter.calculate(mForwardSupplier.get()),
-            mTurnSupplier.get(),
-            false);
-        mDrivetrain.drivePower(speeds.left, speeds.right);
+       double forward = customDeadzone(limiter.calculate(mForwardSupplier.get()));
+       double turn = -customDeadzone(mTurnSupplier.get());
+       mDrivetrain.drivePower(forward - turn, forward + turn);
+
+    }
+
+    public double customDeadzone(double input) {
+        if(Math.abs(input) >= 0.1 && Math.abs(input) < 0.5) {
+            return Math.signum(input) * ((0.25) * Math.pow((12.5), Math.abs(input)) - 0.3218); 
+        } else if(Math.abs(input) >= 0.5 && Math.abs(input) <= 1) {
+            return Math.signum(input) * ((0.876) * (Math.abs(input - 0.5) + 0.562));
+        }
+        return 0;
     }
 
     @Override

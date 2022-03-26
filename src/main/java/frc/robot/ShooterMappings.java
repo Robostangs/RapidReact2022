@@ -10,6 +10,7 @@ public class ShooterMappings {
     public static final HashMap<Double, Shooter.State> kShooterStates;
     private static void addEntry(double distance, double topShooterPower, double bottomShooterPower) {
         kShooterStates.put(distance, new Shooter.State(topShooterPower, bottomShooterPower));
+
     }
     // distance =           {0,     56,     61,     68,     80,     84,     87,     92,     104,    108,    116,    128,    142,    177,    165},
     // topShooterPower =    {500,   2000,   2100,   2000,   2000,   2100,   2200,   2175,   2100,   2300,   2250,   2600,   2750,   2761,   2700},
@@ -33,6 +34,7 @@ public class ShooterMappings {
         addEntry(142, 2750, 3163);
         // addEntry(177, 2761, 3000, 10);
         // addEntry(165, 2700, 2900, 10);
+
     };
     private static final ArrayList<Double> kDistances = new ArrayList<Double>();
     static {

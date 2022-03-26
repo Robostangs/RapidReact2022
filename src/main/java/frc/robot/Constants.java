@@ -63,6 +63,7 @@ public final class Constants {
             public static final double kHorizontalAngle = -75;
             public static final double kStartingAngle = 63; //
 
+
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
 
@@ -76,7 +77,9 @@ public final class Constants {
             public static final Double kWiggleConstant = 0.2;
         }
 
-        public static final int kRotationMotorID = 16;
+
+        public static final int kRotationMotorID = 27;
+
         public static final int kLeftElevatorID = 1;
         public static final int kRightElevatorID = 0;
 
@@ -97,7 +100,8 @@ public final class Constants {
         public static final double kRightElevatorReleasePosition = 0.05;
         public static final double kElevatorReleaseWaitTime = 3;
 
-        public static final double kClawMoveConstant = 500;
+
+        public static final double kClawMoveConstant = 690;
 
         public static final double kFirstCGPosition = 70; //
         public static final double kSecondCGPosition = 300; //
@@ -168,7 +172,8 @@ public final class Constants {
             kBeltConfig.neutralDeadband = 0.001;
         }
 
-        public static final double kSlowBeltSpeed = -0.3;
+        public static final double kSlowBeltSpeed = -0.8;
+
     }
 
     public static final class IntakeConstants {
@@ -216,6 +221,8 @@ public final class Constants {
 
         // Odometry
         public static final double kTrackWidth = 0.471;
+        public static final double kSlewRate = 1;
+
 
         
     }
@@ -229,6 +236,7 @@ public final class Constants {
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+
         public static final double kRotationMotorSearchSpeed = 0.6;
 
         public static final double kBackPosition = 34595;
@@ -255,10 +263,12 @@ public final class Constants {
     }
 
     public static class Limelight {
+
         public static final double kTargetHeight = 103;
         public static final double kLimelightHeight = 25;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
         public static final double kLimelightAngle = 46;
+
         public static final double kTxTolerance = 10;
     }
 
