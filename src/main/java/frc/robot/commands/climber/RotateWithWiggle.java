@@ -10,6 +10,7 @@ public class RotateWithWiggle extends Rotate {
 
     public RotateWithWiggle(double speed, Supplier<Double> wiggleSupplier) {
         super(speed);
+        setName("Rotate with Wiggle");
         mBaseSpeed = speed;
         mWiggleSupplier = wiggleSupplier;
     }

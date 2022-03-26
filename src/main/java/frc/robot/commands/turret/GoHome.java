@@ -2,6 +2,8 @@ package frc.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Limelight;
+
 import frc.robot.subsystems.Turret;
 
 public class GoHome extends CommandBase {
@@ -42,6 +44,7 @@ public class GoHome extends CommandBase {
             mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
             mTurret.configMaxSpeed(0.2);
         }
+        Limelight.disableLEDs();
         mTurret.configClearPosition(false);
     }
 }

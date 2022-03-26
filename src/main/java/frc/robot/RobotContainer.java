@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.AutoClimb;
@@ -16,7 +17,6 @@ import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.drivetrain.CurvatureDrive;
-import frc.robot.commands.drivetrain.CustomArcade;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
@@ -25,6 +25,7 @@ import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,36 +57,54 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {    
         mDrivetrain.setDefaultCommand(
-<<<<<<< Updated upstream
-            new ArcadeDrive(
-                () -> Utils.deadzone(mDriver.getLeftX()),
-                () -> Utils.deadzone(mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis())));
-=======
             new CustomArcade(
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
                 mDriver::getLeftX)
             );
->>>>>>> Stashed changes
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
-            .whileHeld(new Active());
+            .whileHeld(new Active())
+            .whenPressed(new PrintCommand("Driver A Pressed"))
+            .whenReleased(new PrintCommand("Driver A Released"));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new ClimbPrep());
+            .whenPressed(new ClimbPrep())
+            .whenPressed(new PrintCommand("Manip Lbumper Presed"))
+            .whenReleased(new PrintCommand("Manip Lbumper Released"));
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton));
-        new JoystickButton(mManip, XboxController.Button.kB.value)
-            .whenPressed(new Protect());
+            .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton))
+            .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
+            .whenPressed(new PrintCommand("Manip Rbumper Released"));
+        // new JoystickButton(mManip, XboxCo7
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
-            .whenReleased(new Protect());
+            .whenReleased(new Protect())
+            .whenPressed(new PrintCommand("Manip Ltrigger Pressed"))
+            .whenReleased(new PrintCommand("Manip Ltrigger Released"));
         new JoystickButton(mManip, XboxController.Button.kA.value)
-            .whileHeld(new RunElevator());
+            .whileHeld(new RunElevator())
+            .whenPressed(new PrintCommand("Manip A Pressed"))
+            .whenReleased(new PrintCommand("Manip A Released"));
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
-            .whileHeld(new ParallelCommandGroup(
-                new ToRobotAngle(0),
-                new SetShooterState(ShooterMappings.getShooterState(0))));
+            .whileHeld(
+                new ParallelCommandGroup(
+                    new ToRobotAngle(0),
+                    new SetShooterState(ShooterMappings.getShooterState(0)))
+                .andThen(new Protect()))
+            .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
+            .whenReleased(new PrintCommand("Manip Rtrigger Released"));
+        
+        new JoystickButton(mManip, XboxController.Button.kY.value)
+            .whenPressed(new PrintCommand("Manip Y Pressed"))
+            .whenPressed(new PrintCommand("Manip Y Released"));
+
+        new JoystickButton(mManip, XboxController.Button.kX.value)
+            .whenPressed(new PrintCommand("Manip X Pressed"))
+            .whenPressed(new PrintCommand("Manip X Released"));
+
+            
+
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

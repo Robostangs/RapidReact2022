@@ -11,7 +11,7 @@ import frc.robot.subsystems.Climber;
 public class Climb1Bar extends SequentialCommandGroup {
     private final Climber mClimber = Climber.getInstance();
 
-    public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition, Supplier<Double> wiggleSupplier, Supplier<Boolean> fwdLimitSwitchInterrupt) {
+  public Climb1Bar(HandHolder rotationHandHolder, HandHolder grabHandHolder, double CGPosition, Supplier<Double> wiggleSupplier, Supplier<Boolean> fwdLimitSwitchInterrupt) {
         addRequirements(mClimber);
         setName("Climb 1 Bar");
         addCommands(

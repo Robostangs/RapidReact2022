@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -60,7 +61,8 @@ public final class Constants {
             public static final double kEncoderCountsPerDegree = 1170;
 
             public static final double kHorizontalAngle = -75;
-            public static final double kStartingAngle = 60; //
+            public static final double kStartingAngle = 63; //
+
 
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
@@ -75,7 +77,9 @@ public final class Constants {
             public static final Double kWiggleConstant = 0.2;
         }
 
+
         public static final int kRotationMotorID = 27;
+
         public static final int kLeftElevatorID = 1;
         public static final int kRightElevatorID = 0;
 
@@ -95,6 +99,7 @@ public final class Constants {
         public static final double kLeftElevatorReleasePosition = 0.47;
         public static final double kRightElevatorReleasePosition = 0.05;
         public static final double kElevatorReleaseWaitTime = 3;
+
 
         public static final double kClawMoveConstant = 690;
 
@@ -168,6 +173,7 @@ public final class Constants {
         }
 
         public static final double kSlowBeltSpeed = -0.8;
+
     }
 
     public static final class IntakeConstants {
@@ -217,6 +223,7 @@ public final class Constants {
         public static final double kTrackWidth = 0.471;
         public static final double kSlewRate = 1;
 
+
         
     }
 
@@ -229,6 +236,8 @@ public final class Constants {
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+
+        public static final double kRotationMotorSearchSpeed = 0.6;
 
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
@@ -254,10 +263,12 @@ public final class Constants {
     }
 
     public static class Limelight {
-        public static final double kTargetHeight = 98.375;
-        public static final double kLimelightHeight = 24;
+
+        public static final double kTargetHeight = 103;
+        public static final double kLimelightHeight = 25;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 41.3;
+        public static final double kLimelightAngle = 46;
+
         public static final double kTxTolerance = 10;
     }
 
