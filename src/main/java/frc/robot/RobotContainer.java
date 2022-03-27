@@ -67,7 +67,7 @@ public class RobotContainer {
                 mDriver::getLeftX)
         );
         mFeeder.setDefaultCommand(new DefaultFeeder());
-        mTurret.setDefaultCommand(new DefaultTurret());
+        // mTurret.setDefaultCommand(new DefaultTurret());
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whileHeld(new Active());
@@ -77,11 +77,11 @@ public class RobotContainer {
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
             .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton));
 
-        new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
-             .whileHeld(new PrimeShooting())
-            .whenReleased(new Protect());
-        new JoystickButton(mManip, XboxController.Button.kA.value)
-            .whileHeld(new RunElevator());
+        // new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
+        //     .whileHeld(new PrimeShooting())
+        //     .whenReleased(new Protect());
+        // new JoystickButton(mManip, XboxController.Button.kA.value)
+        //     .whileHeld(new RunElevator());
         // new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
         //     .whileHeld(new ParallelCommandGroup(
         //         new ToRobotAngle(0),

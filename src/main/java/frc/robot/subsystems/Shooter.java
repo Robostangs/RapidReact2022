@@ -109,16 +109,16 @@ public class Shooter extends SubsystemBase {
         //     mHomeCommand.schedule();
         // }
 
-        SmartDashboard.putNumber(
-            "Distance Limelight",
-            Limelight.getDistance());
-        setState(
-            new State(
-                (SmartDashboard.getNumber("TopVelo", 0)), 
-                (SmartDashboard.getNumber("BottomVelo", 0))
-            )
-        );
-        SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ");");
+        // SmartDashboard.putNumber(
+        //     "Distance Limelight",
+        //     Limelight.getDistance());
+        // setState(
+        //     new State(
+        //         (SmartDashboard.getNumber("TopVelo", 0)), 
+        //         (SmartDashboard.getNumber("BottomVelo", 0))
+        //     )
+        // );
+        // SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ");");
 
     }
 

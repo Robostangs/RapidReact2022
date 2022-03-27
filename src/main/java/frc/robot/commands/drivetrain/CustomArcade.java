@@ -32,8 +32,8 @@ public class CustomArcade extends CommandBase {
     @Override
     public void execute() {
        double forward = customDeadzone(limiter.calculate(mForwardSupplier.get()));
-       double turn = -customDeadzone(mTurnSupplier.get());
-       mDrivetrain.drivePower(forward - turn, forward + turn);
+       double turn = -Utils.deadzone(mTurnSupplier.get(),2);
+       mDrivetrain.drivePower((0.915) * (forward - turn), forward + turn);
 
     }
 
