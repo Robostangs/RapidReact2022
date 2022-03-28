@@ -32,7 +32,7 @@ public final class Utils {
     }
 
     public static double deadzone(double input, double power) {
-        return deadzone(input, power, -1, -0.1, 0.1, 1);
+        return deadzone(input, power, -1, -0.07, 0.07, 1);
     }
 
     public static double deadzone(double input, double power, double lower_maxzone, double lower_deadzone, double higher_deadzone, double higher_maxzone) {

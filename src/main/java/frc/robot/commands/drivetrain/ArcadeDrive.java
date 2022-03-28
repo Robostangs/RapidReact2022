@@ -24,8 +24,8 @@ public class ArcadeDrive extends CommandBase {
     public ArcadeDrive(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
         addRequirements(mDrivetrain);
         setName("Arcade Drive");
-        mForwardSupplier = funcTurn;
-        mTurnSupplier = funcForward;
+        mForwardSupplier = funcForward;
+        mTurnSupplier = funcTurn;
         // mDrivetrain.resetRotation();
     }
 
@@ -34,9 +34,10 @@ public class ArcadeDrive extends CommandBase {
        
         WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(
             limiter.calculate(mForwardSupplier.get()),
+            // mForwardSupplier.get(),
             mTurnSupplier.get(),
             false);
-        mDrivetrain.drivePower(speeds.left, speeds.right);
+        mDrivetrain.drivePower(Constants.Drivetrain.kPowerOffsetMultiplier * speeds.left, -speeds.right);
     }
 
     @Override

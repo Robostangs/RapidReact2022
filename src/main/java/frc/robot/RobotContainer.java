@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -64,7 +65,7 @@ public class RobotContainer {
     private void configureButtonBindings() {    
         
         mDrivetrain.setDefaultCommand(
-            new CustomArcade(
+            new ArcadeDrive(
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
                 mDriver::getLeftX)
         );
@@ -73,21 +74,23 @@ public class RobotContainer {
 
         new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whileHeld(new Active());
+        new JoystickButton(mDriver, XboxController.Button.kY.value)
+            .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
             .whenPressed(new ClimbPrep());
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
             .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton));
 
-        // new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
-        //     .whileHeld(new PrimeShooting())
-        //     .whenReleased(new Protect());
-        // new JoystickButton(mManip, XboxController.Button.kA.value)
-        //     .whileHeld(new RunElevator());
-        // new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
-        //     .whileHeld(new ParallelCommandGroup(
-        //         new ToRobotAngle(0),
-        //         new SetShooterState(ShooterMappings.getShooterState(0))));
+        new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
+            .whileHeld(new PrimeShooting())
+            .whenReleased(new Protect());
+        new JoystickButton(mManip, XboxController.Button.kA.value)
+            .whileHeld(new RunElevator());
+        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
+            .whileHeld(new ParallelCommandGroup(
+                new ToRobotAngle(0),
+                new SetShooterState(ShooterMappings.getShooterState(0))));
 
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))

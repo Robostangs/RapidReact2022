@@ -231,10 +231,9 @@ public final class Constants {
 
         // Odometry
         public static final double kTrackWidth = 0.471;
-        public static final double kSlewRate = 1;
 
-
-        
+        public static final double kSlewRate = 2;
+        public static final double kPowerOffsetMultiplier = 0.915;
     }
 
     public static class Turret {

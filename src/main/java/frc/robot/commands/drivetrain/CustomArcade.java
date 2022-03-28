@@ -15,8 +15,8 @@ public class CustomArcade extends CommandBase {
 
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
 
-    private final Supplier<Double> mForwardSupplier;
     private final Supplier<Double> mTurnSupplier;
+    private final Supplier<Double> mForwardSupplier;
     SlewRateLimiter limiter = new SlewRateLimiter(Constants.Drivetrain.kSlewRate);
 
     // We're inputting a function here so that we can put in the function of get value from joysticks
@@ -24,20 +24,19 @@ public class CustomArcade extends CommandBase {
     public CustomArcade(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
         addRequirements(mDrivetrain);
         setName("Arcade Drive");
-        mForwardSupplier = funcTurn;
-        mTurnSupplier = funcForward;
+        mForwardSupplier = funcForward;
+        mTurnSupplier = funcTurn;
         // mDrivetrain.resetRotation();
     }
 
     @Override
     public void execute() {
        double forward = customDeadzone(limiter.calculate(mForwardSupplier.get()));
-       double turn = -Utils.deadzone(mTurnSupplier.get(),2);
-       mDrivetrain.drivePower((0.915) * (forward - turn), forward + turn);
-
+       double turn = -0.8 * Utils.deadzone(mTurnSupplier.get(), 2);
+       mDrivetrain.drivePower((Constants.Drivetrain.kPowerOffsetMultiplier) * (forward - turn), forward + turn);
     }
 
-    public double customDeadzone(double input) {
+    public static double customDeadzone(double input) {
         if(Math.abs(input) >= 0.1 && Math.abs(input) < 0.5) {
             return Math.signum(input) * ((0.25) * Math.pow((12.5), Math.abs(input)) - 0.3218); 
         } else if(Math.abs(input) >= 0.5 && Math.abs(input) <= 1) {
