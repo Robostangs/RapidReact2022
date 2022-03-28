@@ -28,6 +28,7 @@ import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -51,6 +52,7 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
+        Limelight.doNothing();
     }
 
     /**

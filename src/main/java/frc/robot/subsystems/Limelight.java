@@ -24,6 +24,8 @@ public class Limelight extends SubsystemBase {
         LimelightTable.getEntry("pipeline").setNumber(0);
     }
 
+    public static void doNothing() {}
+
     @Override
     public void periodic() {
         tx = LimelightTable.getEntry("tx").getDouble(0);
