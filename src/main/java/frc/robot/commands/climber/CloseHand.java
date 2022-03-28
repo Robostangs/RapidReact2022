@@ -21,15 +21,12 @@ public class CloseHand extends CommandBase {
 
     @Override
     public void initialize() {
-        if(mHand.getCallibrationStatus() == Climber.HandCallibrationStatus.kCalibrated) {
-            mHand.setClawSpeed(mSpeed);
-        }
+        mHand.setClawSpeed(mSpeed);
     }
 
     @Override
     public boolean isFinished() {
-        return mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated
-            || mHand.getClawPosition() >= Constants.Climber.Hand.kClawForwardSoftLimit;
+        return mHand.getClawPosition() >= Constants.Climber.Hand.kClawForwardSoftLimit;
     }
 
     @Override

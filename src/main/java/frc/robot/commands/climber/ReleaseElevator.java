@@ -2,6 +2,7 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.climber.ClimbSequenceManager.ClimbState;
 import frc.robot.subsystems.Climber;
 
 public class ReleaseElevator extends WaitCommand {
@@ -10,6 +11,7 @@ public class ReleaseElevator extends WaitCommand {
     public ReleaseElevator() {
         super(Constants.Climber.kElevatorReleaseWaitTime);
         addRequirements(mClimber);
+        setName("Release Elevator");
     }
 
     @Override
@@ -18,5 +20,11 @@ public class ReleaseElevator extends WaitCommand {
             Constants.Climber.kLeftElevatorReleasePosition,
             Constants.Climber.kRightElevatorReleasePosition);
         super.initialize();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        ClimbSequenceManager.getInstance().setState(ClimbState.kTall);
     }
 }
