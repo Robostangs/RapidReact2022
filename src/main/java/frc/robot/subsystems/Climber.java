@@ -231,34 +231,6 @@ public class Climber extends SubsystemBase {
         mRightElevatorRelease.set(rightPosition);
     }
 
-    public double[] getElevatorReleasePositions() {
-        return new double[] {mLeftElevatorRelease.getPosition(), mRightElevatorRelease.getPosition()};
-    }
-
-    public boolean getInclusiveEngaged() {
-        return mHandA.getEngaged() || mHandB.getEngaged();
-    }
-
-    public Hand getEngagedHand() {
-        if (mHandA.getEngaged()) {
-            return mHandA;
-        } else if (mHandB.getEngaged()) {
-            return mHandB;
-        } else {
-            return null;
-        }
-    }
-
-    public Hand getDisengagedHand() {
-        if (mHandA.getEngaged()) {
-            return mHandB;
-        } else if (mHandB.getEngaged()) {
-            return mHandA;
-        } else {
-            return null;
-        }
-    }
-
     public void setState(State state) {
         mState = state;
     }
