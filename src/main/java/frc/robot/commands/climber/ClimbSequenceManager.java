@@ -60,7 +60,8 @@ public class ClimbSequenceManager implements Sendable {
         put(ClimbState.kCallibrated, new Transition(new Protect().andThen(new ReleaseElevator()).withName("Lift climber"), ClimbState.kHigh));
         put(ClimbState.kTall, new Transition(new RotateToPosition(Constants.Climber.Rotator.kStartingAngle).withName("Rotate to Mid Bar"), ClimbState.kPreppedMid));
         put(ClimbState.kPreppedMid, new Transition(new DriveToMidBar(), ClimbState.kGrabbingMid));
-        put(ClimbState.kGrabbingMid, new Transition(new CloseHand(mHandA), ClimbState.kMid));
+        put(ClimbState.kGrabbingMid, new Transition(new CloseHand(mHandA).withName("Grab Mid Bar"), ClimbState.kMid));
+        put(ClimbState.kPreppedHigh, new Transition(new GrabNextBar(mHandB).withName("Grab High Bar"), ClimbState.kMidHigh));
     }};
     private final Map<ClimbState, Transition> mAutoCommands = new HashMap<ClimbState, Transition>() {{
         put(ClimbState.kMid, new Transition(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon), ClimbState.kPreppedHigh));
