@@ -89,24 +89,24 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setBottomShooterPower(double power) {
-        mBottomShooter.set(ControlMode.PercentOutput, -power);
+        mBottomShooter.set(-power);
     }
 
     public void setBottomShooterVelocity(double velocity) {
         if(velocity < 500) {
-            mBottomShooter.set(ControlMode.PercentOutput, 0);
+            mBottomShooter.set(0);
         } else {
             mBottomShooter.set(ControlMode.Velocity, -velocity / (600.0 / 2048.0));
         }
     }
 
     public void setTopShooterPower(double power) {
-        mTopShooter.set(ControlMode.PercentOutput, power);
+        mTopShooter.set(power);
     }
 
     public void setTopShooterVelocity(double velocity) {
         if(velocity < 500) {
-            mTopShooter.set(ControlMode.PercentOutput, 0);
+            mTopShooter.set(0);
         } else {
             mTopShooter.set(ControlMode.Velocity, velocity / (600.0 / 2048.0));
         }

@@ -47,6 +47,7 @@ public final class Constants {
                 clawMotor.setSoftLimit(SoftLimitDirection.kForward, kClawForwardSoftLimit);
                 clawMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
                 clawMotor.setSmartCurrentLimit(40);
+                clawMotor.enableVoltageCompensation(12);
             }
 
             public static final double kClawLockUnlockedPositon = 0.8;
@@ -89,6 +90,7 @@ public final class Constants {
             kRotationConfig.slot0.kD = 0;
             kRotationConfig.peakOutputForward = kPeakRotationOutput;
             kRotationConfig.peakOutputReverse = -kPeakRotationOutput;
+            kRotationConfig.voltageCompSaturation = 12;
         }
 
         public static final double kLeftElevatorReleaseDefaultPosition = 0.11;

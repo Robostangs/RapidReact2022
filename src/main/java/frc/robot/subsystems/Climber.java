@@ -150,7 +150,7 @@ public class Climber extends SubsystemBase {
         }
 
         public void setPower(double power) {
-            mMotor.setVoltage(power * Constants.kMaxVoltage);
+            mMotor.set(power);
         }
 
         public void setPosition(double position, double feedforward) {

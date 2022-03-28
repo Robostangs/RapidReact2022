@@ -32,7 +32,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setPower(double power) {
-        mElevator.set(ControlMode.PercentOutput, power);
+        mElevator.set(power);
     }
 
     public cargoColor getBallColor() {

@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
-        mIntakeMotor.set(ControlMode.PercentOutput, speed);
+        mIntakeMotor.set(speed);
     }
 
     // @Override

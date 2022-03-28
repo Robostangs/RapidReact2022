@@ -115,8 +115,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void drivePower(double leftPwr, double rightPwr) {
-        mLeftTop.set(ControlMode.PercentOutput, leftPwr);
-        mRightTop.set(ControlMode.PercentOutput, rightPwr);
+        mLeftTop.set(leftPwr);
+        mRightTop.set(rightPwr);
     }
 
     public double getLeftPosition() {
