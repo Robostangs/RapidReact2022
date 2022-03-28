@@ -79,9 +79,4 @@ public final class Utils {
     public static double round(double a, int roundAmount) {
         return BigDecimal.valueOf(a).setScale(roundAmount, RoundingMode.HALF_UP).doubleValue();
     }
-
-    public static CommandBase setName(CommandBase command, String name) {
-        command.setName(name);
-        return command;
-    }
 }
