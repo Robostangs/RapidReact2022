@@ -4,6 +4,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ClimbSequenceManager {
     enum ClimbState {
+        kStarting,
+        kHorizontal,
+        kCallibrated,
+        kPositionedMid,
+        kMid,
+        kGrabbedMid,
+        kPreppedHigh,
+        kGrabbingHigh,
+        kMidHigh,
+        kHigh,
+        kPreppedTraversal,
+        kGrabbingTraversal,
+        kHighTraversal,
+        kTraversal,
     }
 
     private static ClimbSequenceManager instance;
@@ -17,6 +31,14 @@ public class ClimbSequenceManager {
     }
 
     private ClimbSequenceManager() {}
+
+    void setState(ClimbState newState) {
+        mCurrentState = newState;
+    }
+
+    ClimbState getState() {
+        return mCurrentState;
+    }
 
     public CommandBase getNextCommand() {
         return null;
