@@ -136,7 +136,7 @@ public class Turret extends SubsystemBase {
     }
 
     public void setPercentSpeed(double speed) {
-        mMotor.set(ControlMode.PercentOutput, speed);
+        mMotor.set(speed);
     }
 
     public boolean getReverseLimit() {

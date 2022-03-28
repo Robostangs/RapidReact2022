@@ -62,7 +62,7 @@ public class Feeder extends SubsystemBase {
     }
 
     public void moveBelt(double beltPower) {
-        mBeltMotor.set(ControlMode.PercentOutput, beltPower);
+        mBeltMotor.set(beltPower);
     }
 
     public void moveBeltPosition(double position) {
