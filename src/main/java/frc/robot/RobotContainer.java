@@ -65,7 +65,7 @@ public class RobotContainer {
     private void configureButtonBindings() {    
         
         mDrivetrain.setDefaultCommand(
-            new ArcadeDrive(
+            new CustomArcade(
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
                 mDriver::getLeftX)
         );

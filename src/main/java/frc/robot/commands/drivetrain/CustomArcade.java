@@ -31,16 +31,16 @@ public class CustomArcade extends CommandBase {
 
     @Override
     public void execute() {
-       double forward = customDeadzone(limiter.calculate(mForwardSupplier.get()));
+       double forward = limiter.calculate(customDeadzone(mForwardSupplier.get()));
        double turn = -0.8 * Utils.deadzone(mTurnSupplier.get(), 2);
-       mDrivetrain.drivePower((Constants.Drivetrain.kPowerOffsetMultiplier) * (forward - turn), forward + turn);
+       mDrivetrain.drivePower((forward - turn) * Constants.Drivetrain.kPowerOffsetMultiplier, forward + turn);
     }
 
     public static double customDeadzone(double input) {
         if(Math.abs(input) >= 0.1 && Math.abs(input) < 0.5) {
             return Math.signum(input) * ((0.25) * Math.pow((12.5), Math.abs(input)) - 0.3218); 
         } else if(Math.abs(input) >= 0.5 && Math.abs(input) <= 1) {
-            return Math.signum(input) * ((0.876) * (Math.abs(input - 0.5) + 0.562));
+            return Math.signum(input) * ((0.876) * (Math.abs(input) - 0.5) + (0.562));
         }
         return 0;
     }
