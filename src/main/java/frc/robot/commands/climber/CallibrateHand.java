@@ -1,7 +1,6 @@
 package frc.robot.commands.climber;
 
 import frc.robot.subsystems.Climber.Hand;
-import frc.robot.subsystems.Climber.HandCallibrationStatus;
 
 public class CallibrateHand extends OpenHand {
 
@@ -16,12 +15,6 @@ public class CallibrateHand extends OpenHand {
     }
 
     @Override
-    public void initialize() {
-        super.initialize();
-        mHand.setCallibrationStatus(HandCallibrationStatus.kCalibrating);
-    }
-
-    @Override
     public boolean isFinished() {
         return mHand.isFullyOpen();
     }
@@ -30,9 +23,7 @@ public class CallibrateHand extends OpenHand {
     public void end(boolean interrupted) {
         if(!interrupted) {
             mHand.zeroClawEncoder();
-            mHand.setCallibrationStatus(HandCallibrationStatus.kCalibrated);
         } else {
-            mHand.setCallibrationStatus(HandCallibrationStatus.kNotCalibrated);
             System.out.println("Hand calibration interrupted!");
         }
         super.end(interrupted);

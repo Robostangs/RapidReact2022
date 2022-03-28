@@ -18,12 +18,6 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 
 public class Climber extends SubsystemBase {
-    public enum HandCallibrationStatus {
-        kNotCalibrated,
-        kCalibrating,
-        kCalibrated
-    }
-
     public class Hand extends SubsystemBase {
 
         private final CANSparkMax mClaw;
@@ -34,7 +28,6 @@ public class Climber extends SubsystemBase {
         private final Debouncer mLimitDebouncer = new Debouncer(Constants.Climber.Hand.kLimitDebounceTime);
         private final Servo mLock;
         private double mSetpoint;
-        private HandCallibrationStatus mCallibrationStatus = HandCallibrationStatus.kNotCalibrated;
 
         private Hand(int clawID, int lockID) {
             // System.out.println("Spark Max " + clawID + " init");
@@ -58,7 +51,6 @@ public class Climber extends SubsystemBase {
             builder.addDoubleProperty("Claw/Velocity", this::getClawSpeed, null);
             builder.addDoubleProperty("Lock Position", this::getLockPosition, null);
             builder.addDoubleProperty("Lock Setpoint", () -> mSetpoint, null);
-            builder.addStringProperty("Callibration Status", () -> getCallibrationStatus() + "", null);
             builder.addDoubleProperty("Output Current", mClaw::getOutputCurrent, null);
         }
 
@@ -106,21 +98,6 @@ public class Climber extends SubsystemBase {
         public boolean isFullyOpen() {
             return mLimitDebouncer.calculate(mOpenLimit.isPressed());
         }
-
-        public void setCallibrationStatus(HandCallibrationStatus status) {
-            mCallibrationStatus = status;
-        }
-
-        public HandCallibrationStatus getCallibrationStatus() {
-            return mCallibrationStatus;
-        }
-    }
-
-    public enum State {
-        kStarting,
-        kPriming,
-        kPrimed,
-        kClimbing
     }
 
     public class Rotator extends SubsystemBase {
@@ -199,8 +176,6 @@ public class Climber extends SubsystemBase {
     private final Servo mLeftElevatorRelease = new Servo(Constants.Climber.kLeftElevatorID);
     private final Servo mRightElevatorRelease = new Servo(Constants.Climber.kRightElevatorID);
 
-    private State mState = State.kStarting;
-
     private Climber() {
         mLeftElevatorRelease.set(Constants.Climber.kLeftElevatorReleaseDefaultPosition);
         mRightElevatorRelease.set(Constants.Climber.kRightElevatorReleaseDefaultPosition);
@@ -217,7 +192,7 @@ public class Climber extends SubsystemBase {
         }
         return instance;
     }
-    
+
     public Rotator getRotator() {
         return mRotator;
     }
@@ -229,13 +204,5 @@ public class Climber extends SubsystemBase {
     public void setElevatorReleasePositions(double leftPosition, double rightPosition) {
         mLeftElevatorRelease.set(leftPosition);
         mRightElevatorRelease.set(rightPosition);
-    }
-
-    public void setState(State state) {
-        mState = state;
-    }
-
-    public State getState() {
-        return mState;
     }
 }
