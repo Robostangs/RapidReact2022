@@ -11,12 +11,13 @@ public class Active extends CommandBase{
 
     public Active(double speed) {
         addRequirements(mIntake);
-        setName("Intaking");
+        setName("Exgest");
         m_speed = speed;
     }
 
     public Active() {
         this(Constants.IntakeConstants.kDefaultSpeed);
+        setName("Intaking");
     }
 
     @Override
