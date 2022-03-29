@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.ShooterMappings;
+import frc.robot.Constants.Turret;
 import frc.robot.commands.AddSmartdashboard;
 import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.commands.climber.ReleaseElevator;
@@ -25,9 +26,11 @@ import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.Search;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class PITTest extends SequentialCommandGroup {
     PowerDistribution pdp = new PowerDistribution();
+
 
     public PITTest() {
         SmartDashboard.putString("PIT Test", "Test Starting");
@@ -45,6 +48,10 @@ public class PITTest extends SequentialCommandGroup {
         builder.addDoubleProperty("Front Shooter Current", () -> pdp.getCurrent(Constants.Shooter.kLeftShooterID), null);
         builder.addDoubleProperty("Back Shooter Current", () -> pdp.getCurrent(Constants.Shooter.kRightShooterID), null);
         builder.addDoubleProperty("Climber Rotation Current", () -> pdp.getCurrent(Constants.Climber.kRotationMotorID), null);
+
+        builder.addDoubleProperty("Turret Closed Loop Error", () -> frc.robot.subsystems.Turret.getInstance().getError(), null);
+        builder.addDoubleProperty("Top Shooter Error", () -> Shooter.getInstance().topShooterError(), null);
+        builder.addDoubleProperty("Bottom Shooter Error", () -> Shooter.getInstance().bottomShooterError(), null);
         super.initSendable(builder);
     }
 
@@ -94,7 +101,6 @@ public class PITTest extends SequentialCommandGroup {
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("PIT Test Error/Battery Voltage", RobotController.getBatteryVoltage());
         super.execute();
     }
 

@@ -96,6 +96,10 @@ public class Turret extends SubsystemBase {
         return speedRawToAnguar(getRawVelocity());
     }
 
+    public double getError() {
+        return mMotor.getClosedLoopError();
+    }
+
     private void setRawSetpoint(double position, double feedforward) {
         position = Utils.saturate(
             position,

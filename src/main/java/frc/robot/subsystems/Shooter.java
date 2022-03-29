@@ -92,6 +92,14 @@ public class Shooter extends SubsystemBase {
         mBottomShooter.set(ControlMode.PercentOutput, -power);
     }
 
+    public double topShooterError() {
+        return mTopShooter.getClosedLoopError();
+    }
+
+    public double bottomShooterError() {
+        return mBottomShooter.getClosedLoopError();
+    }
+
     public void setBottomShooterVelocity(double velocity) {
         if(velocity < 500) {
             mBottomShooter.set(ControlMode.PercentOutput, 0);
