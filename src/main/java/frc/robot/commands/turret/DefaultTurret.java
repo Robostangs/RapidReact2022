@@ -13,8 +13,8 @@ public class DefaultTurret extends SequentialCommandGroup {
     private final Search mSearch = new Search();
 
     public DefaultTurret() {
-        this.setName("default Turret");
-        this.addCommands(
+        setName("default Turret");
+        addCommands(
             mSearch        
                 .withInterrupt(() -> limelightTvDebouncer.calculate(Limelight.getTv() == 1))
                 .andThen(new PrintCommand("Found Target")),                

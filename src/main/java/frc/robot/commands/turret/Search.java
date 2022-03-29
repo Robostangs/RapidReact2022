@@ -11,8 +11,8 @@ public class Search extends CommandBase {
     private double mLastTX = -1;
 
     public Search() {
-        this.addRequirements(mTurret);
-        this.setName("I lost my target");
+        addRequirements(mTurret);
+        setName("I lost my target");
     }
 
     @Override

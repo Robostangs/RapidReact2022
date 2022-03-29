@@ -9,8 +9,8 @@ public class ToRobotAngle extends CommandBase{
     protected double mAngle, mFeedforward;
 
     public ToRobotAngle(double angle, double feedforward) {
-        this.setName("To Robot Angle");
-        this.addRequirements(mTurret);
+        setName("To Robot Angle");
+        addRequirements(mTurret);
         mAngle = angle;
         mFeedforward = feedforward;
     }

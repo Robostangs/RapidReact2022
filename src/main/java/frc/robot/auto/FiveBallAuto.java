@@ -17,7 +17,7 @@ import frc.robot.subsystems.Limelight;
 public class FiveBallAuto extends SequentialCommandGroup {
 
     public FiveBallAuto() {
-        this.setName("Five Ball Auto - Not Rude");
+        setName("Five Ball Auto - Not Rude");
         try {        
             new ParallelCommandGroup(
                 new FollowPath("output/5BallPt1.wpilib.json"), 
