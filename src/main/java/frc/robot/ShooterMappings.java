@@ -47,18 +47,8 @@ public class ShooterMappings {
             } else if(index >= kDistances.size()) {
                 return kDistances.get(kDistances.size() - 1);
             }
-            double below = kDistances.get(index - 1);
-            double above = kDistances.get(index);
-            if(distance > below) {
-                return below;
-            }
+            return kDistances.get(index - 1);
         }
-        // for(int i = 0; i < kDistances.size(); i++) {
-        //     if(distance <= kDistances.get(i)) {
-        //         return (i-1);
-        //     }
-        // }
-        return 0;
     }
 
     public static Shooter.State getShooterState(double distance) {
