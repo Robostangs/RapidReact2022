@@ -3,7 +3,6 @@ package frc.robot;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public final class Utils {
