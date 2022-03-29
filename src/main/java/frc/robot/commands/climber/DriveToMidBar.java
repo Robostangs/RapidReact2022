@@ -2,7 +2,6 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.commands.climber.ClimbSequenceManager.ClimbState;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 
@@ -34,6 +33,5 @@ public class DriveToMidBar extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         mDrivetrain.drivePower(0, 0);
-        ClimbSequenceManager.getInstance().setState(ClimbState.kGrabbingMid);
     }
 }
