@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
@@ -67,23 +66,24 @@ public class RobotContainer {
             .whenReleased(new PrintCommand("Driver A Released"));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new ClimbPrep())
             .whenPressed(new PrintCommand("Manip Lbumper Presed"))
             .whenReleased(new PrintCommand("Manip Lbumper Released"));
+
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton))
             .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
             .whenPressed(new PrintCommand("Manip Rbumper Released"));
-        // new JoystickButton(mManip, XboxCo7
+
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect())
             .whenPressed(new PrintCommand("Manip Ltrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Ltrigger Released"));
+
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator())
             .whenPressed(new PrintCommand("Manip A Pressed"))
             .whenReleased(new PrintCommand("Manip A Released"));
+
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new ParallelCommandGroup(
@@ -92,7 +92,7 @@ public class RobotContainer {
                 .andThen(new Protect()))
             .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Rtrigger Released"));
-        
+
         new JoystickButton(mManip, XboxController.Button.kY.value)
             .whenPressed(new PrintCommand("Manip Y Pressed"))
             .whenPressed(new PrintCommand("Manip Y Released"));
@@ -115,9 +115,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return new SimpleAuto();
-    }
-
-    public static boolean getClimbProceed() {
-        return mManip.getXButton();
     }
 }
