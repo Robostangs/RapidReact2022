@@ -13,7 +13,7 @@ public class GrabNextBar extends SequentialCommandGroup {
         setName("Climb 1 Bar");
         addCommands(
             new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed)
-                .withInterrupt(() -> (grabHand.getEngaged() || grabHand.getEngaged())), // Rotate to position
+                .withInterrupt(() -> (grabHand.getEngaged())), // Rotate to position
             new ParallelDeadlineGroup( // Grab upper bar while holding position
                 new CloseHand(grabHand),
                 new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)));

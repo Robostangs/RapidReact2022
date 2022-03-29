@@ -7,9 +7,11 @@ import java.util.function.Supplier;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -41,6 +43,7 @@ public class ClimbSequenceManager implements Sendable {
         private CommandBase behavior;
         private Supplier<ClimbState> determineNextState;
         private boolean autoSchedule = false;
+        private boolean interruptable = false;
 
         public Transition(CommandBase behavior, Supplier<ClimbState> determineNextState, boolean autoSchedule) {
             this.behavior = behavior;
@@ -73,18 +76,19 @@ public class ClimbSequenceManager implements Sendable {
     }
     private final Map<ClimbState, Transition> mTransitions = new HashMap<ClimbState, Transition>() {{
         put(ClimbState.kStarting, new Transition(new ClimbPrep(), ClimbState.kCallibrated));
-        put(ClimbState.kCallibrated, new Transition(new Protect().andThen(new ReleaseElevator()).withName("Lift climber"), ClimbState.kHigh));
+        put(ClimbState.kCallibrated, new Transition(new Protect().withTimeout(1).andThen(new ReleaseElevator()).withName("Lift climber"), ClimbState.kTall));
         put(ClimbState.kTall, new Transition(new RotateToPosition(Constants.Climber.Rotator.kStartingAngle).withName("Rotate to Mid Bar"), ClimbState.kPreppedMid));
         put(ClimbState.kPreppedMid, new Transition(new DriveToMidBar(), ClimbState.kGrabbingMid));
         put(ClimbState.kGrabbingMid, new Transition(new CloseHand(mHandA).withName("Grab Mid Bar"), ClimbState.kMid));
         put(ClimbState.kMid, new Transition(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon), ClimbState.kPreppedHigh, true));
         put(ClimbState.kPreppedHigh, new Transition(new GrabNextBar(mHandB).withName("Grab High Bar"), () -> mHandB.getEngaged() ? ClimbState.kMidHigh : ClimbState.kMissedHigh));
         put(ClimbState.kMissedHigh, new Transition(new OpenHand(mHandB).withName("Reopen Hand B"), ClimbState.kMid, true));
-        put(ClimbState.kMidHigh, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandA).andThen(new PrintCommand("Let go mid done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kHigh));
+        put(ClimbState.kMidHigh, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandA).andThen(new PrintCommand("Let go mid done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, () -> mWiggleSupplier.get())), ClimbState.kHigh));
         put(ClimbState.kHigh, new Transition(new ParallelCommandGroup(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon), new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)).withName("Prepare lock positions"), ClimbState.kPreppedTraversal));
         put(ClimbState.kPreppedTraversal, new Transition(new GrabNextBar(mHandA).withName("Grab Traversal Bar"), () -> mHandA.getEngaged() ? ClimbState.kHighTraversal : ClimbState.kMissedTraversal));
         put(ClimbState.kMissedTraversal, new Transition(new OpenHand(mHandA).withName("Reopen Hand A"), ClimbState.kHigh, true));
-        put(ClimbState.kHighTraversal, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandB).andThen(new PrintCommand("Let go high done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kTraversal));
+        put(ClimbState.kHighTraversal, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandB).andThen(new PrintCommand("Let go high done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, () -> mWiggleSupplier.get())), ClimbState.kTraversal));
+        put(ClimbState.kTraversal, new Transition(new InstantCommand(), ClimbState.kTraversal));
     }};
     private ClimbState mCurrentState = ClimbState.kStarting;
     private Transition mCurrentTransition = mTransitions.get(mCurrentState);
