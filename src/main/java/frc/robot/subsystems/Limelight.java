@@ -24,6 +24,8 @@ public class Limelight extends SubsystemBase {
         LimelightTable.getEntry("pipeline").setNumber(0);
     }
 
+    public static void doNothing() {}
+
     @Override
     public void periodic() {
         tx = LimelightTable.getEntry("tx").getDouble(0);
@@ -45,6 +47,7 @@ public class Limelight extends SubsystemBase {
     public static double getDistance() {
         return Constants.Limelight.kTargetHeightDelta / (Math.tan(Utils.degToRad(ty + Constants.Limelight.kLimelightAngle)));
     }
+    //Actual Distance = difH / (tan(ty+?))
 
     public static double getTx() {
         return tx;

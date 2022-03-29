@@ -11,19 +11,19 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 import frc.robot.subsystems.Drivetrain;
 
-public class ArcadeDrive extends CommandBase {
+public class CustomArcade extends CommandBase {
 
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
 
-    private final Supplier<Double> mForwardSupplier;
     private final Supplier<Double> mTurnSupplier;
+    private final Supplier<Double> mForwardSupplier;
     SlewRateLimiter limiter = new SlewRateLimiter(Constants.Drivetrain.kSlewRate);
 
     // We're inputting a function here so that we can put in the function of get value from joysticks
     // ADD DEADZONE!!!
-    public ArcadeDrive(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
+    public CustomArcade(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
         addRequirements(mDrivetrain);
-        setName("Arcade Drive");
+        setName("Custom Arcade Drive");
         mForwardSupplier = funcForward;
         mTurnSupplier = funcTurn;
         // mDrivetrain.resetRotation();
@@ -31,13 +31,18 @@ public class ArcadeDrive extends CommandBase {
 
     @Override
     public void execute() {
-       
-        WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(
-            limiter.calculate(mForwardSupplier.get()),
-            // mForwardSupplier.get(),
-            mTurnSupplier.get(),
-            false);
-        mDrivetrain.drivePower(Constants.Drivetrain.kPowerOffsetMultiplier * speeds.left, -speeds.right);
+       double forward = limiter.calculate(customDeadzone(mForwardSupplier.get()));
+       double turn = -0.8 * Utils.deadzone(mTurnSupplier.get(), 2);
+       mDrivetrain.drivePower((forward - turn) * Constants.Drivetrain.kPowerOffsetMultiplier, -(forward + turn));
+    }
+
+    public static double customDeadzone(double input) {
+        if(Math.abs(input) >= 0.1 && Math.abs(input) < 0.5) {
+            return Math.signum(input) * ((0.25) * Math.pow((12.5), Math.abs(input)) - 0.3218); 
+        } else if(Math.abs(input) >= 0.5 && Math.abs(input) <= 1) {
+            return Math.signum(input) * ((0.876) * (Math.abs(input) - 0.5) + (0.562));
+        }
+        return 0;
     }
 
     @Override

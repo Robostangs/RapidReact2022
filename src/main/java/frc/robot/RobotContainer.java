@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -16,15 +17,20 @@ import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.drivetrain.CurvatureDrive;
+import frc.robot.commands.drivetrain.CustomArcade;
+import frc.robot.commands.drivetrain.CustomArcade;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
 import frc.robot.commands.shooter.SetShooterState;
+import frc.robot.commands.turret.DefaultTurret;
 import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,6 +43,7 @@ public class RobotContainer {
     // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
     private final Feeder mFeeder = Feeder.getInstance();
+    private final Turret mTurret = Turret.getInstance();
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
 
@@ -46,6 +53,7 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
+        Limelight.doNothing();
     }
 
     /**
@@ -54,9 +62,10 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {    
+    private void configureButtonBindings() { 
+        
         mDrivetrain.setDefaultCommand(
-            new ArcadeDrive(
+            new CustomArcade(
                 mDriver::getLeftX,
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis()));
         mFeeder.setDefaultCommand(new DefaultFeeder());
@@ -66,24 +75,33 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Driver A Pressed"))
             .whenReleased(new PrintCommand("Driver A Released"));
 
+        new JoystickButton(mDriver, XboxController.Button.kY.value)
+            .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed))
+            .whenPressed(new PrintCommand("Driver Y Pressed"))
+            .whenReleased(new PrintCommand("Driver Y Released"));
+
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
             .whenPressed(new ClimbPrep())
             .whenPressed(new PrintCommand("Manip Lbumper Presed"))
             .whenReleased(new PrintCommand("Manip Lbumper Released"));
+
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
             .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton))
             .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
             .whenPressed(new PrintCommand("Manip Rbumper Released"));
+
         // new JoystickButton(mManip, XboxCo7
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect())
             .whenPressed(new PrintCommand("Manip Ltrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Ltrigger Released"));
+
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator())
             .whenPressed(new PrintCommand("Manip A Pressed"))
             .whenReleased(new PrintCommand("Manip A Released"));
+            
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new ParallelCommandGroup(

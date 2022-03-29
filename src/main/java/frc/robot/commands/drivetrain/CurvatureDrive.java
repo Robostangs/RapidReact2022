@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.Utils;
 import frc.robot.subsystems.Drivetrain;
 
-public class ArcadeDrive extends CommandBase {
+public class CurvatureDrive extends CommandBase {
 
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
 
@@ -19,11 +19,10 @@ public class ArcadeDrive extends CommandBase {
     private final Supplier<Double> mTurnSupplier;
     SlewRateLimiter limiter = new SlewRateLimiter(Constants.Drivetrain.kSlewRate);
 
-    // We're inputting a function here so that we can put in the function of get value from joysticks
-    // ADD DEADZONE!!!
-    public ArcadeDrive(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
+    //TODO: REVERSE TURNING WHEN REVERSING, 
+    public CurvatureDrive(Supplier<Double> funcForward, Supplier<Double> funcTurn) {
         addRequirements(mDrivetrain);
-        setName("Arcade Drive");
+        setName("Curvature Drive");
         mForwardSupplier = funcForward;
         mTurnSupplier = funcTurn;
         // mDrivetrain.resetRotation();
@@ -31,13 +30,12 @@ public class ArcadeDrive extends CommandBase {
 
     @Override
     public void execute() {
-       
-        WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(
-            limiter.calculate(mForwardSupplier.get()),
-            // mForwardSupplier.get(),
+        WheelSpeeds speeds = DifferentialDrive.curvatureDriveIK(
+            mForwardSupplier.get(),
             mTurnSupplier.get(),
-            false);
-        mDrivetrain.drivePower(Constants.Drivetrain.kPowerOffsetMultiplier * speeds.left, -speeds.right);
+            // mForwardSupplier.get() < 0 ? -mTurnSupplier.get() : mTurnSupplier.get(),
+            !(Math.abs(mTurnSupplier.get()) < 0.05));
+        mDrivetrain.drivePower(speeds.left, -speeds.right);
     }
 
     @Override

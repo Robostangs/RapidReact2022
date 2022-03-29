@@ -33,6 +33,7 @@ public class ClimbPrep extends ParallelCommandGroup {
 
     public ClimbPrep() {
         addRequirements(mClimber);
+        setName("Climb Prep");
         final Climber.Hand[] hands = mClimber.getHands();
         addCommands(
             new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),

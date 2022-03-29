@@ -36,6 +36,7 @@ public class Shooter extends SubsystemBase {
             if (o instanceof State) {
                 State other = (State) o;
                 return topSpeed == other.topSpeed && bottomSpeed == other.bottomSpeed;
+
             }
             return false;
         }
@@ -65,9 +66,9 @@ public class Shooter extends SubsystemBase {
     private Shooter() {
         mBottomShooter.configFactoryDefault();
         mTopShooter.configFactoryDefault();
-
         mBottomShooter.configAllSettings(Constants.Shooter.kBottomShooterConfig);
         mTopShooter.configAllSettings(Constants.Shooter.kTopShooterConfig);
+
 
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255);
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255);
@@ -80,12 +81,45 @@ public class Shooter extends SubsystemBase {
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 255);
         //21?
         mBottomShooter.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 255);
+
+        SmartDashboard.putNumber("TopVelo", 0); 
+        SmartDashboard.putNumber("BottomVelo", 0);
+        
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addStringProperty("Shooter State", () -> getState().toString(), null);
+        builder.addDoubleProperty("Bottom Error", () -> mBottomShooter.getClosedLoopError(), null);
+        builder.addDoubleProperty("Top Error", () -> mTopShooter.getClosedLoopError(), null);
+        
+        builder.addDoubleProperty("Top Speed", () -> mTopShooter.getSelectedSensorVelocity() * (600/2048f), null);
+        builder.addDoubleProperty("Bottom Speed", () -> mBottomShooter.getSelectedSensorVelocity() * (600/2048f), null);
+        // builder.addBooleanProperty("Hood homed", () -> isHomed, null);
+    }
+
+    @Override
+    public void periodic() {
+        super.periodic();
+        // if (mHood.hasResetOccurred()) {
+        //     isHomed = false;
+        // }
+        // if (!isHomed && !mHomeCommand.isScheduled()) {
+        //     mHomeCommand.schedule();
+        // }
+
+        // SmartDashboard.putNumber(
+        //     "Distance Limelight",
+        //     Limelight.getDistance());
+        // setState(
+        //     new State(
+        //         (SmartDashboard.getNumber("TopVelo", 0)), 
+        //         (SmartDashboard.getNumber("BottomVelo", 0))
+        //     )
+        // );
+        // SmartDashboard.putString("Table Value", "addEntry(" + Utils.round(Limelight.getDistance(), 2) + ", " + SmartDashboard.getNumber("TopVelo", 0) + ", " + SmartDashboard.getNumber("BottomVelo", 0) + ");");
+
     }
 
     public void setBottomShooterPower(double power) {
@@ -122,5 +156,6 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putString("Requested state", state.toString());
         setTopShooterVelocity(state.topSpeed);
         setBottomShooterVelocity(state.bottomSpeed);
+
     }
 }

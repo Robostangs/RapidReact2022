@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -65,16 +66,14 @@ public class Drivetrain extends SubsystemBase {
         mLeftBottom.follow(mLeftTop);
         mRightBottom.follow(mRightTop);
 
-        mLeftTop.setNeutralMode(NeutralMode.Coast);
-        mRightTop.setNeutralMode(NeutralMode.Coast);
+        mLeftTop.setNeutralMode(NeutralMode.Brake);
+        mRightTop.setNeutralMode(NeutralMode.Brake);
 
         mLeftTop.configFactoryDefault();
         mLeftTop.configAllSettings(Constants.Drivetrain.kLeftMotorsConfig);
 
         mRightTop.configFactoryDefault();
         mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
-
-       
         resetEncoder();
 
         SmartDashboard.putData("Field", mField);

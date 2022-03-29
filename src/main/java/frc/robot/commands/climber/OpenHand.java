@@ -1,6 +1,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
@@ -37,6 +38,11 @@ public class OpenHand extends CommandBase {
         if (mHandContainer != null) {
             mHand = mHandContainer.hand;
         }
+        new WaitCommand(1);
+    }
+
+    @Override
+    public void execute() {
         mHand.setClawSpeed(mSpeed);
     }
 

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -12,7 +13,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -142,15 +145,41 @@ public class Climber extends SubsystemBase {
             currentPosition = getPosition();
         }
 
+
+        Faults fault = new Faults();
+        PowerDistribution powerDistribution = new PowerDistribution();
+
+        public void polluteLog() {
+            mMotor.getFaults(fault);
+            System.out.println( 
+                                    ",,,," + Timer.getFPGATimestamp() +  
+                                    ","  + mMotor.getBusVoltage() + 
+                                    "," + powerDistribution.getVoltage() + 
+                                    "," + powerDistribution.getCurrent(14) + 
+                                    "," + fault.toString() + 
+                                    "," + mMotor.getClosedLoopError() + 
+                                    "," + mMotor.getMotorOutputPercent() + 
+                                    ","+ mMotor.getMotorOutputVoltage() + 
+                                    "," + mMotor.getSelectedSensorPosition() + 
+                                    "," + mMotor.getSelectedSensorVelocity() + 
+                                    "," + mMotor.getTemperature() + 
+                                    "," + mMotor.getStatorCurrent() +
+                                    "," + mMotor.getSupplyCurrent());
+        }
+
         @Override
         public void initSendable(SendableBuilder builder) {
             super.initSendable(builder);
             builder.addDoubleProperty("Position", this::getPosition, null);
             builder.addDoubleProperty("Velocity", this::getVelocity, null);
+            builder.addDoubleProperty("Current", this::getCurrent, null);
         }
 
         public void setPower(double power) {
             mMotor.set(power);
+        }
+        public double getCurrent() {
+            return mMotor.getStatorCurrent();
         }
 
         public void setPosition(double position, double feedforward) {
@@ -209,6 +238,19 @@ public class Climber extends SubsystemBase {
         addChild("Rotation Motor", mRotator);
         addChild("Left Elevator Release", mLeftElevatorRelease);
         addChild("Right Elevator Release", mRightElevatorRelease);
+        System.out.println( ",,,, Time" + 
+                            ", Bus Voltage" + 
+                            ", PDP Voltage"+
+                            ", PDP Current" +
+                            ", Faults" +
+                            ", Closed Loop Error"  + 
+                            ", Motor Output Percentage" + 
+                            ", Motor Output Voltage"+ 
+                            ", Motor Position" +  
+                            ", Motor Velocity" +  
+                            ", Motor Temperature" + 
+                            ", Stator Current" + 
+                            ", Supply Current");
     }
 
     public static Climber getInstance() {

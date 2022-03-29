@@ -64,6 +64,7 @@ public final class Constants {
             public static final double kHorizontalAngle = -75;
             public static final double kStartingAngle = 63; //
 
+
             public static final double kPositionTolerance = 0.5;
             public static final double kSpeedTolerance = 1;
 
@@ -77,7 +78,9 @@ public final class Constants {
             public static final Double kWiggleConstant = 0.2;
         }
 
-        public static final int kRotationMotorID = 16;
+
+        public static final int kRotationMotorID = 27;
+
         public static final int kLeftElevatorID = 1;
         public static final int kRightElevatorID = 0;
 
@@ -99,7 +102,8 @@ public final class Constants {
         public static final double kRightElevatorReleasePosition = 0.05;
         public static final double kElevatorReleaseWaitTime = 3;
 
-        public static final double kClawMoveConstant = 500;
+
+        public static final double kClawMoveConstant = 690;
 
         public static final double kFirstCGPosition = 70; //
         public static final double kSecondCGPosition = 300; //
@@ -149,8 +153,18 @@ public final class Constants {
         public static final double kTopSpeedTolerance = 50;
         public static final double kBottomSpeedTolerance = 50;
         public static final double kAngleTolerance = 0.1;
+
+        // public static double[][] shooterMappings = {{0, 320.0, 5300.0}, 
+        //                                  {102, 2450.0, 2350.0}, 
+        //                                  {118, 2700.0, 2400.0}, 
+        //                                  {130, 3100.0, 2450.0}, 
+        //                                  {142, 3750.0, 475.0}, 
+        //                                  {154, 4162.0, 487.0}, 
+        //                                  {166, 4255.0, 492.0},
+        //                                  {173, 4600.0, 250.0}
+        //                                 }; 
     }
-    
+
     public static final class Elevator {
         public static final TalonFXConfiguration kElevatorConfig = new TalonFXConfiguration();
         public static final double kDefaultPower = -1;
@@ -221,7 +235,8 @@ public final class Constants {
         // Odometry
         public static final double kTrackWidth = 0.471;
 
-        
+        public static final double kSlewRate = 2;
+        public static final double kPowerOffsetMultiplier = 0.915;
     }
 
     public static class Turret {
@@ -233,6 +248,7 @@ public final class Constants {
         public static final double kTicksPerDegree = 314;
         public static final double kMinTurretDegrees = -110;
         public static final double kMaxTurretDegrees = 125.7;
+
         public static final double kRotationMotorSearchSpeed = 0.6;
 
         public static final double kBackPosition = 34595;
@@ -259,10 +275,12 @@ public final class Constants {
     }
 
     public static class Limelight {
-        public static final double kTargetHeight = 103;
-        public static final double kLimelightHeight = 25;
+
+        public static final double kTargetHeight = 104.5;
+        public static final double kLimelightHeight = 26.5;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 46;
+        public static final double kLimelightAngle = 43.11;
+
         public static final double kTxTolerance = 10;
     }
 
