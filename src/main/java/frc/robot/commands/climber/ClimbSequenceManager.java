@@ -27,10 +27,12 @@ public class ClimbSequenceManager implements Sendable {
         kMid,
         kPreppedHigh,
         kGrabbingHigh,
+        kMissedHigh,
         kMidHigh,
         kHigh,
         kPreppedTraversal,
         kGrabbingTraversal,
+        kMissedTraversal,
         kHighTraversal,
         kTraversal,
     }
@@ -76,10 +78,12 @@ public class ClimbSequenceManager implements Sendable {
         put(ClimbState.kPreppedMid, new Transition(new DriveToMidBar(), ClimbState.kGrabbingMid));
         put(ClimbState.kGrabbingMid, new Transition(new CloseHand(mHandA).withName("Grab Mid Bar"), ClimbState.kMid));
         put(ClimbState.kMid, new Transition(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockUnlockedPositon), ClimbState.kPreppedHigh, true));
-        put(ClimbState.kPreppedHigh, new Transition(new GrabNextBar(mHandB).withName("Grab High Bar"), () -> mHandB.getEngaged() ? ClimbState.kMidHigh : ClimbState.kMid));
+        put(ClimbState.kPreppedHigh, new Transition(new GrabNextBar(mHandB).withName("Grab High Bar"), () -> mHandB.getEngaged() ? ClimbState.kMidHigh : ClimbState.kMissedHigh));
+        put(ClimbState.kMissedHigh, new Transition(new OpenHand(mHandB).withName("Reopen Hand B"), ClimbState.kMid, true));
         put(ClimbState.kMidHigh, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandA).andThen(new PrintCommand("Let go mid done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kHigh));
         put(ClimbState.kHigh, new Transition(new ParallelCommandGroup(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon), new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)), ClimbState.kPreppedTraversal));
-        put(ClimbState.kPreppedTraversal, new Transition(new GrabNextBar(mHandA).withName("Grab Traversal Bar"), () -> mHandA.getEngaged() ? ClimbState.kHighTraversal : ClimbState.kHigh));
+        put(ClimbState.kPreppedTraversal, new Transition(new GrabNextBar(mHandA).withName("Grab Traversal Bar"), () -> mHandA.getEngaged() ? ClimbState.kHighTraversal : ClimbState.kMissedTraversal));
+        put(ClimbState.kMissedTraversal, new Transition(new OpenHand(mHandA).withName("Reopen Hand A"), ClimbState.kHigh, true));
         put(ClimbState.kHighTraversal, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandB).andThen(new PrintCommand("Let go high done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kTraversal));
     }};
     private ClimbState mCurrentState = ClimbState.kStarting;
