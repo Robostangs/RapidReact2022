@@ -7,12 +7,10 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.climber.ClimbSequenceManager.ClimbState;
 import frc.robot.subsystems.Climber;
 
 public class ClimbPrep extends ParallelCommandGroup {
     private final Climber mClimber = Climber.getInstance();
-    private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
 
     private final class PrepHand extends SequentialCommandGroup {
         private final Climber.Hand mHand;
@@ -21,8 +19,14 @@ public class ClimbPrep extends ParallelCommandGroup {
             mHand = hand;
             addCommands(
                 new PrintCommand("Running PrepHand"),
-                new CallibrateHand(hand),
-                new SetHandLockPosition(hand, Constants.Climber.Hand.kClawLockLockedPositon),
+                new ConditionalCommand(
+                    new CallibrateHand(mHand, Constants.Climber.Hand.kClawCallibrationSpeed),
+                    new InstantCommand(),
+                    () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
+                new CloseHand(mHand),
+                new SetHandLockPosition(mHand, Constants.Climber.Hand.kClawLockLockedPositon),
+                new WaitCommand(0.5),
+                new OpenHand(mHand),
                 new PrintCommand("Finished PrepHand"));
         }
     }
@@ -31,8 +35,7 @@ public class ClimbPrep extends ParallelCommandGroup {
         addRequirements(mClimber);
         final Climber.Hand[] hands = mClimber.getHands();
         addCommands(
-            new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle)
-                .andThen(new InstantCommand(() -> mSequenceManager.setState(ClimbState.kHorizontal))),
+            new RotateToPosition(Constants.Climber.Rotator.kHorizontalAngle),
             new SequentialCommandGroup(
                 new WaitCommand(Constants.Climber.kWaitBeforePrep),
                 new ParallelCommandGroup(
@@ -41,10 +44,16 @@ public class ClimbPrep extends ParallelCommandGroup {
     }
 
     @Override
+    public void initialize() {
+        super.initialize();
+        mClimber.setState(Climber.State.kPriming);
+    }
+
+    @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
         if(!interrupted) {
-            mSequenceManager.setState(ClimbSequenceManager.ClimbState.kCallibrated);
+            mClimber.setState(Climber.State.kPrimed);
         }
     }
 }
