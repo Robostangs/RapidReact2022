@@ -7,11 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.ClimbPrep;
+import frc.robot.commands.climber.ClimbSequenceManager;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.ArcadeDrive;
@@ -38,6 +40,7 @@ public class RobotContainer {
     private final Feeder mFeeder = Feeder.getInstance();
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
+    private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
 
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -66,10 +69,12 @@ public class RobotContainer {
             .whenReleased(new PrintCommand("Driver A Released"));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
+            .whenPressed(mSequenceManager::proceed)
             .whenPressed(new PrintCommand("Manip Lbumper Presed"))
             .whenReleased(new PrintCommand("Manip Lbumper Released"));
 
         new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
+            .whenPressed(mSequenceManager::interrupt)
             .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
             .whenPressed(new PrintCommand("Manip Rbumper Released"));
 
@@ -104,6 +109,7 @@ public class RobotContainer {
         // new JoystickButton(manip, XboxController.Button.kB.value)
         //     .whenPressed(new AutoShoot(4800, 2500, 0))
         //     .whenInactive(() -> {new SetVariableShooterState(0, 0); new SetElevatorPower(0);});
+        mSequenceManager.setWiggleSupplier(mManip::getLeftY);
     }
 
     /**

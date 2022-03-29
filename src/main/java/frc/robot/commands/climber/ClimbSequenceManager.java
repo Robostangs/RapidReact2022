@@ -55,7 +55,7 @@ public class ClimbSequenceManager implements Sendable {
         public Transition(CommandBase behavior, Supplier<ClimbState> determineNextState) {
             this(behavior, determineNextState, false);
         }
-        
+
         private Transition(CommandBase behavior, ClimbState nextState) {
             this(behavior, nextState, false);
         }
@@ -69,7 +69,7 @@ public class ClimbSequenceManager implements Sendable {
     {
         var hands = Climber.getInstance().getHands();
         mHandA = hands[0];
-        mHandB = hands[0];
+        mHandB = hands[1];
     }
     private final Map<ClimbState, Transition> mTransitions = new HashMap<ClimbState, Transition>() {{
         put(ClimbState.kStarting, new Transition(new ClimbPrep(), ClimbState.kCallibrated));
@@ -81,19 +81,20 @@ public class ClimbSequenceManager implements Sendable {
         put(ClimbState.kPreppedHigh, new Transition(new GrabNextBar(mHandB).withName("Grab High Bar"), () -> mHandB.getEngaged() ? ClimbState.kMidHigh : ClimbState.kMissedHigh));
         put(ClimbState.kMissedHigh, new Transition(new OpenHand(mHandB).withName("Reopen Hand B"), ClimbState.kMid, true));
         put(ClimbState.kMidHigh, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandA).andThen(new PrintCommand("Let go mid done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kHigh));
-        put(ClimbState.kHigh, new Transition(new ParallelCommandGroup(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon), new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)), ClimbState.kPreppedTraversal));
+        put(ClimbState.kHigh, new Transition(new ParallelCommandGroup(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon), new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)).withName("Prepare lock positions"), ClimbState.kPreppedTraversal));
         put(ClimbState.kPreppedTraversal, new Transition(new GrabNextBar(mHandA).withName("Grab Traversal Bar"), () -> mHandA.getEngaged() ? ClimbState.kHighTraversal : ClimbState.kMissedTraversal));
         put(ClimbState.kMissedTraversal, new Transition(new OpenHand(mHandA).withName("Reopen Hand A"), ClimbState.kHigh, true));
         put(ClimbState.kHighTraversal, new Transition(new ParallelDeadlineGroup(new OpenHand(mHandB).andThen(new PrintCommand("Let go high done")), new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, mWiggleSupplier)), ClimbState.kTraversal));
     }};
     private ClimbState mCurrentState = ClimbState.kStarting;
-    private Transition mCurrentTransition;
+    private Transition mCurrentTransition = mTransitions.get(mCurrentState);
     private Supplier<Double> mWiggleSupplier;
 
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addStringProperty("ClimbSequence State", () -> mCurrentState.toString(), null);
         builder.addStringProperty("ClimbSequence Command", () -> mCurrentTransition != null ? mCurrentTransition.behavior.getName() : "", null);
+        builder.addBooleanProperty("ClimbSequence Command Active", this::isCurrentBehaviorScheduled, null);
     }
 
     public static ClimbSequenceManager getInstance() {
@@ -118,9 +119,13 @@ public class ClimbSequenceManager implements Sendable {
         mWiggleSupplier = wiggleSupplier;
     }
 
+    private boolean isCurrentBehaviorScheduled() {
+        return mCurrentTransition != null && mCurrentTransition.behavior != null && mCommandScheduler.isScheduled(mCurrentTransition.behavior);
+    }
+
     public void proceed() {
-        if(mCommandScheduler.requiring(mClimber) != null) {
-            interrupt();
+        if (!isCurrentBehaviorScheduled()) {
+            mCurrentTransition.behavior.schedule();
         }
     }
 
