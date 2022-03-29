@@ -166,11 +166,13 @@ public final class Constants {
         public static final int kLightColorShooterID = 2;
 
         public static final TalonFXConfiguration kBeltConfig = new TalonFXConfiguration();
+        public static final double kInDebounceTime = 0.1;
+        public static final double kOutDebounceTime = 0.5;
         static {
             kBeltConfig.neutralDeadband = 0.001;
         }
 
-        public static final double kSlowBeltSpeed = -0.3;
+        public static final double kBeltSpeed = -0.3;
     }
 
     public static final class IntakeConstants {
