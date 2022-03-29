@@ -232,11 +232,30 @@ public final class Constants {
             kRightMotorsConfig.slot0.kD = 0;
         }
 
+        public static class CustomDeadzone {
+
+            public static final double kLowerLimitExpFunc = 0.1;
+            public static final double kUpperLimitExpFunc = 0.5;
+            public static final double kUpperLimitLinFunc = 1;
+
+            public static final double kExpFuncConstant = 0.3218;
+            public static final double kExpFuncBase = 12.5;
+            public static final double kExpFuncMult = 0.25;
+
+            public static final double kLinFuncMult = 0.876;
+            public static final double kLinFuncOffset = 0.5;
+            public static final double kLinFuncConstant = 0.562;
+
+            public static final double kNoSpeed = 0;
+
+        }
+
         // Odometry
         public static final double kTrackWidth = 0.471;
 
         public static final double kSlewRate = 2;
         public static final double kPowerOffsetMultiplier = 0.915;
+        public static final double kTurningMultiplier = -0.8;
     }
 
     public static class Turret {

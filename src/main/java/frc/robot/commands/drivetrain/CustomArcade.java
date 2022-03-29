@@ -3,9 +3,6 @@ package frc.robot.commands.drivetrain;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -32,17 +29,17 @@ public class CustomArcade extends CommandBase {
     @Override
     public void execute() {
        double forward = limiter.calculate(customDeadzone(mForwardSupplier.get()));
-       double turn = -0.8 * Utils.deadzone(mTurnSupplier.get(), 2);
+       double turn = Constants.Drivetrain.kTurningMultiplier * Utils.deadzone(mTurnSupplier.get(), 2);
        mDrivetrain.drivePower((forward - turn) * Constants.Drivetrain.kPowerOffsetMultiplier, -(forward + turn));
     }
 
     public static double customDeadzone(double input) {
-        if(Math.abs(input) >= 0.1 && Math.abs(input) < 0.5) {
-            return Math.signum(input) * ((0.25) * Math.pow((12.5), Math.abs(input)) - 0.3218); 
-        } else if(Math.abs(input) >= 0.5 && Math.abs(input) <= 1) {
-            return Math.signum(input) * ((0.876) * (Math.abs(input) - 0.5) + (0.562));
+        if(Math.abs(input) >= Constants.Drivetrain.CustomDeadzone.kLowerLimitExpFunc && Math.abs(input) < Constants.Drivetrain.CustomDeadzone.kUpperLimitExpFunc) {
+            return Math.signum(input) * ((Constants.Drivetrain.CustomDeadzone.kExpFuncMult) * Math.pow((Constants.Drivetrain.CustomDeadzone.kExpFuncBase), Math.abs(input)) - Constants.Drivetrain.CustomDeadzone.kExpFuncConstant); 
+        } else if(Math.abs(input) >= Constants.Drivetrain.CustomDeadzone.kUpperLimitExpFunc && Math.abs(input) <= Constants.Drivetrain.CustomDeadzone.kUpperLimitLinFunc) {
+            return Math.signum(input) * ((Constants.Drivetrain.CustomDeadzone.kLinFuncMult) * (Math.abs(input) - Constants.Drivetrain.CustomDeadzone.kLinFuncOffset) + (Constants.Drivetrain.CustomDeadzone.kLinFuncConstant));
         }
-        return 0;
+        return Constants.Drivetrain.CustomDeadzone.kNoSpeed;
     }
 
     @Override
