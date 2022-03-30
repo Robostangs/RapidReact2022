@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -45,7 +44,6 @@ public class ClimbSequenceManager implements Sendable {
         private CommandBase behavior;
         private Supplier<ClimbState> determineNextState;
         private boolean autoSchedule = false;
-        private boolean interruptable = false;
 
         public Transition(CommandBase behavior, Supplier<ClimbState> determineNextState, boolean autoSchedule) {
             this.behavior = behavior;
