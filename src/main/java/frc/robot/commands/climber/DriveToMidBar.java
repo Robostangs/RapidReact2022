@@ -22,8 +22,7 @@ public class DriveToMidBar extends CommandBase {
 
     @Override
     public void initialize() {
-        mDrivetrain.drivePower(mDriveSpeed, -mDriveSpeed); 
-        
+        mDrivetrain.drivePower(Constants.Drivetrain.kPowerOffsetMultiplier * mDriveSpeed, -mDriveSpeed); 
     }
 
     @Override
