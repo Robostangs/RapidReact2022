@@ -43,7 +43,6 @@ public class FiveBallAuto extends SequentialCommandGroup {
                     new WaitCommand(1)),
                 new PrimeShooting());
         } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
         }
     }

@@ -86,11 +86,4 @@ public class AutoClimb extends SequentialCommandGroup {
         //mClimber.getRotator().polluteLog();
         super.execute();
     }
-
-    @Override
-    public boolean isFinished() {
-        // TODO Auto-generated method stub
-        return super.isFinished();
-
-    }
 }
