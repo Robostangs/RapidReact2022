@@ -96,6 +96,7 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Rtrigger Released"));
 
+        // TODO: Change climber controls 
         new JoystickButton(mManip, XboxController.Button.kY.value)
             .whenPressed(new PrintCommand("Manip Y Pressed"))
             .whenPressed(new PrintCommand("Manip Y Released"));
