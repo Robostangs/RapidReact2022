@@ -22,7 +22,8 @@ public class DriveToMidBar extends CommandBase {
 
     @Override
     public void initialize() {
-        mDrivetrain.drivePower(mDriveSpeed, -mDriveSpeed); //XXX TODO FIXME: Why is right not reversed???
+        mDrivetrain.drivePower(mDriveSpeed, -mDriveSpeed); 
+        
     }
 
     @Override

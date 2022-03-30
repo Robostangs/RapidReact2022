@@ -22,4 +22,10 @@ public class TankDrive extends CommandBase{
         mDrivetrain.drivePower(mLeftSpeed.get(), mRightSpeed.get());
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        mDrivetrain.drivePower(0, 0);
+        super.end(interrupted);
+    }
+
 }

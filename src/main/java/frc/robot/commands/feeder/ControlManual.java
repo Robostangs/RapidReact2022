@@ -20,4 +20,10 @@ public class ControlManual extends CommandBase {
     public void execute() {
         mFeeder.moveBelt(mPowerSupplier.get());
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        mFeeder.moveBelt(0);
+        super.end(interrupted);
+    }
 }

@@ -1,19 +1,15 @@
 package frc.robot.test.drivetrain;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.ShooterMappings;
-import frc.robot.Constants.Turret;
 import frc.robot.commands.AddSmartdashboard;
 import frc.robot.commands.climber.ClimbPrep;
 import frc.robot.commands.climber.ReleaseElevator;
@@ -25,15 +21,38 @@ import frc.robot.commands.shooter.SetShooterState;
 import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.Search;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 
 public class PITTest extends SequentialCommandGroup {
     PowerDistribution pdp = new PowerDistribution();
+    boolean ran = false;
 
 
     public PITTest() {
+        this.addRequirements(Drivetrain.getInstance(), Turret.getInstance(), Feeder.getInstance(), Shooter.getInstance(), Intake.getInstance());
+        setName("PIT Test");
         SmartDashboard.putString("PIT Test", "Test Starting");
+    
+        this.addCommands(
+            new TankDrive(()-> Constants.PitTest.dtVelo, () -> 0.0).withTimeout(1).beforeStarting(new AddSmartdashboard("LeftDt")),
+            new TankDrive(()-> 0.0, () -> Constants.PitTest.dtVelo).withTimeout(1).beforeStarting(new AddSmartdashboard("RightDt")),
+
+            new Active().withTimeout(1).beforeStarting(new AddSmartdashboard("Intake")),
+            new ControlManual(() -> Constants.Feeder.kSlowBeltSpeed).withTimeout(1).beforeStarting(new AddSmartdashboard("Feeder Belts")),
+            new RunElevator().withTimeout(1).beforeStarting(new AddSmartdashboard("Feeder Wheels (Elevator)")),
+
+            new SetShooterState(ShooterMappings.getShooterState(0)).withTimeout(1.5).beforeStarting(new AddSmartdashboard("Shooter")),
+            new Search().withTimeout(1).beforeStarting(new AddSmartdashboard("Turret")).andThen(new Protect().withTimeout(1)),
+
+            new ReleaseElevator().withTimeout(2).beforeStarting(new AddSmartdashboard("Climber Elevator")),
+            new ClimbPrep().withTimeout(5).beforeStarting(new AddSmartdashboard("Climber Rotate and Claws")),
+            new AddSmartdashboard("Test Complete"),
+            new InstantCommand(() -> {ran = true;})
+        );
+        
     }
 
     @Override
@@ -53,62 +72,9 @@ public class PITTest extends SequentialCommandGroup {
         builder.addDoubleProperty("Top Shooter Error", () -> Shooter.getInstance().topShooterError(), null);
         builder.addDoubleProperty("Bottom Shooter Error", () -> Shooter.getInstance().bottomShooterError(), null);
         super.initSendable(builder);
+    } 
+
+    public boolean didRun() {
+        return ran;
     }
-
-    @Override
-    public void initialize() {
-        this.addCommands(
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new TankDrive(()-> Constants.PitTest.dtVelo, () -> 0.0)
-            ).beforeStarting(new AddSmartdashboard("LeftDt")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new TankDrive(()-> 0.0, () -> Constants.PitTest.dtVelo)
-            ).beforeStarting(new AddSmartdashboard("RightDt")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new Active()
-            ).beforeStarting(new AddSmartdashboard("Intake")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new ControlManual(() -> Constants.Feeder.kSlowBeltSpeed)
-            ).beforeStarting(new AddSmartdashboard("Feeder Belts")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new RunElevator()
-            ).beforeStarting(new AddSmartdashboard("Feeder Wheels (Elevator)")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new SetShooterState(ShooterMappings.getShooterState(0))
-            ).beforeStarting(new AddSmartdashboard("Shooter")),
-
-            new ParallelDeadlineGroup(
-                new WaitCommand(1), 
-                new Search()
-            ).beforeStarting(new AddSmartdashboard("Turret")).andThen(new Protect()),
-
-            new ClimbPrep().beforeStarting(new AddSmartdashboard("Climber Rotate and Claws")),
-            new WaitCommand(5),
-            new ReleaseElevator().beforeStarting(new AddSmartdashboard("Climber Elevator"))
-        );
-    }
-
-    @Override
-    public void execute() {
-        super.execute();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        SmartDashboard.putString("PIT Test", "Test Complete");
-        super.end(interrupted);
-    }
-
-    
 }

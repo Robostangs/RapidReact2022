@@ -4,13 +4,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class AddSmartdashboard extends InstantCommand{
-
-    public AddSmartdashboard(String name, String value) {
-        SmartDashboard.putString(name, value);
-    }
+    private String mName;
 
     public AddSmartdashboard(String name) {
-        SmartDashboard.putString("PIT Test", name);
+        mName = name;
     }
+
+    @Override
+    public void initialize() {
+        SmartDashboard.putString("PIT Test", mName);
+        super.initialize();
+    }
+
     
 }

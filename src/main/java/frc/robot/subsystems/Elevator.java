@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
     private static Elevator instance;
-    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.elevatorMotorID);
+    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.kElevatorMotorID);
     private final ColorSensorV3 mColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
     enum cargoColor {
