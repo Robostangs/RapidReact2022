@@ -19,7 +19,7 @@ import frc.robot.commands.turret.Protect;
 import frc.robot.subsystems.Climber;
 
 public class ClimbSequenceManager implements Sendable {
-    enum ClimbState {
+    public enum ClimbState {
         kStarting,
         kCallibrated,
         kTall,
@@ -129,6 +129,10 @@ public class ClimbSequenceManager implements Sendable {
 
     public void setGrabbedBarSupplier(Supplier<Boolean> grabbedBarSupplier) {
         mGrabbedBarSupplier = grabbedBarSupplier;
+    }
+
+    public ClimbState getState() {
+        return mCurrentState;
     }
 
     private boolean isCurrentBehaviorScheduled() {

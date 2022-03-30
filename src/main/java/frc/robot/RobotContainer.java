@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -65,15 +71,40 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Driver A Pressed"))
             .whenReleased(new PrintCommand("Driver A Released"));
 
-        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(mSequenceManager::proceed)
-            .whenPressed(new PrintCommand("Manip Lbumper Presed"))
-            .whenReleased(new PrintCommand("Manip Lbumper Released"));
+        final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
+            ClimbSequenceManager.ClimbState.kStarting,
+            ClimbSequenceManager.ClimbState.kCallibrated));
 
-        new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(mSequenceManager::interrupt)
-            .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
-            .whenPressed(new PrintCommand("Manip Rbumper Released"));
+        new Button(new JoystickButton(mManip, XboxController.Button.kLeftBumper.value).and(new JoystickButton(mManip, XboxController.Button.kRightBumper.value)))
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> keyStates.contains(mSequenceManager.getState())))
+            .whenPressed(new PrintCommand("Manip both bumpers Pressed"))
+            .whenReleased(new PrintCommand("Manip both bumpers Released"));
+
+        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> !keyStates.contains(mSequenceManager.getState())))
+                .whenPressed(new PrintCommand("Manip Lbumper Pressed"))
+                .whenReleased(new PrintCommand("Manip Lbumper Released"));
+
+        new JoystickButton(mManip, XboxController.Button.kY.value)
+            .whenPressed(new PrintCommand("Manip Y Pressed"))
+            .whenPressed(new PrintCommand("Manip Y Released"));
+
+        new JoystickButton(mManip, XboxController.Button.kX.value)
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> !keyStates.contains(mSequenceManager.getState())))
+            .whenPressed(new PrintCommand("Manip X Pressed"))
+            .whenPressed(new PrintCommand("Manip X Released"));
+
+        mSequenceManager.setWiggleSupplier(mManip::getLeftY);
+        mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
 
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
@@ -94,21 +125,6 @@ public class RobotContainer {
                 .andThen(new Protect()))
             .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Rtrigger Released"));
-
-        // TODO: Change climber controls 
-        new JoystickButton(mManip, XboxController.Button.kY.value)
-            .whenPressed(new PrintCommand("Manip Y Pressed"))
-            .whenPressed(new PrintCommand("Manip Y Released"));
-
-        new JoystickButton(mManip, XboxController.Button.kX.value)
-            .whenPressed(new PrintCommand("Manip X Pressed"))
-            .whenPressed(new PrintCommand("Manip X Released"));
-
-        // new JoystickButton(manip, XboxController.Button.kB.value)
-        //     .whenPressed(new AutoShoot(4800, 2500, 0))
-        //     .whenInactive(() -> {new SetVariableShooterState(0, 0); new SetElevatorPower(0);});
-        mSequenceManager.setWiggleSupplier(mManip::getLeftY);
-        mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
     }
 
     /**
