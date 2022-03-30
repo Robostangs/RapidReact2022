@@ -31,7 +31,6 @@ import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,7 +43,6 @@ public class RobotContainer {
     // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
     private final Feeder mFeeder = Feeder.getInstance();
-    private final Turret mTurret = Turret.getInstance();
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
     private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
