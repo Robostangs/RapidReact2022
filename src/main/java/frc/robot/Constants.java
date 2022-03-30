@@ -173,7 +173,7 @@ public final class Constants {
 
     public static final class Feeder {
         public static final int kBeltMotorID = 4;
-        public static final int elevatorMotorID = 5;
+        public static final int kElevatorMotorID = 5;
         public static final int kDarkColorIntakeID = 1;
         public static final int kLightColorIntakeID = 0;
         public static final int kDarkColorShooterID = 3;
@@ -301,6 +301,11 @@ public final class Constants {
         public static final double kLimelightAngle = 43.11;
 
         public static final double kTxTolerance = 10;
+    }
+
+    public static class PitTest {
+        public static final double dtVelo = 0.4;
+        
     }
 
     public static final double kMaxVoltage = 12;

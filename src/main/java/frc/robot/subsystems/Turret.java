@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -55,11 +57,13 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (mMotor.hasResetOccurred()) {
-            mIsHomed = false;
-        }
-        if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
-            mGoHomeCommand.schedule(false);
+        if(RobotBase.isReal()) {
+            if (mMotor.hasResetOccurred()) {
+                mIsHomed = false;
+            }
+            if (!mIsHomed && !mGoHomeCommand.isScheduled()) {
+                mGoHomeCommand.schedule(false);
+            }
         }
     }
 
@@ -93,6 +97,10 @@ public class Turret extends SubsystemBase {
 
     public double getAngularVelocity() {
         return speedRawToAnguar(getRawVelocity());
+    }
+
+    public double getError() {
+        return mMotor.getClosedLoopError();
     }
 
     private void setRawSetpoint(double position, double feedforward) {
