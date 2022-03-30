@@ -108,6 +108,7 @@ public class RobotContainer {
         //     .whenPressed(new AutoShoot(4800, 2500, 0))
         //     .whenInactive(() -> {new SetVariableShooterState(0, 0); new SetElevatorPower(0);});
         mSequenceManager.setWiggleSupplier(mManip::getLeftY);
+        mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
     }
 
     /**
