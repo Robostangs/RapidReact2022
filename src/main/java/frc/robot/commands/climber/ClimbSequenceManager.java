@@ -85,7 +85,7 @@ public class ClimbSequenceManager implements Sendable {
         put(ClimbState.kMissedHigh, new Transition(new OpenHand(mHandB).withName("Reopen Hand B"), ClimbState.kMid, true));
         put(ClimbState.kMidHigh, new Transition(new OpenHand(mHandA).deadlineWith(new RotateWithWiggle(Constants.Climber.Rotator.kCGHoldSpeed, () -> mWiggleSupplier.get())).withName("Let go mid"), ClimbState.kHigh, true));
         put(ClimbState.kHigh, new Transition(new SetHandLockPosition(mHandA, Constants.Climber.Hand.kClawLockLockedPositon).alongWith(new SetHandLockPosition(mHandB, Constants.Climber.Hand.kClawLockUnlockedPositon)).andThen(mRotator::setNeutralModeCoast).withName("Prepare lock positions"), ClimbState.kPreppedTraversal));
-        put(ClimbState.kPreppedTraversal, new Transition(new InstantCommand(mRotator::setNeutralModeBrake).andThen(new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed).withInterrupt(() -> (mHandB.getEngaged()))).withName("Grab Traversal Bar"), ClimbState.kHitTraversal));
+        put(ClimbState.kPreppedTraversal, new Transition(new InstantCommand(mRotator::setNeutralModeBrake).andThen(new Rotate(Constants.Climber.Rotator.kClimbRotationSpeed).withInterrupt(() -> (mHandA.getEngaged()))).withName("Grab Traversal Bar"), ClimbState.kHitTraversal));
         put(ClimbState.kHitTraversal, new Transition(new CloseHand(mHandA).deadlineWith(new Rotate(Constants.Climber.Rotator.kClimbHoldSpeed)), ClimbState.kUnknownTraversal, true));
         put(ClimbState.kUnknownTraversal, new Transition(new InstantCommand(), () -> mGrabbedBarSupplier.get() ? ClimbState.kHighTraversal : ClimbState.kMissedTraversal));
         put(ClimbState.kMissedTraversal, new Transition(new OpenHand(mHandA).withName("Reopen Hand A"), ClimbState.kHigh, true));
