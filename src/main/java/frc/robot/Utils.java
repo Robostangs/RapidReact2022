@@ -3,8 +3,6 @@ package frc.robot;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 public final class Utils {
     public static double saturate(double input, double min, double max) {
         return Math.min(Math.max(input, min), max);
@@ -77,10 +75,5 @@ public final class Utils {
 
     public static double round(double a, int roundAmount) {
         return BigDecimal.valueOf(a).setScale(roundAmount, RoundingMode.HALF_UP).doubleValue();
-    }
-
-    public static CommandBase setName(CommandBase command, String name) {
-        command.setName(name);
-        return command;
     }
 }

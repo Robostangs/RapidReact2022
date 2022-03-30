@@ -1,30 +1,16 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class OpenHand extends CommandBase {
-    protected final HandHolder mHandContainer;
     protected Climber.Hand mHand;
     protected final double mSpeed;
-
-    public OpenHand(HandHolder handContainer, double speed) {
-        addRequirements(Climber.getInstance());
-        setName("Open Hand");
-        mHandContainer = handContainer;
-        mSpeed = speed;
-    }
-
-    public OpenHand(HandHolder hand) {
-        this(hand, Constants.Climber.Hand.kClawDefaultOpenSpeed);
-    }
 
     public OpenHand(Climber.Hand hand, double speed) {
         addRequirements(hand);
         setName("Open Hand");
-        mHandContainer = null;
         mHand = hand;
         mSpeed = speed;
     }
@@ -35,14 +21,6 @@ public class OpenHand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (mHandContainer != null) {
-            mHand = mHandContainer.hand;
-        }
-        new WaitCommand(1);
-    }
-
-    @Override
-    public void execute() {
         mHand.setClawSpeed(mSpeed);
     }
 

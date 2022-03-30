@@ -5,15 +5,20 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.climber.AutoClimb;
-import frc.robot.commands.climber.ClimbPrep;
+import frc.robot.commands.climber.ClimbSequenceManager;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.CustomArcade;
@@ -42,6 +47,7 @@ public class RobotContainer {
     private final Turret mTurret = Turret.getInstance();
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
+    private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
 
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -59,13 +65,14 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() { 
-        
+        // DEFAULT COMMANDS
         mDrivetrain.setDefaultCommand(
             new CustomArcade(
-                mDriver::getLeftX,
-                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis()));
+                () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
+                mDriver::getLeftX));
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
+        // DRIVER CONTROLS
         new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whileHeld(new Active())
             .whenPressed(new PrintCommand("Driver A Pressed"))
@@ -76,17 +83,7 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Driver Y Pressed"))
             .whenReleased(new PrintCommand("Driver Y Released"));
 
-        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new ClimbPrep())
-            .whenPressed(new PrintCommand("Manip Lbumper Presed"))
-            .whenReleased(new PrintCommand("Manip Lbumper Released"));
-
-        new JoystickButton(mManip, XboxController.Button.kRightBumper.value)
-            .whenPressed(new AutoClimb(mManip::getLeftY, mManip::getYButton))
-            .whenPressed(new PrintCommand("Manip Rbumper Pressed"))
-            .whenPressed(new PrintCommand("Manip Rbumper Released"));
-
-        // new JoystickButton(mManip, XboxCo7
+        // MANIP CONTROLS
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect())
@@ -97,7 +94,7 @@ public class RobotContainer {
             .whileHeld(new RunElevator())
             .whenPressed(new PrintCommand("Manip A Pressed"))
             .whenReleased(new PrintCommand("Manip A Released"));
-            
+
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new ParallelCommandGroup(
@@ -106,18 +103,42 @@ public class RobotContainer {
                 .andThen(new Protect()))
             .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Rtrigger Released"));
-        
+
+        // MANIP CLIMBER CONTROLS
+        final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
+            ClimbSequenceManager.ClimbState.kStarting,
+            ClimbSequenceManager.ClimbState.kCallibrated));
+
+        new Button(new JoystickButton(mManip, XboxController.Button.kLeftBumper.value).and(new JoystickButton(mManip, XboxController.Button.kRightBumper.value)))
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> keyStates.contains(mSequenceManager.getState())))
+            .whenPressed(new PrintCommand("Manip both bumpers Pressed"))
+            .whenReleased(new PrintCommand("Manip both bumpers Released"));
+
+        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> !keyStates.contains(mSequenceManager.getState())))
+            .whenPressed(new PrintCommand("Manip Lbumper Pressed"))
+            .whenReleased(new PrintCommand("Manip Lbumper Released"));
+
         new JoystickButton(mManip, XboxController.Button.kY.value)
             .whenPressed(new PrintCommand("Manip Y Pressed"))
             .whenPressed(new PrintCommand("Manip Y Released"));
 
         new JoystickButton(mManip, XboxController.Button.kX.value)
+            .whenPressed(new ConditionalCommand(
+                new InstantCommand(mSequenceManager::proceed),
+                new InstantCommand(),
+                () -> !keyStates.contains(mSequenceManager.getState())))
             .whenPressed(new PrintCommand("Manip X Pressed"))
             .whenPressed(new PrintCommand("Manip X Released"));
 
-        // new JoystickButton(manip, XboxController.Button.kB.value)
-        //     .whenPressed(new AutoShoot(4800, 2500, 0))
-        //     .whenInactive(() -> {new SetVariableShooterState(0, 0); new SetElevatorPower(0);});
+        mSequenceManager.setWiggleSupplier(mManip::getLeftY);
+        mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
     }
 
     /**
@@ -125,13 +146,9 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-  
+
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return new SimpleAuto();
-    }
-
-    public static boolean getClimbProceed() {
-        return mManip.getXButton();
     }
 }

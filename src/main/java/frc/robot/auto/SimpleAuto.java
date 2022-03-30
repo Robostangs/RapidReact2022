@@ -1,17 +1,13 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.elevator.RunElevator;
-import frc.robot.commands.feeder.MoveUp1Ball;
 import frc.robot.commands.intake.Active;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 

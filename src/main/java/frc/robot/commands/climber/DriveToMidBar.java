@@ -28,7 +28,7 @@ public class DriveToMidBar extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return mClimber.getInclusiveEngaged();
+        return mClimber.getHands()[0].getEngaged();
     }
 
     @Override

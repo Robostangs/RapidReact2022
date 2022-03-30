@@ -73,6 +73,7 @@ public class Drivetrain extends SubsystemBase {
 
         mRightTop.configFactoryDefault();
         mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
+
         resetEncoder();
 
         SmartDashboard.putData("Field", mField);

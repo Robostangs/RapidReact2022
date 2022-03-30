@@ -1,7 +1,5 @@
 package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -13,20 +11,11 @@ public class ClimbPrep extends ParallelCommandGroup {
     private final Climber mClimber = Climber.getInstance();
 
     private final class PrepHand extends SequentialCommandGroup {
-        private final Climber.Hand mHand;
-
         private PrepHand(Climber.Hand hand) {
-            mHand = hand;
             addCommands(
                 new PrintCommand("Running PrepHand"),
-                new ConditionalCommand(
-                    new CallibrateHand(mHand, Constants.Climber.Hand.kClawCallibrationSpeed),
-                    new InstantCommand(),
-                    () -> mHand.getCallibrationStatus() != Climber.HandCallibrationStatus.kCalibrated),
-                new CloseHand(mHand),
-                new SetHandLockPosition(mHand, Constants.Climber.Hand.kClawLockLockedPositon),
-                new WaitCommand(0.5),
-                new OpenHand(mHand),
+                new CallibrateHand(hand),
+                new SetHandLockPosition(hand, Constants.Climber.Hand.kClawLockLockedPositon),
                 new PrintCommand("Finished PrepHand"));
         }
     }
@@ -42,19 +31,5 @@ public class ClimbPrep extends ParallelCommandGroup {
                 new ParallelCommandGroup(
                     new PrepHand(hands[0]),
                     new PrepHand(hands[1]))));
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
-        mClimber.setState(Climber.State.kPriming);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
-        if(!interrupted) {
-            mClimber.setState(Climber.State.kPrimed);
-        }
     }
 }
