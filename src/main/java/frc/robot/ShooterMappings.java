@@ -20,15 +20,14 @@ public class ShooterMappings {
     static {
         kShooterStates = new HashMap<Double, Shooter.State>();
         // addEntry(0, 320.0, 5300.0);
-        addEntry(0, 1000, 1000); 
+        addEntry(0, 1000, 1000);
         addEntry(102, 2450.0, 2350.0);
         addEntry(118, 2700.0, 2400.0);
         addEntry(130, 3100, 2450);
         addEntry(142, 3750.0, 475.0);
         addEntry(154, 4162.0, 487.0);
-
-        addEntry(166, 4255.0, 492.0);        
-        addEntry(173, 4600.0, 250.0); 
+        addEntry(166, 4255.0, 492.0);
+        addEntry(173, 4600.0, 250.0);
     };
     private static final ArrayList<Double> kDistances = new ArrayList<Double>();
     static {

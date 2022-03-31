@@ -40,7 +40,7 @@ public final class Constants {
             public static final int kLockBID = 3;
 
             //TODO: SAKET CHANGED BECAUSE DAN TOLD HIM TO, was 70
-            public static final int kClawForwardSoftLimit = 65;
+            public static final int kClawForwardSoftLimit = 67;
             public static final void configClawMotor(CANSparkMax clawMotor) {
                 clawMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(true);
                 clawMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
