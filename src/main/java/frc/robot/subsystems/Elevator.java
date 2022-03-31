@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import frc.LoggyThings.*;
 // import com.revrobotics.ColorSensorV3;
 
 // import edu.wpi.first.wpilibj.I2C;
@@ -9,7 +10,7 @@ import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
     private static Elevator instance;
-    private final WPI_TalonFX mElevator = new WPI_TalonFX(Constants.Feeder.kElevatorMotorID);
+    private final LoggyWPI_TalonFX mElevator = new LoggyWPI_TalonFX(Constants.Feeder.kElevatorMotorID, "/Feeder/Elevator/");
     // private final ColorSensorV3 mColorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
     // enum cargoColor {
