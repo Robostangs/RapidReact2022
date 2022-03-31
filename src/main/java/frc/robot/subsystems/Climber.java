@@ -26,7 +26,6 @@ public class Climber extends SubsystemBase {
         private final SparkMaxLimitSwitch mEngagementSwitch;
         private final SparkMaxLimitSwitch mOpenLimit;
         private final Debouncer mLimitDebouncer = new Debouncer(Constants.Climber.Hand.kLimitDebounceTime);
-        private final Debouncer mLongLimitDebouncer = new Debouncer(Constants.Climber.Hand.kLongLimitDebounceTime);
         private final Servo mLock;
         private double mSetpoint;
 
@@ -98,10 +97,6 @@ public class Climber extends SubsystemBase {
 
         public boolean isFullyOpen() {
             return mLimitDebouncer.calculate(mOpenLimit.isPressed());
-        }
-
-        public boolean isLongFullyOpen() {
-            return mLongLimitDebouncer.calculate(mOpenLimit.isPressed());
         }
     }
 

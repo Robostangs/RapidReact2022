@@ -1,6 +1,5 @@
 package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
@@ -27,11 +26,6 @@ public class OpenHand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (mHand.isLongFullyOpen()) {
-            mHand.zeroClawEncoder();
-            DataLogManager.log("Normal opening recallibrating");
-            return true;
-        }
         return mHand.getClawPosition() <= 5;
     }
 
