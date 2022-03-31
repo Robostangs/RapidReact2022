@@ -152,7 +152,7 @@ public class ClimbSequenceManager implements Sendable {
     public void proceed() {
         if (SmartDashboard.getString("Reset Climber State?", "No").equals("Confirm")) {
             SmartDashboard.putString("Reset Climber State?", "Understood");
-            setState(ClimbState.kStarting);
+            mCurrentTransition = new Transition(new InstantCommand(mRotator::setNeutralModeBrake), ClimbState.kStarting);
         }
         if (!isCurrentBehaviorScheduled()) {
             System.out.println("Starting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
