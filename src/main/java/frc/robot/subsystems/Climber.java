@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
+import frc.LoggyThings.*;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
@@ -16,11 +17,12 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
+import frc.LoggyThings.*;
 
 public class Climber extends SubsystemBase {
     public class Hand extends SubsystemBase {
 
-        private final CANSparkMax mClaw;
+        private final LoggyCANSparkMax mClaw;
         private final RelativeEncoder mClawEncoder;
         private final SparkMaxPIDController mClawPIDController;
         private final SparkMaxLimitSwitch mEngagementSwitch;
@@ -31,7 +33,7 @@ public class Climber extends SubsystemBase {
 
         private Hand(int clawID, int lockID) {
             // System.out.println("Spark Max " + clawID + " init");
-            mClaw = new CANSparkMax(clawID, MotorType.kBrushless);
+            mClaw = new LoggyCANSparkMax(clawID, MotorType.kBrushless, "/Climber/Hand/"+clawID+"/");
             mClawEncoder = mClaw.getEncoder();
             mClawPIDController = mClaw.getPIDController();
             mEngagementSwitch = mClaw.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
@@ -101,7 +103,7 @@ public class Climber extends SubsystemBase {
     }
 
     public class Rotator extends SubsystemBase {
-        private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Climber.kRotationMotorID);
+        private final LoggyWPI_TalonFX mMotor = new LoggyWPI_TalonFX(Constants.Climber.kRotationMotorID, "/Climber/Rotation/");
         private double currentPosition = getPosition();
         // TODO: Rotator limit switch
 

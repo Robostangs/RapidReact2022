@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import frc.LoggyThings.*;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,7 +11,7 @@ public class Intake extends SubsystemBase {
 
     private static Intake instance;
 
-    private final WPI_TalonFX mIntakeMotor = new WPI_TalonFX(Constants.IntakeConstants.kIntakeMotorID);
+    private final LoggyWPI_TalonFX mIntakeMotor = new LoggyWPI_TalonFX(Constants.IntakeConstants.kIntakeMotorID, "/Intake/Intake/");
 
     public static Intake getInstance() {
         if (instance == null) {

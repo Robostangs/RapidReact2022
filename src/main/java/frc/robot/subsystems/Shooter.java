@@ -3,7 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
+import frc.LoggyThings.*;
+import frc.LoggyThings.ILoggyMotor.LogItem;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -50,8 +51,8 @@ public class Shooter extends SubsystemBase {
     }
 
     private static Shooter instance;
-    private final WPI_TalonFX mBottomShooter  = new WPI_TalonFX(Constants.Shooter.kLeftShooterID);
-    private final WPI_TalonFX mTopShooter = new WPI_TalonFX(Constants.Shooter.kRightShooterID);
+    private final LoggyWPI_TalonFX mBottomShooter  = new LoggyWPI_TalonFX(Constants.Shooter.kLeftShooterID, "/Shooter/Bottom/", LogItem.LOGLEVEL_PID);
+    private final LoggyWPI_TalonFX mTopShooter = new LoggyWPI_TalonFX(Constants.Shooter.kRightShooterID, "/Shooter/Top/", LogItem.LOGLEVEL_PID);
 
     public static Shooter getInstance() {
         if (instance == null) {

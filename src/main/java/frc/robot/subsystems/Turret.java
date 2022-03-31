@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import frc.LoggyThings.*;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -17,7 +18,7 @@ public class Turret extends SubsystemBase {
 
     private static Turret instance;
 
-    private final WPI_TalonFX mMotor = new WPI_TalonFX(Constants.Turret.kRotationMotorID);
+    private final LoggyWPI_TalonFX mMotor = new LoggyWPI_TalonFX(Constants.Turret.kRotationMotorID, "/Turret/Turret/");
     // private final DigitalInput m_homeSensorOn, m_homeSensorOff;
     private boolean mIsHomed;
     private static CommandBase mGoHomeCommand = new GoHome().withTimeout(3);

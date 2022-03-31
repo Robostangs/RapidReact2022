@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.LoggyThings.*;
+import frc.LoggyThings.ILoggyMotor.LogItem;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
@@ -23,10 +24,10 @@ public class Drivetrain extends SubsystemBase {
 
     private final DifferentialDriveOdometry mDrivetrainOdometry
         = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(0, 0, new Rotation2d(0, 0)));
-    private final WPI_TalonFX mLeftTop = new WPI_TalonFX(Constants.Drivetrain.kLeftTopID);
-    private final WPI_TalonFX mLeftBottom = new WPI_TalonFX(Constants.Drivetrain.kLeftBackID);
-    private final WPI_TalonFX mRightTop = new WPI_TalonFX(Constants.Drivetrain.kRightTopID);
-    private final WPI_TalonFX mRightBottom = new WPI_TalonFX(Constants.Drivetrain.kRightBackID);
+    private final LoggyWPI_TalonFX mLeftTop = new LoggyWPI_TalonFX(Constants.Drivetrain.kLeftTopID, "/Drivetrain/Left/Top/");
+    private final LoggyWPI_TalonFX mLeftBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kLeftBackID, "/Drivetrain/Left/Bottom/", LogItem.LOGLEVEL_MINIMAL);
+    private final LoggyWPI_TalonFX mRightTop = new LoggyWPI_TalonFX(Constants.Drivetrain.kRightTopID, "/Drivetrain/Right/Top/");
+    private final LoggyWPI_TalonFX mRightBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kRightBackID, "/Drivetrain/Right/Bottom/", LogItem.LOGLEVEL_MINIMAL);
     private final AHRS mGyro = new AHRS(SPI.Port.kMXP);
     private final Field2d mField = new Field2d();
 
