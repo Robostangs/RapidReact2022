@@ -128,15 +128,12 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Manip Lbumper Pressed"))
             .whenReleased(new PrintCommand("Manip Lbumper Released"));
 
-        new JoystickButton(mManip, XboxController.Button.kY.value)
+        new JoystickButton(mManip, XboxController.Button.kY.value) // Just used for printing
             .whenPressed(new PrintCommand("Manip Y Pressed"))
             .whenPressed(new PrintCommand("Manip Y Released"));
 
         new JoystickButton(mManip, XboxController.Button.kX.value)
-            .whenPressed(new ConditionalCommand(
-                new InstantCommand(mSequenceManager::proceed),
-                new InstantCommand(),
-                () -> !keyStates.contains(mSequenceManager.getState())))
+            .whenPressed(mSequenceManager::interrupt)
             .whenPressed(new PrintCommand("Manip X Pressed"))
             .whenPressed(new PrintCommand("Manip X Released"));
 

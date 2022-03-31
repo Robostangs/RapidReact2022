@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -114,6 +115,7 @@ public class ClimbSequenceManager implements Sendable {
     private ClimbSequenceManager() {
         SendableRegistry.addLW(this, "Climber", "ClimbSequenceManager");
         mCommandScheduler.onCommandFinish(this::checkForTransitionFinish);
+        SmartDashboard.putString("Reset Climber State?", "No");
     }
 
     private void checkForTransitionFinish(Command command) {
@@ -135,11 +137,23 @@ public class ClimbSequenceManager implements Sendable {
         return mCurrentState;
     }
 
+    public void setState(ClimbState newState) {
+        mCurrentState = newState;
+        mCurrentTransition = mTransitions.get(newState);
+        if (mCurrentTransition.autoSchedule) {
+            mCommandScheduler.schedule(mCurrentTransition.behavior);
+        }
+    }
+
     private boolean isCurrentBehaviorScheduled() {
         return mCurrentTransition != null && mCurrentTransition.behavior != null && mCommandScheduler.isScheduled(mCurrentTransition.behavior);
     }
 
     public void proceed() {
+        if (SmartDashboard.getString("Reset Climber State?", "No").equals("Confirm")) {
+            SmartDashboard.putString("Reset Climber State?", "Understood");
+            setState(ClimbState.kStarting);
+        }
         if (!isCurrentBehaviorScheduled()) {
             System.out.println("Starting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
             mCurrentTransition.behavior.schedule();
@@ -155,10 +169,6 @@ public class ClimbSequenceManager implements Sendable {
     private void advanceState() {
         final ClimbState nextState = mCurrentTransition.determineNextState.get();
         System.out.println("Advancing state from " + mCurrentState + " to " + nextState);
-        mCurrentState = nextState;
-        mCurrentTransition = mTransitions.get(nextState);
-        if (mCurrentTransition.autoSchedule) {
-            mCommandScheduler.schedule(mCurrentTransition.behavior);
-        }
+        setState(nextState);
     }
 }

@@ -245,7 +245,6 @@ public final class Constants {
             public static final double kLinFuncConstant = 0.562;
 
             public static final double kNoSpeed = 0;
-
         }
 
         // Odometry
