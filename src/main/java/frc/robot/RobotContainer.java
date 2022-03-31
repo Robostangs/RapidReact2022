@@ -73,41 +73,29 @@ public class RobotContainer {
 
         // DRIVER CONTROLS
         new JoystickButton(mDriver, XboxController.Button.kA.value)
-            .whileHeld(new Active())
-            .whenPressed(new PrintCommand("Driver A Pressed"))
-            .whenReleased(new PrintCommand("Driver A Released"));
+            .whileHeld(new Active());
 
         new JoystickButton(mDriver, XboxController.Button.kY.value)
             .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed)
-            .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)))
-            .whenPressed(new PrintCommand("Driver Y Pressed"))
-            .whenReleased(new PrintCommand("Driver Y Released"));
+            .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)));
 
         // MANIP CONTROLS
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
-            .whenReleased(new Protect())
-            .whenPressed(new PrintCommand("Manip Ltrigger Pressed"))
-            .whenReleased(new PrintCommand("Manip Ltrigger Released"));
+            .whenReleased(new Protect());
 
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
                 .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
-            .whenReleased(new Protect().withTimeout(1))
-            .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
-            .whenReleased(new PrintCommand("Manip Rtrigger Released"));
+            .whenReleased(new Protect().withTimeout(1));
 
         new JoystickButton(mManip, XboxController.Button.kA.value)
-            .whileHeld(new RunElevator())
-            .whenPressed(new PrintCommand("Manip A Pressed"))
-            .whenReleased(new PrintCommand("Manip A Released"));
+            .whileHeld(new RunElevator());
 
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whileHeld(new SetShooterState(ShooterMappings.getShooterState(0)).alongWith(new ToRobotAngle(0)))
-            .whenReleased(new Protect().withTimeout(1))
-            .whenPressed(new PrintCommand("Manip A Pressed"))
-            .whenReleased(new PrintCommand("Manip A Released"));
+            .whenReleased(new Protect().withTimeout(1));
 
         // MANIP CLIMBER CONTROLS
         final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
@@ -118,26 +106,18 @@ public class RobotContainer {
             .whenPressed(new ConditionalCommand(
                 new InstantCommand(mSequenceManager::proceed),
                 new InstantCommand(),
-                () -> keyStates.contains(mSequenceManager.getState())))
-            .whenPressed(new PrintCommand("Manip both bumpers Pressed"))
-            .whenReleased(new PrintCommand("Manip both bumpers Released"));
+                () -> keyStates.contains(mSequenceManager.getState())));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
             .whenPressed(new ConditionalCommand(
                 new InstantCommand(mSequenceManager::proceed),
                 new InstantCommand(),
-                () -> !keyStates.contains(mSequenceManager.getState())))
-            .whenPressed(new PrintCommand("Manip Lbumper Pressed"))
-            .whenReleased(new PrintCommand("Manip Lbumper Released"));
+                () -> !keyStates.contains(mSequenceManager.getState())));
 
-        new JoystickButton(mManip, XboxController.Button.kY.value) // Just used for printing
-            .whenPressed(new PrintCommand("Manip Y Pressed"))
-            .whenPressed(new PrintCommand("Manip Y Released"));
+        new JoystickButton(mManip, XboxController.Button.kY.value);
 
         new JoystickButton(mManip, XboxController.Button.kX.value)
-            .whenPressed(mSequenceManager::interrupt)
-            .whenPressed(new PrintCommand("Manip X Pressed"))
-            .whenPressed(new PrintCommand("Manip X Released"));
+            .whenPressed(mSequenceManager::interrupt);
 
         mSequenceManager.setWiggleSupplier(mManip::getLeftY);
         mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
