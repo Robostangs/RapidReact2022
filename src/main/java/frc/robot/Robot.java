@@ -22,7 +22,6 @@ public class Robot extends TimedRobot {
 
     private final RobotContainer mRobotContainer = new RobotContainer();
     private Command mAutonomousCommand;
-    @SuppressWarnings("unused")
     public static final PowerDistribution mPowerDistributionPanel = new PowerDistribution();
     private PITTest pitTest = new PITTest();
 

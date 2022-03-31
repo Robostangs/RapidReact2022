@@ -184,7 +184,7 @@ public final class Constants {
             kBeltConfig.neutralDeadband = 0.001;
         }
 
-        public static final double kBeltSpeed = -0.3;
+        public static final double kDefaultSpeed = -0.3;
     }
 
     public static final class IntakeConstants {

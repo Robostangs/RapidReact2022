@@ -39,7 +39,7 @@ public class PITTest extends SequentialCommandGroup {
             new TankDrive(()-> 0.0, () -> Constants.PitTest.dtVelo).withTimeout(1).beforeStarting(new AddSmartdashboard("RightDt")),
 
             new Active().withTimeout(1).beforeStarting(new AddSmartdashboard("Intake")),
-            new ControlManual(() -> Constants.Feeder.kBeltSpeed).withTimeout(1).beforeStarting(new AddSmartdashboard("Feeder Belts")),
+            new ControlManual(() -> Constants.Feeder.kDefaultSpeed).withTimeout(1).beforeStarting(new AddSmartdashboard("Feeder Belts")),
             new RunElevator().withTimeout(1).beforeStarting(new AddSmartdashboard("Feeder Wheels (Elevator)")),
 
             new SetShooterState(ShooterMappings.getShooterState(0)).withTimeout(1.5).beforeStarting(new AddSmartdashboard("Shooter")),

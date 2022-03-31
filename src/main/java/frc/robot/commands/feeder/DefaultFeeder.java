@@ -21,7 +21,7 @@ public class DefaultFeeder extends CommandBase {
         if (outDebouncer.calculate(mFeeder.getShooterSensorLight() || !mFeeder.getShooterSensorDark())) {
             mFeeder.moveBelt(0);
         } else if (inDebouncer.calculate(mFeeder.getIntakeSensorLight() || !mFeeder.getIntakeSensorDark())) {
-            mFeeder.moveBelt(Constants.Feeder.kBeltSpeed);
+            mFeeder.moveBelt(Constants.Feeder.kDefaultSpeed);
         }
     }
 }

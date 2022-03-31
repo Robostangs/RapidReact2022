@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.ClimbSequenceManager;
@@ -69,6 +68,7 @@ public class RobotContainer {
             new CustomArcade(
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
                 mDriver::getLeftX));
+
         mFeeder.setDefaultCommand(new DefaultFeeder());
 
         // DRIVER CONTROLS
@@ -76,8 +76,9 @@ public class RobotContainer {
             .whileHeld(new Active());
 
         new JoystickButton(mDriver, XboxController.Button.kY.value)
-            .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed)
-            .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)));
+            .whileHeld(
+                new Active(-Constants.IntakeConstants.kDefaultSpeed)
+                    .alongWith(new ControlManual(() -> -Constants.Feeder.kDefaultSpeed)));
 
         // MANIP CONTROLS
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
@@ -87,7 +88,7 @@ public class RobotContainer {
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
-                .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
+                    .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
             .whenReleased(new Protect().withTimeout(1));
 
         new JoystickButton(mManip, XboxController.Button.kA.value)
@@ -113,8 +114,6 @@ public class RobotContainer {
                 new InstantCommand(mSequenceManager::proceed),
                 new InstantCommand(),
                 () -> !keyStates.contains(mSequenceManager.getState())));
-
-        new JoystickButton(mManip, XboxController.Button.kY.value);
 
         new JoystickButton(mManip, XboxController.Button.kX.value)
             .whenPressed(mSequenceManager::interrupt);
