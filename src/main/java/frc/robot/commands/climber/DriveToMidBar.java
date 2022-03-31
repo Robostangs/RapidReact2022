@@ -12,7 +12,7 @@ public class DriveToMidBar extends CommandBase {
 
     public DriveToMidBar(double driveSpeed) {
         addRequirements(mDrivetrain);
-        setName("Drive To Climber");
+        setName("Drive To Climber Mid Bar");
         mDriveSpeed = driveSpeed;
     }
 

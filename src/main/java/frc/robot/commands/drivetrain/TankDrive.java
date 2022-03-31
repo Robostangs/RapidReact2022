@@ -11,7 +11,7 @@ public class TankDrive extends CommandBase{
     private Drivetrain mDrivetrain = Drivetrain.getInstance();
 
     public TankDrive(Supplier<Double> leftSpeed, Supplier<Double> rightSpeed) {
-        this.setName("TankDrive");
+        this.setName("Tank Drive");
         this.addRequirements(mDrivetrain);
         mLeftSpeed = leftSpeed;
         mRightSpeed = rightSpeed;

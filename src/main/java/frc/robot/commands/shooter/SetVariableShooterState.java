@@ -9,6 +9,7 @@ public class SetVariableShooterState extends SetShooterState {
 
     public SetVariableShooterState(Supplier<Shooter.State> stateSupplier) {
         super(null);
+        setName("Set Variable Shooter State");
         mStateSupplier = stateSupplier;
     }
 

@@ -78,25 +78,26 @@ public class RobotContainer {
         new JoystickButton(mDriver, XboxController.Button.kY.value)
             .whileHeld(
                 new Active(-Constants.IntakeConstants.kDefaultSpeed)
-                    .alongWith(new ControlManual(() -> -Constants.Feeder.kDefaultSpeed)));
+                    .alongWith(new ControlManual(() -> -Constants.Feeder.kDefaultSpeed))
+                    .withName("Exgest"));
 
         // MANIP CONTROLS
         new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
-            .whenReleased(new Protect());
+            .whenReleased(new Protect().withTimeout(1).withName("Protect"));
 
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
                     .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
-            .whenReleased(new Protect().withTimeout(1));
+            .whenReleased(new Protect().withTimeout(1).withName("Protect"));
 
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
 
         new JoystickButton(mManip, XboxController.Button.kB.value)
             .whileHeld(new SetShooterState(ShooterMappings.getShooterState(0)).alongWith(new ToRobotAngle(0)))
-            .whenReleased(new Protect().withTimeout(1));
+            .whenReleased(new Protect().withTimeout(1).withName("Protect"));
 
         // MANIP CLIMBER CONTROLS
         final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
@@ -104,19 +105,25 @@ public class RobotContainer {
             ClimbSequenceManager.ClimbState.kCallibrated));
 
         new Button(new JoystickButton(mManip, XboxController.Button.kLeftBumper.value).and(new JoystickButton(mManip, XboxController.Button.kRightBumper.value)))
-            .whenPressed(new ConditionalCommand(
-                new InstantCommand(mSequenceManager::proceed),
-                new InstantCommand(),
-                () -> keyStates.contains(mSequenceManager.getState())));
+            .whenPressed(
+                new ConditionalCommand(
+                    new InstantCommand(mSequenceManager::proceed),
+                    new InstantCommand(),
+                    () -> keyStates.contains(mSequenceManager.getState()))
+                    .withName("Conditional proceed L1+R1"));
 
         new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new ConditionalCommand(
-                new InstantCommand(mSequenceManager::proceed),
-                new InstantCommand(),
-                () -> !keyStates.contains(mSequenceManager.getState())));
+            .whenPressed(
+                new ConditionalCommand(
+                    new InstantCommand(mSequenceManager::proceed),
+                    new InstantCommand(),
+                    () -> !keyStates.contains(mSequenceManager.getState()))
+                    .withName("Conditional proceed L1"));
 
         new JoystickButton(mManip, XboxController.Button.kX.value)
-            .whenPressed(mSequenceManager::interrupt);
+            .whenPressed(
+                new InstantCommand(mSequenceManager::interrupt)
+                    .withName("Climb Sequence Interrupt"));
 
         mSequenceManager.setWiggleSupplier(mManip::getLeftY);
         mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);

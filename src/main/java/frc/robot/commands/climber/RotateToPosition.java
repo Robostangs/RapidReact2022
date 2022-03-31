@@ -9,7 +9,7 @@ public class RotateToPosition extends CommandBase {
 
     public RotateToPosition(double position) {
         addRequirements(mRotator);
-        setName("Rotate Climber");
+        setName("Rotate Climber to Position");
         mPosition = position;
     }
 

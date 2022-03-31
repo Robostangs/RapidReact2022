@@ -25,8 +25,9 @@ public class FollowPath extends RamseteCommand{
 
     private FollowPath(Trajectory trajectory) {
         super(trajectory, mDrivetrain::getPose, new RamseteController(Constants.Drivetrain.kB, Constants.Drivetrain.kZeta), new DifferentialDriveKinematics(Constants.Drivetrain.kTrackWidth), mDrivetrain::drivePower, mDrivetrain);
+        setName("Follow Path");
     }
-    
+
     public FollowPath(Spline.ControlVector initial,List<Translation2d> interiorWaypoints,Spline.ControlVector end) {
         this(TrajectoryGenerator.generateTrajectory(initial, interiorWaypoints, end, mTrajectoryConfig));
     }

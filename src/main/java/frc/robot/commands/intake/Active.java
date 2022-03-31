@@ -11,7 +11,7 @@ public class Active extends CommandBase{
 
     public Active(double speed) {
         addRequirements(mIntake);
-        setName("Exgest");
+        setName("Activate intake");
         m_speed = speed;
     }
 

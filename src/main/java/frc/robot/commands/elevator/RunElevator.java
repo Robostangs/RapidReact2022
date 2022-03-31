@@ -13,7 +13,7 @@ public class RunElevator extends CommandBase {
 
     public RunElevator(double power) {
         addRequirements(mElevator);
-        setName("Moving Elevator");
+        setName("Run Elevator");
         mPower = power;
     }
 

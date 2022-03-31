@@ -13,7 +13,7 @@ public class DefaultFeeder extends CommandBase {
 
     public DefaultFeeder() {
         addRequirements(mFeeder);
-        setName("Move Feeder");
+        setName("Default Feeder");
     }
 
     @Override

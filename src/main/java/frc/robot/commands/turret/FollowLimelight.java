@@ -11,6 +11,7 @@ public class FollowLimelight extends ToRobotAngle {
     public void initialize() {
         mAngle = mTurret.getAngle();
         super.initialize();
+        setName("Turret Follow Limelight");
     }
 
     @Override

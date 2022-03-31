@@ -8,6 +8,7 @@ public class AddSmartdashboard extends InstantCommand{
 
     public AddSmartdashboard(String name) {
         mName = name;
+        setName("Add " + name + " to SmartDashboard");
     }
 
     @Override
@@ -15,6 +16,4 @@ public class AddSmartdashboard extends InstantCommand{
         SmartDashboard.putString("PIT Test", mName);
         super.initialize();
     }
-
-    
 }

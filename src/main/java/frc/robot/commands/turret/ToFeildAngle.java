@@ -9,6 +9,7 @@ public class ToFeildAngle extends ToRobotAngle{
 
     public ToFeildAngle(double angle) {
         super(Drivetrain.getInstance().getAngle(), Drivetrain.getInstance().getGyroRate()*Constants.Turret.kTurningFeedForward);
+        setName("To Field Angle");
         desiredAngle = angle;
     }
 

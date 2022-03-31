@@ -9,6 +9,7 @@ public class SetShooterState extends CommandBase {
 
     public SetShooterState(Shooter.State state) {
         addRequirements(mShooter);
+        setName("Set Shooter State");
         mState = state;
     }
 
