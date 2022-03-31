@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +25,7 @@ import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
 import frc.robot.commands.shooter.SetShooterState;
+import frc.robot.commands.turret.DefaultTurret;
 import frc.robot.commands.turret.Protect;
 import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
@@ -88,19 +88,24 @@ public class RobotContainer {
             .whenPressed(new PrintCommand("Manip Ltrigger Pressed"))
             .whenReleased(new PrintCommand("Manip Ltrigger Released"));
 
+        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
+            .whileHeld(
+                new DefaultTurret()
+                .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
+            .whenReleased(new Protect().withTimeout(1))
+            .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
+            .whenReleased(new PrintCommand("Manip Rtrigger Released"));
+
         new JoystickButton(mManip, XboxController.Button.kA.value)
             .whileHeld(new RunElevator())
             .whenPressed(new PrintCommand("Manip A Pressed"))
             .whenReleased(new PrintCommand("Manip A Released"));
 
-        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
-            .whileHeld(
-                new ParallelCommandGroup(
-                    new ToRobotAngle(0),
-                    new SetShooterState(ShooterMappings.getShooterState(0)))
-                .andThen(new Protect()))
-            .whenPressed(new PrintCommand("Manip Rtrigger Pressed"))
-            .whenReleased(new PrintCommand("Manip Rtrigger Released"));
+        new JoystickButton(mManip, XboxController.Button.kB.value)
+            .whileHeld(new SetShooterState(ShooterMappings.getShooterState(0)).alongWith(new ToRobotAngle(0)))
+            .whenReleased(new Protect().withTimeout(1))
+            .whenPressed(new PrintCommand("Manip A Pressed"))
+            .whenReleased(new PrintCommand("Manip A Released"));
 
         // MANIP CLIMBER CONTROLS
         final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(

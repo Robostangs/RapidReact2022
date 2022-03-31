@@ -1,4 +1,4 @@
-addEntry(102, 2450.0, 2350.0);-- Tarmack
+addEntry(102, 2450.0, 2350.0);-- Tarmac
 addEntry(0, 320.0, 5300.0); -- Layup
 addEntry(173, 4600.0, 250.0); -- Launchpad 
 

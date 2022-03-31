@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.ShooterMappings;
 import frc.robot.commands.AddSmartdashboard;
 import frc.robot.commands.climber.ClimbPrep;
@@ -25,9 +26,8 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 
 public class PITTest extends SequentialCommandGroup {
-    PowerDistribution pdp = new PowerDistribution();
+    PowerDistribution pdp = Robot.mPowerDistributionPanel;
     boolean ran = false;
-
 
     public PITTest() {
         this.addRequirements(Drivetrain.getInstance(), Turret.getInstance(), Feeder.getInstance(), Shooter.getInstance(), Intake.getInstance());
