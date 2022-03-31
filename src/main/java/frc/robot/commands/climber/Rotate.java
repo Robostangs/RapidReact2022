@@ -1,5 +1,6 @@
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
@@ -26,9 +27,9 @@ public class Rotate extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         if (!interrupted) {
-            System.out.println("Rotate finished");
+            DataLogManager.log("Rotate finished");
         } else {
-            System.out.println("Rotate interrupted");
+            DataLogManager.log("Rotate interrupted");
         }
         mRotator.setPower(0);
     }

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
@@ -19,7 +20,7 @@ public class Limelight extends SubsystemBase {
 
     private Limelight() {
         if(LimelightTable == null) {
-            System.out.println("LLtable is Null"); 
+            DataLogManager.log("LLtable is Null"); 
         }
         LimelightTable.getEntry("pipeline").setNumber(0);
     }
@@ -75,9 +76,5 @@ public class Limelight extends SubsystemBase {
 
     public static void blinkLEDs() {
         instance.LimelightTable.getEntry("ledMode").setNumber(2);
-    }
-
-    public static void printValues() {
-        System.out.println("Limelight values: Tx: " + getTx() + "; Ty: " + getTy() + "; Tv: " + getTv() + "; Distance: " + getDistance());
     }
 }

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -120,7 +121,7 @@ public class ClimbSequenceManager implements Sendable {
 
     private void checkForTransitionFinish(Command command) {
         if(command == mCurrentTransition.behavior) {
-            System.out.println("Naturally finished " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
+            DataLogManager.log("Naturally finished " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
             advanceState();
         }
     }
@@ -155,20 +156,20 @@ public class ClimbSequenceManager implements Sendable {
             mCurrentTransition = new Transition(new InstantCommand(mRotator::setNeutralModeBrake), ClimbState.kStarting);
         }
         if (!isCurrentBehaviorScheduled()) {
-            System.out.println("Starting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
+            DataLogManager.log("Starting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
             mCurrentTransition.behavior.schedule();
         }
     }
 
     public void interrupt() {
         mCurrentTransition.behavior.cancel();
-        System.out.println("Interrupting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
+        DataLogManager.log("Interrupting " + mCurrentTransition.behavior.getName() + " of " + mCurrentState);
         advanceState();
     }
 
     private void advanceState() {
         final ClimbState nextState = mCurrentTransition.determineNextState.get();
-        System.out.println("Advancing state from " + mCurrentState + " to " + nextState);
+        DataLogManager.log("Advancing state from " + mCurrentState + " to " + nextState);
         setState(nextState);
     }
 }

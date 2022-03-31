@@ -1,5 +1,6 @@
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import frc.robot.subsystems.Climber.Hand;
 
 public class CallibrateHand extends OpenHand {
@@ -24,7 +25,7 @@ public class CallibrateHand extends OpenHand {
         if(!interrupted) {
             mHand.zeroClawEncoder();
         } else {
-            System.out.println("Hand calibration interrupted!");
+            DataLogManager.log("Hand calibration interrupted!");
         }
         super.end(interrupted);
     }

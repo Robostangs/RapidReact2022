@@ -1,10 +1,10 @@
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Limelight;
 
 public class RunElevator extends CommandBase {
 
@@ -23,8 +23,7 @@ public class RunElevator extends CommandBase {
 
     @Override
     public void initialize() {
-        Limelight.printValues();
-        System.out.println(SmartDashboard.getString("Requested state", "No requested state found"));
+        DataLogManager.log(SmartDashboard.getString("Requested state", "No requested state found"));
         mElevator.setPower(mPower);
     }
 

@@ -1,5 +1,6 @@
 package frc.robot.commands.turret;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Limelight;
@@ -40,7 +41,7 @@ public class GoHome extends CommandBase {
             mTurret.configMaxSpeed(1);
             mTurret.setHomed(true);
         } else if(interrupted) {
-            System.out.println("Turret homing interrupted!");
+            DataLogManager.log("Turret homing interrupted!");
             mTurret.setAngularVelocitySetpoint(0, Constants.Turret.kTurningFeedForward);
             mTurret.configMaxSpeed(0.2);
         }

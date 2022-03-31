@@ -3,6 +3,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,9 +34,9 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {System.out.println("INITIALIZED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandFinish((Command c) -> {System.out.println("FINISHED: " + c.getName());});
-        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {System.out.println("INTERUPTED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInitialize((Command c) -> {DataLogManager.log("INITIALIZED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandFinish((Command c) -> {DataLogManager.log("FINISHED: " + c.getName());});
+        CommandScheduler.getInstance().onCommandInterrupt((Command c) -> {DataLogManager.log("INTERUPTED: " + c.getName());});
     }
 
     /**

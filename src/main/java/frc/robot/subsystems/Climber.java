@@ -189,19 +189,6 @@ public class Climber extends SubsystemBase {
         addChild("Rotation Motor", mRotator);
         addChild("Left Elevator Release", mLeftElevatorRelease);
         addChild("Right Elevator Release", mRightElevatorRelease);
-        System.out.println( ",,,, Time" + 
-                            ", Bus Voltage" + 
-                            ", PDP Voltage"+
-                            ", PDP Current" +
-                            ", Faults" +
-                            ", Closed Loop Error"  + 
-                            ", Motor Output Percentage" + 
-                            ", Motor Output Voltage"+ 
-                            ", Motor Position" +  
-                            ", Motor Velocity" +  
-                            ", Motor Temperature" + 
-                            ", Stator Current" + 
-                            ", Supply Current");
     }
 
     public static Climber getInstance() {
