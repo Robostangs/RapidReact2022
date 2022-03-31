@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.ShooterMappings;
 import frc.robot.commands.AddSmartdashboard;
 import frc.robot.commands.climber.ClimbPrep;
@@ -27,7 +29,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 
 public class PITTest extends SequentialCommandGroup {
-    PowerDistribution pdp = new PowerDistribution();
+    PowerDistribution pdp = Robot.mPowerDistributionPanel;
     boolean ran = false;
 
 

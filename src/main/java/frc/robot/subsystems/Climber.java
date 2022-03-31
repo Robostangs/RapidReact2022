@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -145,28 +144,6 @@ public class Climber extends SubsystemBase {
                 setEncoderPosition(currentPosition);
             }
             currentPosition = getPosition();
-        }
-
-
-        Faults fault = new Faults();
-        PowerDistribution powerDistribution = new PowerDistribution();
-
-        public void polluteLog() {
-            mMotor.getFaults(fault);
-            System.out.println( 
-                                    ",,,," + Timer.getFPGATimestamp() +  
-                                    ","  + mMotor.getBusVoltage() + 
-                                    "," + powerDistribution.getVoltage() + 
-                                    "," + powerDistribution.getCurrent(14) + 
-                                    "," + fault.toString() + 
-                                    "," + mMotor.getClosedLoopError() + 
-                                    "," + mMotor.getMotorOutputPercent() + 
-                                    ","+ mMotor.getMotorOutputVoltage() + 
-                                    "," + mMotor.getSelectedSensorPosition() + 
-                                    "," + mMotor.getSelectedSensorVelocity() + 
-                                    "," + mMotor.getTemperature() + 
-                                    "," + mMotor.getStatorCurrent() +
-                                    "," + mMotor.getSupplyCurrent());
         }
 
         @Override
