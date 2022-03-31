@@ -2,8 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import frc.LoggyThings.*;
+import frc.LoggyThings.LoggyWPI_TalonFX;
 import frc.LoggyThings.ILoggyMotor.LogItem;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

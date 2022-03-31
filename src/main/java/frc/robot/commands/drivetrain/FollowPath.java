@@ -24,7 +24,7 @@ public class FollowPath extends RamseteCommand{
     private static final TrajectoryConfig mTrajectoryConfig = new TrajectoryConfig(Constants.Drivetrain.maxVelocity, Constants.Drivetrain.maxAcceleration);
 
     private FollowPath(Trajectory trajectory) {
-        super(trajectory, mDrivetrain::getPose, new RamseteController(Constants.Drivetrain.kB, Constants.Drivetrain.kZeta), new DifferentialDriveKinematics(Constants.Drivetrain.kTrackWidth), mDrivetrain::setDriveVelos, mDrivetrain);
+        super(trajectory, mDrivetrain::getPose, new RamseteController(Constants.Drivetrain.kB, Constants.Drivetrain.kZeta), new DifferentialDriveKinematics(Constants.Drivetrain.kTrackWidth), mDrivetrain::drivePower, mDrivetrain);
     }
     
     public FollowPath(Spline.ControlVector initial,List<Translation2d> interiorWaypoints,Spline.ControlVector end) {

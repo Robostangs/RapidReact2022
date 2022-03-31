@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import frc.LoggyThings.*;
+import frc.LoggyThings.LoggyWPI_TalonFX;
 // import com.revrobotics.ColorSensorV3;
 
 // import edu.wpi.first.wpilibj.I2C;

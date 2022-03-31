@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.ShooterMappings;
 import frc.robot.commands.AddSmartdashboard;
 import frc.robot.commands.climber.ClimbPrep;

@@ -2,9 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANSparkMax;
-import frc.LoggyThings.*;
+import frc.LoggyThings.LoggyCANSparkMax;
+import frc.LoggyThings.LoggyWPI_TalonFX;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
@@ -17,7 +16,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utils;
-import frc.LoggyThings.*;
 
 public class Climber extends SubsystemBase {
     public class Hand extends SubsystemBase {

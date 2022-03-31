@@ -30,7 +30,7 @@ public class CustomArcade extends CommandBase {
     public void execute() {
        double forward = limiter.calculate(customDeadzone(mForwardSupplier.get()));
        double turn = Constants.Drivetrain.kTurningMultiplier * Utils.deadzone(mTurnSupplier.get(), 2);
-       mDrivetrain.drivePower((forward - turn) * Constants.Drivetrain.kPowerOffsetMultiplier, (forward + turn));
+       mDrivetrain.drivePower((forward - turn) * Constants.Drivetrain.kPowerOffsetMultiplier, -(forward + turn));
     }
 
     public static double customDeadzone(double input) {

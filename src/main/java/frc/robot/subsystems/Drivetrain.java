@@ -4,7 +4,6 @@ import com.kauailabs.navx.frc.AHRS;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,7 +13,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.LoggyThings.*;
+import frc.LoggyThings.LoggyWPI_TalonFX;
 import frc.LoggyThings.ILoggyMotor.LogItem;
 import frc.robot.Constants;
 
@@ -83,6 +82,7 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         mField.setRobotPose(updateOdometry());
+        // System.out.println("\nPose: " + getPose().toString());
     }
 
     @Override

@@ -22,6 +22,7 @@ import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.CustomArcade;
 import frc.robot.commands.elevator.RunElevator;
+import frc.robot.commands.feeder.ControlManual;
 import frc.robot.commands.feeder.DefaultFeeder;
 import frc.robot.commands.intake.Active;
 import frc.robot.commands.shooter.SetShooterState;
@@ -77,7 +78,8 @@ public class RobotContainer {
             .whenReleased(new PrintCommand("Driver A Released"));
 
         new JoystickButton(mDriver, XboxController.Button.kY.value)
-            .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed))
+            .whileHeld(new Active(-Constants.IntakeConstants.kDefaultSpeed)
+            .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)))
             .whenPressed(new PrintCommand("Driver Y Pressed"))
             .whenReleased(new PrintCommand("Driver Y Released"));
 
