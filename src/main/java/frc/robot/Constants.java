@@ -56,6 +56,7 @@ public final class Constants {
             public static final void configClawLock(Servo lock) {}
 
             public static final double kLimitDebounceTime = 0.06;
+            public static final double kLongLimitDebounceTime = 1;
         }
 
         public static class Rotator {
@@ -79,8 +80,8 @@ public final class Constants {
         }
 
         public static final int kRotationMotorID = 27;
-        public static final int kLeftElevatorID = 1;
-        public static final int kRightElevatorID = 0;
+        public static final int kLeftElevatorID = 0;
+        public static final int kRightElevatorID = 1;
 
         public static final double kPeakRotationOutput = 0.75;
         public static final TalonFXConfiguration kRotationConfig = new TalonFXConfiguration();
@@ -94,10 +95,10 @@ public final class Constants {
             kRotationConfig.voltageCompSaturation = 12;
         }
 
-        public static final double kLeftElevatorReleaseDefaultPosition = 0.11;
-        public static final double kRightElevatorReleaseDefaultPosition = 0.41;
-        public static final double kLeftElevatorReleasePosition = 0.47;
-        public static final double kRightElevatorReleasePosition = 0.05;
+        public static final double kLeftElevatorReleaseDefaultPosition = 0.49;// 0.185;
+        public static final double kRightElevatorReleaseDefaultPosition = 0.49;//0.475;
+        public static final double kLeftElevatorReleasePosition = 0.85;// 0.545; 
+        public static final double kRightElevatorReleasePosition = 0.13;// 0.125;
         public static final double kElevatorReleaseWaitTime = 3;
 
 
