@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.elevator.RunElevator;
 import frc.robot.commands.intake.Active;
@@ -23,7 +24,7 @@ public class SimpleAuto extends SequentialCommandGroup {
         // TODO: MAKE BETTER
         addCommands(
             new InstantCommand(() -> 
-                mDrivetrain.drivePower(0.2, -0.2)),
+                mDrivetrain.drivePower(0.2 * Constants.Drivetrain.kPowerOffsetMultiplier, -0.2)),
             new Active(0.5).withTimeout(2.5),
             new InstantCommand(() -> mDrivetrain.drivePower(-0.2, 0.2)),
             new WaitCommand(1.5),
