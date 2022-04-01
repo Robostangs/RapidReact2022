@@ -21,6 +21,7 @@ public class ShooterMappings {
         kShooterStates = new HashMap<Double, Shooter.State>();
         // addEntry(0, 320.0, 5300.0);
         addEntry(0, 1000, 1000);
+        addEntry(94, 2400.0, 2300.0);
         addEntry(102, 2450.0, 2350.0);
         addEntry(118, 2700.0, 2400.0);
         addEntry(130, 3100, 2450);

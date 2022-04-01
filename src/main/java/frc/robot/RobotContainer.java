@@ -89,7 +89,7 @@ public class RobotContainer {
         new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
-                    .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
+                    .alongWith(new SetShooterState(ShooterMappings.getShooterState(94))))
             .whenReleased(new Protect().withTimeout(1).withName("Protect"));
 
         new JoystickButton(mManip, XboxController.Button.kA.value)
