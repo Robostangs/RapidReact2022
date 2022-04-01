@@ -180,7 +180,7 @@ public final class Constants {
 
         public static final TalonFXConfiguration kBeltConfig = new TalonFXConfiguration();
         public static final double kInDebounceTime = 0.1;
-        public static final double kOutDebounceTime = 0.3;
+        public static final double kOutDebounceTime = 0.15;
         static {
             kBeltConfig.neutralDeadband = 0.001;
         }
