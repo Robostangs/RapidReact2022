@@ -8,6 +8,7 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveToMidBar extends CommandBase {
     private final Climber mClimber = Climber.getInstance();
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
+    private final Climber.Hand mHandA = mClimber.getHands()[0];
     private final double mDriveSpeed;
 
     public DriveToMidBar(double driveSpeed) {
@@ -27,7 +28,7 @@ public class DriveToMidBar extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return mClimber.getHands()[0].getEngaged();
+        return mHandA.getEngaged();
     }
 
     @Override
