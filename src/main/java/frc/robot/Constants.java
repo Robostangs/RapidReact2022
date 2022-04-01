@@ -107,7 +107,7 @@ public final class Constants {
         public static final double kFirstCGPosition = 70; //
         public static final double kSecondCGPosition = 300; //
 
-        public static final double kDefaultDriveSpeed = 0.1;
+        public static final double kDefaultDriveSpeed = 0.2;
         public static final double kWaitBeforePrep = 0.1;
     }
 
