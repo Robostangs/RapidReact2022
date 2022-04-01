@@ -17,7 +17,7 @@ public class FollowLimelight extends ToRobotAngle {
     @Override
     public void execute() {
         Limelight.enableLEDs();
-        mAngle = mAngle + Constants.Turret.kFilterConstant * (Limelight.getTx() + mTurret.getAngle() - mAngle);
+        mAngle = mAngle + Constants.Turret.kFilterConstant * (Limelight.getTx() + Constants.Turret.kNominalOffset + mTurret.getAngle() - mAngle);
         SmartDashboard.putNumber("Mangle", mAngle);
         mFeedforward = (Drivetrain.getInstance().getGyroRate() * Constants.Turret.kTurningFeedForward);
         super.execute();

@@ -270,14 +270,15 @@ public final class Constants {
         public static final double kBackPosition = 34595;
         public static final double kLeftNinety = 63428;
 
-        public static final double kFilterConstant = 0.5;
+        public static final double kFilterConstant = 0.75;
+        public static final double kNominalOffset = 1;
         public static final double kDebounceTime = 0.1;
 
         public static final double kTurningFeedForward = -0.03;
 
         public static final TalonFXConfiguration kMotorConfig = new TalonFXConfiguration();
 
-        public static final double kProtectedValue = -90;
+        public static final double kProtectAngle = -90;
         static {
             kMotorConfig.slot0 = new SlotConfiguration();
             kMotorConfig.slot0.kP = 0.1;
