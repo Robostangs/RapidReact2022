@@ -95,9 +95,9 @@ public final class Constants {
             kRotationConfig.voltageCompSaturation = 12;
         }
 
-        public static final double kLeftElevatorReleaseDefaultPosition = 0.49;// 0.185;
+        public static final double kLeftElevatorReleaseDefaultPosition = 0.32;// 0.185;
         public static final double kRightElevatorReleaseDefaultPosition = 0.49;//0.475;
-        public static final double kLeftElevatorReleasePosition = 0.85;// 0.545; 
+        public static final double kLeftElevatorReleasePosition = 0.72;// 0.545; 
         public static final double kRightElevatorReleasePosition = 0.13;// 0.125;
         public static final double kElevatorReleaseWaitTime = 3;
 
@@ -107,7 +107,7 @@ public final class Constants {
         public static final double kFirstCGPosition = 70; //
         public static final double kSecondCGPosition = 300; //
 
-        public static final double kDefaultDriveSpeed = 0.2;
+        public static final double kDefaultDriveSpeed = 0.15;
         public static final double kWaitBeforePrep = 0.1;
     }
 
@@ -199,7 +199,7 @@ public final class Constants {
 
         public static final int kRightTopID = 3;
         public static final int kRightBackID = 2;
-
+ 
         public static final int kGyro = 7;
         public static final int kFalconEncoderMax = 2048;
         public static final double kWheelDiameter = 0.15;
