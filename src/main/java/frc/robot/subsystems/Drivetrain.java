@@ -24,9 +24,9 @@ public class Drivetrain extends SubsystemBase {
     private final DifferentialDriveOdometry mDrivetrainOdometry
         = new DifferentialDriveOdometry(getGyroRotation2d(), new Pose2d(0, 0, new Rotation2d(0, 0)));
     private final LoggyWPI_TalonFX mLeftTop = new LoggyWPI_TalonFX(Constants.Drivetrain.kLeftTopID, "/Drivetrain/Left/Top/");
-    private final LoggyWPI_TalonFX mLeftBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kLeftBackID, "/Drivetrain/Left/Bottom/", LogItem.LOGLEVEL_MINIMAL);
+    private final LoggyWPI_TalonFX mLeftBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kLeftBackID, "/Drivetrain/Left/Bottom/");
     private final LoggyWPI_TalonFX mRightTop = new LoggyWPI_TalonFX(Constants.Drivetrain.kRightTopID, "/Drivetrain/Right/Top/");
-    private final LoggyWPI_TalonFX mRightBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kRightBackID, "/Drivetrain/Right/Bottom/", LogItem.LOGLEVEL_MINIMAL);
+    private final LoggyWPI_TalonFX mRightBottom = new LoggyWPI_TalonFX(Constants.Drivetrain.kRightBackID, "/Drivetrain/Right/Bottom/");
     private final AHRS mGyro = new AHRS(SPI.Port.kMXP);
     private final Field2d mField = new Field2d();
 
@@ -62,17 +62,27 @@ public class Drivetrain extends SubsystemBase {
         // m_rightFeedForward = new SimpleMotorFeedforward(Constants.Drivetrain.kRightS,
         // Constants.Drivetrain.kRightV, Constants.Drivetrain.kRightD);
 
-        mLeftBottom.follow(mLeftTop);
-        mRightBottom.follow(mRightTop);
-
+        
         mLeftTop.setNeutralMode(NeutralMode.Brake);
         mRightTop.setNeutralMode(NeutralMode.Brake);
+        mLeftBottom.setNeutralMode(NeutralMode.Brake);
+        mRightBottom.setNeutralMode(NeutralMode.Brake);
 
         mLeftTop.configFactoryDefault();
         mLeftTop.configAllSettings(Constants.Drivetrain.kLeftMotorsConfig);
 
         mRightTop.configFactoryDefault();
         mRightTop.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
+
+        mLeftBottom.configFactoryDefault();
+        mLeftBottom.configAllSettings(Constants.Drivetrain.kLeftMotorsConfig);
+
+        mRightBottom.configFactoryDefault();
+        mRightBottom.configAllSettings(Constants.Drivetrain.kRightMotorsConfig);
+        
+
+        // mLeftBottom.follow(mLeftTop);
+        // mRightBottom.follow(mRightTop);
 
         resetEncoder();
 
@@ -117,6 +127,8 @@ public class Drivetrain extends SubsystemBase {
     public void drivePower(double leftPwr, double rightPwr) {
         mLeftTop.set(leftPwr);
         mRightTop.set(rightPwr);
+        mLeftBottom.set(leftPwr);
+        mRightBottom.set(rightPwr);
     }
 
     public double getLeftPosition() {
@@ -162,6 +174,8 @@ public class Drivetrain extends SubsystemBase {
     public void resetEncoder() {
         mLeftTop.setSelectedSensorPosition(0);
         mRightTop.setSelectedSensorPosition(0);
+        mLeftBottom.setSelectedSensorPosition(0);
+        mRightBottom.setSelectedSensorPosition(0);
     }
 
     public double getAngle() {
@@ -179,6 +193,8 @@ public class Drivetrain extends SubsystemBase {
     public void setDriveVelos(double leftVelo, double rightVelo) {
         mLeftTop.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
         mRightTop.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
+        mLeftBottom.set(ControlMode.Velocity, leftVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
+        mRightBottom.set(ControlMode.Velocity, rightVelo * (Constants.Drivetrain.kFalconEncoderMax / 10));
     }
 
     private Pose2d updateOdometry() {
