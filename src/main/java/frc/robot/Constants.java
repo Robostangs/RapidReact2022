@@ -251,7 +251,7 @@ public final class Constants {
         public static final double kTrackWidth = 0.471;
 
         public static final double kSlewRate = 2;
-        public static final double kPowerOffsetMultiplier = 0.915;
+        public static final double kPowerOffsetMultiplier = 1   ;
         public static final double kTurningMultiplier = -0.8;
     }
 
