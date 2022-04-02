@@ -296,7 +296,7 @@ public final class Constants {
         public static final double kTargetHeight = 104.5;
         public static final double kLimelightHeight = 26.5;
         public static final double kTargetHeightDelta = kTargetHeight - kLimelightHeight;
-        public static final double kLimelightAngle = 43.11;
+        public static final double kLimelightAngle = 43.2 ;
 
         public static final double kTxTolerance = 10;
     }
