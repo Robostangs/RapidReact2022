@@ -140,6 +140,7 @@ public class ClimbSequenceManager implements Sendable {
 
     public void setState(ClimbState newState) {
         mCurrentState = newState;
+        SmartDashboard.putString("Current State", newState.toString());
         mCurrentTransition = mTransitions.get(newState);
         if (mCurrentTransition.autoSchedule) {
             mCommandScheduler.schedule(mCurrentTransition.behavior);
