@@ -1,5 +1,7 @@
 package frc.robot.commands.climber;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -11,8 +13,13 @@ public class Rotate extends CommandBase {
 
     public Rotate(double speed) {
         addRequirements(mRotator);
+        addRequirements(Climber.getInstance());
         setName("Rotate Climber");
         mSpeed = speed;
+    }
+
+    public Rotate(Supplier<Double> speed) {
+        this(speed.get());
     }
 
     public Rotate() {

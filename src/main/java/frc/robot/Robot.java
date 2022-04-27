@@ -6,9 +6,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.LoggyThings.LoggyThingManager;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Turret;
 import frc.robot.test.drivetrain.PITTest;
 
@@ -88,6 +91,9 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.cancel();
         }
+        var mClimber = Climber.getInstance();
+        var mDriver = new XboxController(0);
+        new RunCommand(() -> mClimber.getRotator().setPower(mDriver.getRightX()), mClimber).schedule();
     }
 
     /** This function is called periodically during operator control. */

@@ -15,9 +15,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.ClimbSequenceManager;
+import frc.robot.commands.climber.Rotate;
+import frc.robot.Constants.Climber;
 import frc.robot.auto.SimpleAuto;
 import frc.robot.commands.PrimeShooting;
 import frc.robot.commands.drivetrain.CustomArcade;
@@ -44,6 +47,7 @@ public class RobotContainer {
     // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drivetrain mDrivetrain = Drivetrain.getInstance();
     private final Feeder mFeeder = Feeder.getInstance();
+    private final frc.robot.subsystems.Climber mClimber = frc.robot.subsystems.Climber.getInstance();
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
     private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
@@ -70,6 +74,7 @@ public class RobotContainer {
                 () -> mDriver.getLeftTriggerAxis() > 0.01 ? -mDriver.getLeftTriggerAxis() : mDriver.getRightTriggerAxis(),
                 mDriver::getLeftX));
         mFeeder.setDefaultCommand(new DefaultFeeder());
+        //Josh Change
 
         // DRIVER CONTROLS
         new JoystickButton(mDriver, XboxController.Button.kA.value)
@@ -80,47 +85,48 @@ public class RobotContainer {
             .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)));
 
         // MANIP CONTROLS
-        new Button(() -> mManip.getLeftTriggerAxis() >= 0.5)
+        new Button(() -> mDriver.getLeftTriggerAxis() >= 0.5)
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect());
 
-        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
+        new Button(() -> mDriver.getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
                 .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
             .whenReleased(new Protect().withTimeout(1));
 
-        new JoystickButton(mManip, XboxController.Button.kA.value)
+        new JoystickButton(mDriver, XboxController.Button.kA.value)
             .whileHeld(new RunElevator());
 
-        new JoystickButton(mManip, XboxController.Button.kB.value)
+        new JoystickButton(mDriver, XboxController.Button.kB.value)
             .whileHeld(new SetShooterState(ShooterMappings.getShooterState(0)).alongWith(new ToRobotAngle(0)))
             .whenReleased(new Protect().withTimeout(1));
 
         // MANIP CLIMBER CONTROLS
-        final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
-            ClimbSequenceManager.ClimbState.kStarting,
-            ClimbSequenceManager.ClimbState.kCallibrated));
+        // final Set<ClimbSequenceManager.ClimbState> keyStates = new HashSet<>(Arrays.asList(
+        //     ClimbSequenceManager.ClimbState.kStarting,
+        //     ClimbSequenceManager.ClimbState.kCallibrated));
 
-        new Button(new JoystickButton(mManip, XboxController.Button.kLeftBumper.value).and(new JoystickButton(mManip, XboxController.Button.kRightBumper.value)))
-            .whenPressed(new ConditionalCommand(
-                new InstantCommand(mSequenceManager::proceed),
-                new InstantCommand(),
-                () -> keyStates.contains(mSequenceManager.getState())));
+        // new Button(new JoystickButton(mManip, XboxController.Button.kLeftBumper.value).and(new JoystickButton(mManip, XboxController.Button.kRightBumper.value)))
+        //     .whenPressed(new ConditionalCommand(
+        //         new InstantCommand(mSequenceManager::proceed),
+        //         new InstantCommand(),
+        //         () -> keyStates.contains(mSequenceManager.getState())));
 
-        new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new ConditionalCommand(
-                new InstantCommand(mSequenceManager::proceed),
-                new InstantCommand(),
-                () -> !keyStates.contains(mSequenceManager.getState())));
+        // new JoystickButton(mManip, XboxController.Button.kLeftBumper.value)
+        //     .whenPressed(new ConditionalCommand(
+        //         new InstantCommand(mSequenceManager::proceed),
+        //         new InstantCommand(),
+        //         () -> !keyStates.contains(mSequenceManager.getState())));
 
-        new JoystickButton(mManip, XboxController.Button.kY.value);
+        // new JoystickButton(mManip, XboxController.Button.kY.value);
 
-        new JoystickButton(mManip, XboxController.Button.kX.value)
-            .whenPressed(mSequenceManager::interrupt);
+        // new JoystickButton(mManip, XboxController.Button.kX.value)
+        //     .whenPressed(mSequenceManager::interrupt);
 
-        mSequenceManager.setWiggleSupplier(mManip::getLeftY);
-        mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
+        // mSequenceManager.setWiggleSupplier(mManip::getLeftY);
+        // mSequenceManager.setGrabbedBarSupplier(mManip::getYButton);
+
     }
 
     /**
