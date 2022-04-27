@@ -85,17 +85,17 @@ public class RobotContainer {
             .alongWith(new ControlManual(() -> -Constants.Feeder.kBeltSpeed)));
 
         // MANIP CONTROLS
-        new Button(() -> mDriver.getLeftTriggerAxis() >= 0.5)
+        new Button(() -> mDriver.getLeftBumper())
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect());
 
-        new Button(() -> mDriver.getRightTriggerAxis() >= 0.5)
+        new Button(() -> mDriver.getRightBumper())
             .whileHeld(
                 new DefaultTurret()
                 .alongWith(new SetShooterState(ShooterMappings.getShooterState(102))))
             .whenReleased(new Protect().withTimeout(1));
 
-        new JoystickButton(mDriver, XboxController.Button.kA.value)
+        new JoystickButton(mDriver, XboxController.Button.kX.value)
             .whileHeld(new RunElevator());
 
         new JoystickButton(mDriver, XboxController.Button.kB.value)
