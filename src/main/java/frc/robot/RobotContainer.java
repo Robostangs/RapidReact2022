@@ -9,8 +9,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,6 +35,7 @@ import frc.robot.commands.turret.ToRobotAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Music;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +51,9 @@ public class RobotContainer {
     private static final XboxController mDriver = new XboxController(0);
     private static final XboxController mManip = new XboxController(1);
     private final ClimbSequenceManager mSequenceManager = ClimbSequenceManager.getInstance();
+    private static Spark blinken = new Spark(11);
+    private static Music music = Music.getInstance();
+    
 
     // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -54,6 +62,9 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         Limelight.doNothing();
+        blinken.set(-0.99);
+        music.addMotors(new TalonFX(Constants.Drivetrain.kLeftBackID), new TalonFX(Constants.Drivetrain.kLeftTopID), new TalonFX(Constants.Drivetrain.kRightBackID), new TalonFX(Constants.Drivetrain.kRightTopID));
+        music.loadMusic("src\\main\\deploy\\Dynamite.chrp");
     }
 
     /**
@@ -86,7 +97,8 @@ public class RobotContainer {
             .whileHeld(new PrimeShooting())
             .whenReleased(new Protect().withTimeout(1).withName("Protect"));
 
-        new Button(() -> mManip.getRightTriggerAxis() >= 0.5)
+        new Button(() -> mManip.
+        getRightTriggerAxis() >= 0.5)
             .whileHeld(
                 new DefaultTurret()
                     .alongWith(new SetShooterState(ShooterMappings.getShooterState(94))))

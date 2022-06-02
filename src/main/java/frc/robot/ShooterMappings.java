@@ -23,6 +23,7 @@ public class ShooterMappings {
         addEntry(0, 1000, 1000);
         addEntry(94, 2200.0, 2100.0);
         addEntry(102, 2450.0, 2350.0);
+        addEntry(110, 2550,2350);
         addEntry(118, 2700.0, 2400.0);
         addEntry(130, 3100, 2450);
         addEntry(142, 3750.0, 475.0);

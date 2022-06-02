@@ -11,7 +11,7 @@ public class Music {
 
     private final Orchestra mOrchestra = new Orchestra();
 
-    public Music getInstance() {
+    public static Music getInstance() {
         if (instance == null) {
             instance = new Music();
         }
@@ -31,9 +31,10 @@ public class Music {
         // dynamite.chrp
         mOrchestra.loadMusic(musicFilePath);
         Timer.delay(2);
+        play();
     }
 
-    public void play() {
+    private void play() {
         mOrchestra.play();
     }
 }
